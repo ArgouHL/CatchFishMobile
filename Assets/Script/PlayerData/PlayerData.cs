@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewPlayer", menuName = "NewPlayer")]
 public class PlayerData : ScriptableObject
 {
-    public  string Player_Name;
+    public  string player_Name;
     public int Player_Money;
     public int Player_Can;
     public int Player_Energy;
@@ -15,7 +15,7 @@ public class PlayerData : ScriptableObject
 
     internal void NewData(string name)
     {
-        Player_Name = name;
+        player_Name = name;
         Player_Money = 0;
         Player_Can = 0;
         Player_Energy = 100;
@@ -30,7 +30,7 @@ public class PlayerData : ScriptableObject
 
     internal void Reverse(Account ac)
     {
-        Player_Name = ac.Player_Name;
+        player_Name = ac.Player_Name;
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
@@ -49,7 +49,7 @@ public class Account
 
     internal Account(PlayerData ac)
     {
-        Player_Name = ac.Player_Name;
+        Player_Name = ac.player_Name;
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;

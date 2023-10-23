@@ -48,7 +48,7 @@ public class PlayerDataControl : MonoBehaviour
             return false;
         }         
         playerData.Reverse(_ac);
-        Debug.Log("Load:" + playerData.name);
+        Debug.Log("Load:" + playerData.player_Name);
         return true;
     }
 
