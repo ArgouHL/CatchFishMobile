@@ -11,23 +11,14 @@ public class TouchInputManager : Singleton<TouchInputManager>
     public static TouchInputManager instance;
 
 
-    public delegate void TouchEventScan(Vector2 position, float time);
-    public static TouchEventScan OnStartTouchScan;
-    public static TouchEventScan OnEndTouchScan;
 
     public delegate void TouchEvent(Vector2 position, float time);
     public static TouchEvent OnStartTouch;
     public static TouchEvent OnEndTouch;
+    public static TouchEvent OnStartTouchShop;
+    public static TouchEvent OnEndTouchShop;
 
-    public delegate void CheckItemEvent(Vector2 position, float time);
-    public static TouchEvent OnStartTouchCheck;
-    public static TouchEvent OnEndTouchCheck;
 
-    public delegate void StartOneTouch(InputAction.CallbackContext ctx);
-    public static StartOneTouch PuzzleOneTouch;
-
-    public delegate void UIOneTouchEvent(InputAction.CallbackContext ctx);
-    public static UIOneTouchEvent UIOneTouch;
 
 
 
@@ -73,12 +64,12 @@ public class TouchInputManager : Singleton<TouchInputManager>
 
     private void OnEnable()
     {
-        //Debug.Log(PlayerInputManager.inputs == null ? "y":"n"); 
-        //PlayerInputManager.inputs.Puzzle.Touch.started +=StartTouchPrimary;
-        //PlayerInputManager.inputs.Puzzle.Touch.canceled += EndTouchPrimary;
+        Debug.Log(PlayerInputManager.inputs == null ? "y":"n"); 
+        PlayerInputManager.inputs.Lobby.Touch.started +=StartTouchPrimary;
+        PlayerInputManager.inputs.Lobby.Touch.canceled += EndTouchPrimary;
         //PlayerInputManager.inputs.UI.Touch.started += ctx => OneTouchPrimary(ctx);
-        //PlayerInputManager.inputs.Player.Touch.started += ctx => StartTouchScan(ctx);
-        //PlayerInputManager.inputs.Player.Touch.canceled += ctx => EndTouchScan(ctx);
+        PlayerInputManager.inputs.Shop.Touch.started += ctx => StartTouchShop(ctx);
+        PlayerInputManager.inputs.Shop.Touch.canceled += ctx => EndTouchShop(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.started += ctx => StartTouchCheckItem(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.canceled += ctx => EndTouchCheckItem(ctx);
 
@@ -86,12 +77,13 @@ public class TouchInputManager : Singleton<TouchInputManager>
 
     private void OnDisable()
     {
-
+        PlayerInputManager.inputs.Lobby.Touch.started -= StartTouchPrimary;
+        PlayerInputManager.inputs.Lobby.Touch.canceled -= EndTouchPrimary;
         //PlayerInputManager.inputs.Puzzle.Touch.started -= StartTouchPrimary;
         //PlayerInputManager.inputs.Puzzle.Touch.canceled -= EndTouchPrimary;
         //PlayerInputManager.inputs.UI.Touch.started -= ctx => OneTouchPrimary(ctx);
-        //PlayerInputManager.inputs.Player.Touch.started -= ctx => StartTouchScan(ctx);
-        //PlayerInputManager.inputs.Player.Touch.canceled -= ctx => EndTouchScan(ctx);
+        PlayerInputManager.inputs.Shop.Touch.started -= ctx => StartTouchShop(ctx);
+        PlayerInputManager.inputs.Shop.Touch.canceled -= ctx => EndTouchShop(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.started -= ctx => StartTouchCheckItem(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.canceled -= ctx => EndTouchCheckItem(ctx);
 
@@ -99,41 +91,41 @@ public class TouchInputManager : Singleton<TouchInputManager>
 
     private void OneTouchPrimary(InputAction.CallbackContext ctx)
     {
-        Debug.Log("UITouch");
-        if (UIOneTouch != null) UIOneTouch(ctx);
+        //Debug.Log("UITouch");
+        //if (UIOneTouch != null) UIOneTouch(ctx);
     }
 
     private void StartTouchPrimary(InputAction.CallbackContext ctx)
     {
 
-        //var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Puzzle.TouchPosistion.ReadValue<Vector2>());
-        //_pos.z = Camera.main.nearClipPlane;
-        //if (OnStartTouch != null)
-        //    OnStartTouch(_pos, (float)ctx.startTime);
+        var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Lobby.TouchPosition.ReadValue<Vector2>());
+        _pos.z = Camera.main.nearClipPlane;
+        if (OnStartTouch != null)
+            OnStartTouch(_pos, (float)ctx.startTime);
 
 
     }
 
     private void EndTouchPrimary(InputAction.CallbackContext ctx)
     {
-        //var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Puzzle.TouchPosistion.ReadValue<Vector2>());
-        //_pos.z = Camera.main.nearClipPlane;
-        //if (OnEndTouch != null) OnEndTouch(_pos, (float)ctx.time);
+        var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Lobby.TouchPosition.ReadValue<Vector2>());
+        _pos.z = Camera.main.nearClipPlane;
+        if (OnEndTouch != null) OnEndTouch(_pos, (float)ctx.time);
     }
 
-    private void StartTouchScan(InputAction.CallbackContext ctx)
+    private void StartTouchShop(InputAction.CallbackContext ctx)
     {
-        //var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Player.TouchPosistion.ReadValue<Vector2>());
-        //_pos.z = Camera.main.nearClipPlane;
-        //if (OnStartTouchScan != null)
-        //    OnStartTouchScan(_pos, (float)ctx.startTime);
+        var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Shop.TouchPosition.ReadValue<Vector2>());
+        _pos.z = Camera.main.nearClipPlane;
+        if (OnStartTouchShop != null)
+            OnStartTouchShop(_pos, (float)ctx.startTime);
     }
 
-    private void EndTouchScan(InputAction.CallbackContext ctx)
+    private void EndTouchShop(InputAction.CallbackContext ctx)
     {
-        //var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Player.TouchPosistion.ReadValue<Vector2>());
-        //_pos.z = Camera.main.nearClipPlane;
-        //if (OnEndTouchScan != null) OnEndTouchScan(_pos, (float)ctx.time);
+        var _pos = Camera.main.ScreenToWorldPoint(PlayerInputManager.inputs.Shop.TouchPosition.ReadValue<Vector2>());
+        _pos.z = Camera.main.nearClipPlane;
+        if (OnEndTouchShop != null) OnEndTouchShop(_pos, (float)ctx.time);
     }
 
 

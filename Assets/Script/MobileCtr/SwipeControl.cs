@@ -21,12 +21,13 @@ public class SwipeControl : MonoBehaviour
 
 
     public delegate void SwipeEvent();
-    public static SwipeEvent SwipeUp, SwipeDown, SwipeLeftRight;
-    public delegate void SwipeScanEvent();
-    public static SwipeScanEvent SwipeLeftScan, SwipeRightScan;
+    public static SwipeEvent SwipeUp, SwipeDown, SwipeLeft, SwipeRight;
 
-    public delegate void SwipeCheckEvent();
-    public static SwipeCheckEvent SwipeLeftCheck, SwipeRightCheck;
+    public delegate void SwipeShopPageEvent();
+    public static SwipeShopPageEvent SwipeLeftPage, SwipeRightPage;
+
+    //public delegate void SwipeCheckEvent();
+    //public static SwipeCheckEvent SwipeLeftCheck, SwipeRightCheck;
 
     private void Awake()
     {
@@ -49,10 +50,10 @@ public class SwipeControl : MonoBehaviour
     {
         TouchInputManager.OnStartTouch += SwipeStart;
         TouchInputManager.OnEndTouch += SwipeEnd;
-        TouchInputManager.OnStartTouchScan += SwipeStartScan;
-        TouchInputManager.OnEndTouchScan += SwipeEndScan;
-        TouchInputManager.OnStartTouchCheck += SwipeStartCheck;
-        TouchInputManager.OnEndTouchCheck += SwipeEndCheck;
+        TouchInputManager.OnStartTouchShop += SwipeStartShop;
+        TouchInputManager.OnEndTouchShop += SwipeEndShop;
+        //TouchInputManager.OnStartTouchCheck += SwipeStartCheck;
+        //TouchInputManager.OnEndTouchCheck += SwipeEndCheck;
 
     }
 
@@ -60,11 +61,12 @@ public class SwipeControl : MonoBehaviour
     {
         TouchInputManager.OnStartTouch -= SwipeStart;
         TouchInputManager.OnEndTouch -= SwipeEnd;
-        TouchInputManager.OnStartTouchScan -= SwipeStartScan;
-        TouchInputManager.OnEndTouchScan -= SwipeEndScan;
-        TouchInputManager.OnStartTouchCheck -= SwipeStartCheck;
-        TouchInputManager.OnEndTouchCheck -= SwipeEndCheck;
-
+        TouchInputManager.OnStartTouchShop -= SwipeStartShop;
+        TouchInputManager.OnEndTouchShop -= SwipeEndShop;
+        //TouchInputManager.OnStartTouchScan -= SwipeStartScan;
+        //TouchInputManager.OnEndTouchScan -= SwipeEndScan;
+        //TouchInputManager.OnStartTouchCheck -= SwipeStartCheck;
+        //TouchInputManager.OnEndTouchCheck -= SwipeEndCheck;
     }
       
 
@@ -74,26 +76,26 @@ public class SwipeControl : MonoBehaviour
         startTime = time;
     }
 
-    private void SwipeEndCheck(Vector2 position, float time)
-    {
-        endPos = position;
-        endTime = time;
-        DetectSwipeCheck();
+    //private void SwipeEndCheck(Vector2 position, float time)
+    //{
+    //    endPos = position;
+    //    endTime = time;
+    //    DetectSwipeCheck();
 
-    }
+    //}
 
 
-    private void SwipeStartScan(Vector2 position, float time)
+    private void SwipeStartShop(Vector2 position, float time)
     {
         startPos = position;
         startTime = time;
     }
 
-    private void SwipeEndScan(Vector2 position, float time)
+    private void SwipeEndShop(Vector2 position, float time)
     {
         endPos = position;
         endTime = time;
-        DetectSwipeScan();
+        DetectSwipeShop();
     }
 
     private void SwipeStart(Vector2 position, float time)
@@ -111,7 +113,7 @@ public class SwipeControl : MonoBehaviour
 
     private void DetectSwipe()
     {
-        //Debug.Log("swipeAnyWay");
+        Debug.Log("swipeAnyWay");
         if (Vector3.Distance(startPos,endPos)>= minDisUpDown && (endTime-startTime)<= maxTime)
         {
             Debug.Log("swipe");
@@ -119,92 +121,95 @@ public class SwipeControl : MonoBehaviour
             var direction = endPos - startPos;
             var direction2D = ((Vector2)direction).normalized;
             SwipeDirection(direction2D);
-
-
         }
     }
 
-    private void DetectSwipeScan()
+    private void DetectSwipeShop()
     {
-        //Debug.Log("swipeSwipeCheck");
+        
         if (Vector3.Distance(startPos, endPos) >= minDisLR && (endTime - startTime) <= maxTime)
         {
             Debug.Log("swipe");
             Debug.DrawLine(startPos, endPos, Color.green, 5f);
             var direction = endPos - startPos;
             var direction2D = ((Vector2)direction).normalized;
-            SwipeDirectionScan(direction2D);
-
-
+            SwipeDirectionShop(direction2D);
         }
     }
 
-    private void DetectSwipeCheck()
-    {
-        //Debug.Log("swipeSwipeCheck");
-        Debug.DrawLine(startPos, endPos, Color.green, 5f);
-        if (Vector3.Distance(startPos, endPos) >= minDisLR && (endTime - startTime) <= maxTime)
-        {
-            Debug.Log("swipe");
-           
-            var direction = endPos - startPos;
-            var direction2D = ((Vector2)direction).normalized;
-            SwipeDirectionCheck(direction2D);
+    //private void DetectSwipeCheck()
+    //{
+    //    Debug.Log("swipeSwipeCheck");
+    //    Debug.DrawLine(startPos, endPos, Color.green, 5f);
+    //    if (Vector3.Distance(startPos, endPos) >= minDisLR && (endTime - startTime) <= maxTime)
+    //    {
+    //        Debug.Log("swipe");
+
+    //        var direction = endPos - startPos;
+    //        var direction2D = ((Vector2)direction).normalized;
+    //        SwipeDirectionCheck(direction2D);
 
 
-        }
-    }
+    //    }
+    //}
 
 
     private void SwipeDirection(Vector2 direction)
     {
         if(Vector2.Dot(Vector2.up,direction)>dirThreshold)
         {
-            //Debug.Log("swipeUp");
+            Debug.Log("swipeUp");
             SwipeUp?.Invoke();
         }
         if (Vector2.Dot(Vector2.down, direction) > dirThreshold)
         {
-            //Debug.Log("swipeDown");
+            Debug.Log("swipeDown");
             SwipeDown?.Invoke();
         }
-        if (Vector2.Dot(Vector2.right, direction) > dirThreshold || Vector2.Dot(Vector2.left, direction) > dirThreshold)
-        {
-            //Debug.Log("swipeleftright");
-            SwipeLeftRight?.Invoke();
-        }
-    }
-
-
-    private void SwipeDirectionScan(Vector2 direction)
-    {
         if (Vector2.Dot(Vector2.left, direction) > dirThreshold)
         {
             Debug.Log("swipeleft");
-            SwipeLeftScan?.Invoke();
+            SwipeLeft?.Invoke();
         }
         if (Vector2.Dot(Vector2.right, direction) > dirThreshold)
         {
             Debug.Log("swiperight");
-            SwipeRightScan?.Invoke();
+            SwipeRight?.Invoke();
         }
-        
+       
     }
 
 
-    private void SwipeDirectionCheck(Vector2 direction)
+    private void SwipeDirectionShop(Vector2 direction)
     {
         if (Vector2.Dot(Vector2.left, direction) > dirThreshold)
         {
-            Debug.Log("swipeCheckCheckleft");
-            SwipeLeftCheck?.Invoke();
+            Debug.Log("swipeleft");
+            SwipeRightPage?.Invoke();
         }
         if (Vector2.Dot(Vector2.right, direction) > dirThreshold)
         {
-            Debug.Log("swipeCheckright");
-            SwipeRightCheck?.Invoke();
+            Debug.Log("swiperight");
+            SwipeLeftPage?.Invoke();
+            
         }
 
     }
+
+
+    //private void SwipeDirectionCheck(Vector2 direction)
+    //{
+    //    if (Vector2.Dot(Vector2.left, direction) > dirThreshold)
+    //    {
+    //        Debug.Log("swipeCheckCheckleft");
+    //        SwipeLeftCheck?.Invoke();
+    //    }
+    //    if (Vector2.Dot(Vector2.right, direction) > dirThreshold)
+    //    {
+    //        Debug.Log("swipeCheckright");
+    //        SwipeRightCheck?.Invoke();
+    //    }
+
+    //}
 }
 

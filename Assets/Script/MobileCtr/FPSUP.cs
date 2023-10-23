@@ -11,6 +11,7 @@ public class FPSUP : MonoBehaviour
 #if UNITY_ANDROID
         Application.targetFrameRate = 120;
 #endif
+        DontDestroyOnLoad(gameObject);
     }
 
 
