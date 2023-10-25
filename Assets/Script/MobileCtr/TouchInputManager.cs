@@ -17,9 +17,11 @@ public class TouchInputManager : Singleton<TouchInputManager>
     public static TouchEvent OnEndTouch;
     public static TouchEvent OnStartTouchShop;
     public static TouchEvent OnEndTouchShop;
+   
 
 
-
+    public delegate void OneTouchEvent(InputAction.CallbackContext ctx);
+    public static OneTouchEvent GamePlayOneTouch;
 
 
     private void Awake()
@@ -67,7 +69,7 @@ public class TouchInputManager : Singleton<TouchInputManager>
         Debug.Log(PlayerInputManager.inputs == null ? "y":"n"); 
         PlayerInputManager.inputs.Lobby.Touch.started +=StartTouchPrimary;
         PlayerInputManager.inputs.Lobby.Touch.canceled += EndTouchPrimary;
-        //PlayerInputManager.inputs.UI.Touch.started += ctx => OneTouchPrimary(ctx);
+        
         PlayerInputManager.inputs.Shop.Touch.started += ctx => StartTouchShop(ctx);
         PlayerInputManager.inputs.Shop.Touch.canceled += ctx => EndTouchShop(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.started += ctx => StartTouchCheckItem(ctx);
@@ -81,7 +83,7 @@ public class TouchInputManager : Singleton<TouchInputManager>
         PlayerInputManager.inputs.Lobby.Touch.canceled -= EndTouchPrimary;
         //PlayerInputManager.inputs.Puzzle.Touch.started -= StartTouchPrimary;
         //PlayerInputManager.inputs.Puzzle.Touch.canceled -= EndTouchPrimary;
-        //PlayerInputManager.inputs.UI.Touch.started -= ctx => OneTouchPrimary(ctx);
+       
         PlayerInputManager.inputs.Shop.Touch.started -= ctx => StartTouchShop(ctx);
         PlayerInputManager.inputs.Shop.Touch.canceled -= ctx => EndTouchShop(ctx);
         //PlayerInputManager.inputs.CheckItem.Touch.started -= ctx => StartTouchCheckItem(ctx);
@@ -89,11 +91,7 @@ public class TouchInputManager : Singleton<TouchInputManager>
 
     }
 
-    private void OneTouchPrimary(InputAction.CallbackContext ctx)
-    {
-        //Debug.Log("UITouch");
-        //if (UIOneTouch != null) UIOneTouch(ctx);
-    }
+
 
     private void StartTouchPrimary(InputAction.CallbackContext ctx)
     {

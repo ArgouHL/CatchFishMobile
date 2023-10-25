@@ -28,19 +28,28 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
             ""id"": ""096ef238-fb59-4132-aa04-946ee008f081"",
             ""actions"": [
                 {
+                    ""name"": ""TouchPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""20d0545f-765e-4b8b-9f94-6d63ed331e6a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Touch"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""cf2ce4a2-e210-4348-bc28-4a21e5886f8b"",
+                    ""id"": ""1eba4167-f879-4a1e-8753-82b1a7d7dab7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""TouchPosition"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""20d0545f-765e-4b8b-9f94-6d63ed331e6a"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Hit"",
+                    ""type"": ""Button"",
+                    ""id"": ""85dba85a-9f20-4279-9c00-2df8f597f8bd"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -49,23 +58,34 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""a2dd5fee-f6b8-420b-bdf2-a10cf003506b"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Touch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""117dc765-b744-410c-9c84-c41abda45f5a"",
                     ""path"": ""<Touchscreen>/primaryTouch/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6741947-28ba-4dd8-b45d-178fc44e10a9"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dc3613b-9c45-4932-b03f-1b86c2c8ee19"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -630,19 +650,19 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
             ""id"": ""cdd42003-b9ee-4e09-aa8b-f3dfb4f267c5"",
             ""actions"": [
                 {
-                    ""name"": ""Touch"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""dadee03e-a451-41ee-9f2d-281d5d28a498"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""TouchPosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a252204e-45b5-4fcb-b87a-d341ef0d1525"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Hit"",
+                    ""type"": ""Button"",
+                    ""id"": ""377d6e3a-ff73-45ad-9171-fdc03a4525ef"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -651,23 +671,23 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""aecd809d-5cac-480d-833a-996be63f5dea"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Touch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6e82af9e-3475-400c-842e-882dc3ae0d78"",
                     ""path"": ""<Touchscreen>/primaryTouch/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69d7b701-222e-4a31-b019-6a247fa002a2"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -774,8 +794,9 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
 }");
         // Lobby
         m_Lobby = asset.FindActionMap("Lobby", throwIfNotFound: true);
-        m_Lobby_Touch = m_Lobby.FindAction("Touch", throwIfNotFound: true);
         m_Lobby_TouchPosition = m_Lobby.FindAction("TouchPosition", throwIfNotFound: true);
+        m_Lobby_Touch = m_Lobby.FindAction("Touch", throwIfNotFound: true);
+        m_Lobby_Hit = m_Lobby.FindAction("Hit", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -793,8 +814,8 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         m_UI_AddHp = m_UI.FindAction("AddHp", throwIfNotFound: true);
         // GamePlay
         m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
-        m_GamePlay_Touch = m_GamePlay.FindAction("Touch", throwIfNotFound: true);
         m_GamePlay_TouchPosition = m_GamePlay.FindAction("TouchPosition", throwIfNotFound: true);
+        m_GamePlay_Hit = m_GamePlay.FindAction("Hit", throwIfNotFound: true);
         // Shop
         m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
         m_Shop_Touch = m_Shop.FindAction("Touch", throwIfNotFound: true);
@@ -862,14 +883,16 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
     // Lobby
     private readonly InputActionMap m_Lobby;
     private ILobbyActions m_LobbyActionsCallbackInterface;
-    private readonly InputAction m_Lobby_Touch;
     private readonly InputAction m_Lobby_TouchPosition;
+    private readonly InputAction m_Lobby_Touch;
+    private readonly InputAction m_Lobby_Hit;
     public struct LobbyActions
     {
         private @InputManager m_Wrapper;
         public LobbyActions(@InputManager wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Touch => m_Wrapper.m_Lobby_Touch;
         public InputAction @TouchPosition => m_Wrapper.m_Lobby_TouchPosition;
+        public InputAction @Touch => m_Wrapper.m_Lobby_Touch;
+        public InputAction @Hit => m_Wrapper.m_Lobby_Hit;
         public InputActionMap Get() { return m_Wrapper.m_Lobby; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -879,22 +902,28 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_LobbyActionsCallbackInterface != null)
             {
-                @Touch.started -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
-                @Touch.performed -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
-                @Touch.canceled -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
                 @TouchPosition.started -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouchPosition;
                 @TouchPosition.performed -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouchPosition;
                 @TouchPosition.canceled -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouchPosition;
+                @Touch.started -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
+                @Touch.performed -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
+                @Touch.canceled -= m_Wrapper.m_LobbyActionsCallbackInterface.OnTouch;
+                @Hit.started -= m_Wrapper.m_LobbyActionsCallbackInterface.OnHit;
+                @Hit.performed -= m_Wrapper.m_LobbyActionsCallbackInterface.OnHit;
+                @Hit.canceled -= m_Wrapper.m_LobbyActionsCallbackInterface.OnHit;
             }
             m_Wrapper.m_LobbyActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Touch.started += instance.OnTouch;
-                @Touch.performed += instance.OnTouch;
-                @Touch.canceled += instance.OnTouch;
                 @TouchPosition.started += instance.OnTouchPosition;
                 @TouchPosition.performed += instance.OnTouchPosition;
                 @TouchPosition.canceled += instance.OnTouchPosition;
+                @Touch.started += instance.OnTouch;
+                @Touch.performed += instance.OnTouch;
+                @Touch.canceled += instance.OnTouch;
+                @Hit.started += instance.OnHit;
+                @Hit.performed += instance.OnHit;
+                @Hit.canceled += instance.OnHit;
             }
         }
     }
@@ -1032,14 +1061,14 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
     // GamePlay
     private readonly InputActionMap m_GamePlay;
     private IGamePlayActions m_GamePlayActionsCallbackInterface;
-    private readonly InputAction m_GamePlay_Touch;
     private readonly InputAction m_GamePlay_TouchPosition;
+    private readonly InputAction m_GamePlay_Hit;
     public struct GamePlayActions
     {
         private @InputManager m_Wrapper;
         public GamePlayActions(@InputManager wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Touch => m_Wrapper.m_GamePlay_Touch;
         public InputAction @TouchPosition => m_Wrapper.m_GamePlay_TouchPosition;
+        public InputAction @Hit => m_Wrapper.m_GamePlay_Hit;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1049,22 +1078,22 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_GamePlayActionsCallbackInterface != null)
             {
-                @Touch.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouch;
-                @Touch.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouch;
-                @Touch.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouch;
                 @TouchPosition.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouchPosition;
                 @TouchPosition.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouchPosition;
                 @TouchPosition.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnTouchPosition;
+                @Hit.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnHit;
+                @Hit.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnHit;
+                @Hit.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnHit;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Touch.started += instance.OnTouch;
-                @Touch.performed += instance.OnTouch;
-                @Touch.canceled += instance.OnTouch;
                 @TouchPosition.started += instance.OnTouchPosition;
                 @TouchPosition.performed += instance.OnTouchPosition;
                 @TouchPosition.canceled += instance.OnTouchPosition;
+                @Hit.started += instance.OnHit;
+                @Hit.performed += instance.OnHit;
+                @Hit.canceled += instance.OnHit;
             }
         }
     }
@@ -1153,8 +1182,9 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
     public OptionActions @Option => new OptionActions(this);
     public interface ILobbyActions
     {
-        void OnTouch(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+        void OnTouch(InputAction.CallbackContext context);
+        void OnHit(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1174,8 +1204,8 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
     }
     public interface IGamePlayActions
     {
-        void OnTouch(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+        void OnHit(InputAction.CallbackContext context);
     }
     public interface IShopActions
     {
