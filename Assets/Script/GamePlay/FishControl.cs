@@ -5,11 +5,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
+using UnityEngine.InputSystem;
 
 public class FishControl : MonoBehaviour
 {
     public static FishControl instance;
-    int remainTimeShow = 0;
+    int remainHitTime = 0;
     private Fish hittedFish = null;
     [SerializeField] private TMP_Text t;
     [SerializeField] private List<Fish> fishsOnScreen;
@@ -22,9 +23,18 @@ public class FishControl : MonoBehaviour
     private void Start()
     {
         Instantized();
-        StartCoroutine(FishSpawn());
+      
     }
 
+
+
+
+
+
+    public void StartGenFish()
+    {
+        StartCoroutine(FishSpawn());
+    }
     private void Instantized()
     {
         fishsOnScreen = new List<Fish>();
@@ -55,13 +65,13 @@ public class FishControl : MonoBehaviour
         if (hittedFish != _fish)
         {
             hittedFish = _fish;
-            remainTimeShow = _fish.HitTimes;
+            remainHitTime = _fish.HitTimes;
         }
-        remainTimeShow--;
-        if (remainTimeShow <= 0)
+        remainHitTime--;
+        if (remainHitTime <= 0)
         {
-            _fish.StopMove();
-           
+            ResultCount.instance.AddCatchedFish(_fish.type);
+            _fish.StopMove();         
 
         }
         UpdateHit();
@@ -92,8 +102,8 @@ public class FishControl : MonoBehaviour
 
     private void UpdateHit()
     {
-        t.text = remainTimeShow.ToString();
-        t.gameObject.SetActive(remainTimeShow > 0);
+        t.text = remainHitTime.ToString();
+        t.gameObject.SetActive(remainHitTime > 0);
 
 
     }
@@ -107,4 +117,11 @@ public class FishControl : MonoBehaviour
             yield return new WaitForSeconds(0.7f);
         }
     }
+
+    public void TestFuncINint(int i)
+    {
+
+    }
+
+    
 }

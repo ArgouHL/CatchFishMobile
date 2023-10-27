@@ -9,8 +9,9 @@ public class PlayerData : ScriptableObject
     public int Player_Money;
     public int Player_Can;
     public int Player_Energy;
+    public int Player_MaxEnergy;
     public int Player_CatStick;
-    public bool Created;
+    public bool UseForTest;
 
 
     internal void NewData(string name)
@@ -18,7 +19,8 @@ public class PlayerData : ScriptableObject
         player_Name = name;
         Player_Money = 0;
         Player_Can = 0;
-        Player_Energy = 100;
+        Player_Energy = 10;
+        Player_MaxEnergy = 10;
         Player_CatStick = 0;
     }
 
@@ -34,6 +36,7 @@ public class PlayerData : ScriptableObject
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
+        Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_CatStick = ac.Player_CatStick;
     }
 }
@@ -45,7 +48,7 @@ public class Account
     internal int Player_Can;
     internal int Player_Energy;
     internal int Player_CatStick;
-
+    internal int Player_MaxEnergy;
 
     internal Account(PlayerData ac)
     {
@@ -53,6 +56,7 @@ public class Account
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
+        Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_CatStick = ac.Player_CatStick;
     }
 }

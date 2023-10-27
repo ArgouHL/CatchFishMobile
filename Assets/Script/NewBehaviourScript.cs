@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class NewBehaviourScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //InputManager inputs;
+    //private void Awake()
+    //{
+    //    inputs = new InputManager();
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //private void OnEnable()
+    //{
+    //    inputs.GamePlay.Hit.performed += TestFuncINInput;
+    //}
+    //private void OnDisable()
+    //{
+    //    inputs.GamePlay.Hit.performed -= TestFuncINInput;
+    //}
+
+
+    //public void TestFuncINInput(InputAction.CallbackContext ctx)
+    //{
+
+    //}
 }

@@ -39,6 +39,7 @@ public class PlayerDataControl : MonoBehaviour
         Debug.LogWarning("playerSaveCreated:"+name);
     }
 
+ [ContextMenu("Load")]
     public bool LoadPlayer()
     {
         var _ac = Load();
@@ -74,9 +75,10 @@ public class PlayerDataControl : MonoBehaviour
         Debug.Log("Save Complete"+ Application.dataPath + "/Save.ept");
     }
 
-    [ContextMenu("Load")]
+   
     public Account Load()
     {
+        
         if (File.Exists(Application.persistentDataPath + "/Save.ept"))
         {
             BinaryFormatter bf = new BinaryFormatter();

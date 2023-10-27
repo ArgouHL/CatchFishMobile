@@ -8115,6 +8115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playName_MainUI: {fileID: 1361645883}
+  playMoney_MainUI: {fileID: 1854120945}
+  playEnergy_MainUI: {fileID: 1507122029}
 --- !u!1 &2123379006
 GameObject:
   m_ObjectHideFlags: 0
