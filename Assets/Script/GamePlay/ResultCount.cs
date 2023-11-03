@@ -12,7 +12,7 @@ public class ResultCount : MonoBehaviour
         instance = this;
     }
 
-    public void AddCatchedFish(fishType type)
+    public void AddCatchedFish()
     {
         catchedFish++;
         GameInformationShow.instance.UpdateCatchedCount(catchedFish);

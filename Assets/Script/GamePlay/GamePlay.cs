@@ -7,11 +7,25 @@ using UnityEngine.InputSystem;
 public class GamePlay : MonoBehaviour
 {
     private InputAction touchPosition;
+    public static bool isGameEnd = true;
+    public static GamePlay instance;
+
+    public delegate void OrderCheck(Fish fish);
+    public static OrderCheck CatchedFish;
+
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         PlayerInputManager.instance.ChangeType(InputType.GamePlay);
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
-        StartCoroutine(PreStart());
+
+        OrderManager.instance.GetOrders();
+
+
     }
 
 
@@ -25,23 +39,27 @@ public class GamePlay : MonoBehaviour
         PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
     }
 
-
+    public void GamePreStart()
+    {
+        StartCoroutine(PreStart());
+        isGameEnd = false;
+    }
 
     public void GetFish(InputAction.CallbackContext ctx)
     {
         Debug.Log("GetFish");
-       var _hitPos=(Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
+        var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
         Debug.Log(_hitPos);
         FishControl.instance.HitFish(_hitPos);
     }
 
-    
+
     private IEnumerator PreStart()
     {
-        yield return FadeInWait();
-       int readytime = 3; 
-       
-        while(readytime >= 0)
+
+        int readytime = 3;
+
+        while (readytime >= 0)
         {
             GameInformationShow.instance.UpdatePreCount(readytime);
             readytime--;
@@ -51,10 +69,7 @@ public class GamePlay : MonoBehaviour
         GameStart();
     }
 
-    private IEnumerator FadeInWait()
-    {
-        yield return new WaitForSeconds(1);
-    }
+
     private void GameStart()
     {
         FishControl.instance.StartGenFish();
@@ -65,18 +80,20 @@ public class GamePlay : MonoBehaviour
     {
         int readytime = 45;
         yield return new WaitForSeconds(1);
-        GameInformationShow.instance.UpdateCountDown(readytime);
+
         while (readytime >= 0)
         {
+            GameInformationShow.instance.UpdateCountDown(readytime);
             //GameInformationShow.instance.UpdatePreCount(readytime);
             readytime--;
             yield return new WaitForSeconds(1);
         }
+        GameInformationShow.instance.UpdateCountDown(readytime);
         GameStop();
     }
 
     private void GameStop()
     {
-        throw new NotImplementedException();
+        isGameEnd = true;
     }
 }

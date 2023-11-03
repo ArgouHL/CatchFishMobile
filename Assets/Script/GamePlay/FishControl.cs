@@ -48,7 +48,7 @@ public class FishControl : MonoBehaviour
         float height = Random.Range(-9f, 4f);
         var fishObj = Instantiate(fishPrefab.fishObj, new Vector2(8*way, height), Quaternion.identity);
         var _fish = fishObj.AddComponent<Fish>().Swim(way,3f);
-        _fish.type = fishPrefab.type;
+        
         _fish.size = fishPrefab.size;
         _fish.HitTimes = fishPrefab.hitTimes;
         fishsOnScreen.Add(_fish);
@@ -70,7 +70,8 @@ public class FishControl : MonoBehaviour
         remainHitTime--;
         if (remainHitTime <= 0)
         {
-            ResultCount.instance.AddCatchedFish(_fish.type);
+            ResultCount.instance.AddCatchedFish();
+            GamePlay.CatchedFish.Invoke(_fish);
             _fish.StopMove();         
 
         }
@@ -111,10 +112,10 @@ public class FishControl : MonoBehaviour
 
     private IEnumerator FishSpawn()
     {
-        while(true)
+        while(!GamePlay.isGameEnd)
         {
             GenerateFish();
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 

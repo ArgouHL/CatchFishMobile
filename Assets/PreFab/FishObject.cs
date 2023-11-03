@@ -7,11 +7,12 @@ public class FishObject : ScriptableObject
 {
     public string fishName;
     public GameObject fishObj;
-    public fishType type;
+    public int fishID;
     public int hitTimes;
     public float size;
     
 
 }
 
-public enum fishType{a,b,c}
+public enum fishRarity { Normal, Rare, SuperRara ,Special,Shark}
+public enum fishReagon { Pacific }

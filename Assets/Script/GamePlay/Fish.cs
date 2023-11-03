@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    public fishType type;
+  
     public int HitTimes;
     Coroutine swimming;
     internal float size;
@@ -34,3 +34,5 @@ public class Fish : MonoBehaviour
         Destroy(gameObject);
     }
 }
+
+public enum Fishrity { None, ElecticShock, Bait }

@@ -10,6 +10,7 @@ public class MainUICtr : MonoBehaviour
     private void Start()
     {
         UpdateShownData();
+        MusicControl.instance.PlayBGM(bgmType.Lobby);
     }
 
     private void UpdateShownData()
