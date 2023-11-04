@@ -440,6 +440,7 @@ MonoBehaviour:
   tempFishs:
   - {fileID: 11400000, guid: fba31fc1db2031e449048d98c5c098aa, type: 2}
   - {fileID: 11400000, guid: c2a2cc9cb0727bf4b9c335cacca24112, type: 2}
+  - {fileID: 11400000, guid: 12b19b2bff697c74ab8af9cf2e1a5c6e, type: 2}
 --- !u!114 &98930420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1534,8 +1535,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allOrders:
   - {fileID: 11400000, guid: 1b5216738950286429ba043bf2192f6b, type: 2}
-  - {fileID: 11400000, guid: 0aeb3a1e76b6fb440a7a114951628ee6, type: 2}
-  - {fileID: 11400000, guid: 29367b77fe715bb478d6822fb7a27e55, type: 2}
+  - {fileID: 11400000, guid: 106595066850f96489db7d4129dd3818, type: 2}
+  - {fileID: 11400000, guid: 1363e3b1bcfad574d96bd8364187c6e9, type: 2}
 --- !u!4 &527940212
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2099f54308d801c4abf8681272eafa7d, type: 3}
+  m_Name: Catch3Diff
+  m_EditorClassIdentifier: 
+  orderName: "\u9023\u7E8C\u6293\u52303\u96BB\u4E0D\u540C\u7A2E\u985E\u7684\u9B5A"
+  orderInfo: "\u9023\u7E8C\u6293\u52303\u96BB\u4E0D\u540C\u7A2E\u985E\u7684\u9B5A"
+  rewardMoney: 10
+  rewardExp: 150
+  requirdCount: 3
+  rule: 4

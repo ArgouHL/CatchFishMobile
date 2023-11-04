@@ -29,12 +29,13 @@ public class OrderManager : MonoBehaviour
         var selectedOrders = allOrders.OrderBy(order => random.Next()).Take(3).ToArray();
         foreach (var orderObj in selectedOrders)
         {
-            if (orderObj is SimpleOrderObj)
+            if (orderObj is CountOrderObj && !(orderObj is TimeLimitOrderObj) && !(orderObj is ReagonLimitOrderObj))
             {
-                var _order= new SimpleCountOrder((SimpleOrderObj)orderObj);
+                var _orderObj = orderObj as CountOrderObj;
+                var _order = new CountOrder(_orderObj);
                 ordersInGame.Add(_order);
                 GamePlay.CatchedFish += _order.AddCount;
-            }     
+            }
         }
         ShowOrderInfo(ordersInGame);
     }
@@ -51,13 +52,13 @@ public class OrderManager : MonoBehaviour
     }
 
 
-    public void UpdateOrderAfterCatchFish(fishRarity rarity, fishReagon reagon)
+    public void UpdateOrderAfterCatchFish(FishRarity rarity, FishReagon reagon)
     {
-        if (ordersInGame.Any(order => order is ItemUseCountOrder))
-            StartItemCount();
+        //if (ordersInGame.Any(order => order is ItemUseCountOrder))
+        //    StartItemCount();
     }
 
-    
+
 
 
 
@@ -90,15 +91,25 @@ public class Order
 public class CountOrder : Order
 {
     internal int requiredNum;
+
+
+    private TypeNeed required;
     internal int count = 0;
+    private List<FishRecord> lastFishs;
+    public CountOrder(CountOrderObj orderObj)
+    {
+        GetOrderBase(orderObj);
+        requiredNum = orderObj.requirdCount;
+        required = orderObj.rule;
+        lastFishs = new List<FishRecord>();
+    }
+
     internal void AddCount(Fish fish)
     {
         if (isUpdated)
             return;
-        if (!IsTargetFish())
-            return;
+        CheckTargetFish(fish);
         count++;
-
         if (count >= requiredNum)
         {
             OrderManager.instance.UpdateOrderInfo(this);
@@ -106,39 +117,56 @@ public class CountOrder : Order
         }
     }
 
-    internal virtual bool IsTargetFish()
-    {
-        return true;
+    internal void CheckTargetFish(Fish fish)
+    {       
+        if (lastFishs.Count > 0)
+        {
+            switch (required)
+            {
+                case TypeNeed.DifferentRarity:
+                    bool sameRarity = lastFishs.Any(record => record.rarity == fish.rarity);
+                    if (sameRarity)
+                    {
+                        lastFishs.Clear();
+                        count = 0;                        
+                    }
+                    break;
+                case TypeNeed.DifferentFish:
+                    bool sameFish = lastFishs.Any(record => record.iD == fish.fishID);
+                    if (sameFish)
+                    {
+                        lastFishs.Clear();
+                        count = 0;
+                    }                    
+                    break;
+            }
+        }
+        lastFishs.Add(new FishRecord(fish));
+
     }
 
 }
 
-public class SimpleCountOrder : CountOrder
+public class FishRecord
 {
-   
-   
-   
-    public SimpleCountOrder(SimpleOrderObj orderObj)
+    internal string iD;
+    internal FishRarity rarity;
+    public FishRecord(Fish fish)
     {
-        GetOrderBase(orderObj);
-        requiredNum = orderObj.requirdCount;
-    }
-    public void AddCount()
-    {
-      
-    }
-
-}
-
-public class ItemUseCountOrder : CountOrder
-{
-  
-   
-    public ItemUseCountOrder(int _requiedNum)
-    {
-        requiredNum = _requiedNum;
+        iD = fish.fishID;
+        rarity = fish.rarity;
     }
 }
+
+//public class ItemUseCountOrder : CountOrder
+//{
+
+
+//    //public ItemUseCountOrder(int _requiedNum)
+//    //{
+//    //    requiredNum = _requiedNum;
+//    //}
+//}
 
 public class ReagonOrder : Order
 {
@@ -154,5 +182,5 @@ public class TimeLimitOrder : Order
 
 
 
-public enum orderType { fishCount, }
+
 

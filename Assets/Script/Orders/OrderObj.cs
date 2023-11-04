@@ -12,11 +12,6 @@ public class OrderObj : ScriptableObject
 
 }
 
-public class CountOrderObj : OrderObj
-{
-    public int requirdCount;
-
-}
 
 public class UseItemOrder : OrderObj
 {

@@ -17,3 +17,4 @@ MonoBehaviour:
   rewardMoney: 10
   rewardExp: 150
   requirdCount: 3
+  Rule: 0
