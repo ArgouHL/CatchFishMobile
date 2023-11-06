@@ -22,17 +22,31 @@ public class OrderManager : MonoBehaviour
         instance = this;
     }
 
-    public void GetOrders()
+    internal void GetOrders()
     {
         System.Random random = new System.Random();
         ordersInGame = new List<Order>();
         var selectedOrders = allOrders.OrderBy(order => random.Next()).Take(3).ToArray();
         foreach (var orderObj in selectedOrders)
         {
-            if (orderObj is CountOrderObj && !(orderObj is TimeLimitOrderObj) && !(orderObj is ReagonLimitOrderObj))
+            if(orderObj is TimeLimitOrderObj)
+            {
+                var _orderObj = orderObj as TimeLimitOrderObj;
+                var _order = new TimeLimitOrder(_orderObj);
+                ordersInGame.Add(_order);
+                GamePlay.CatchedFish += _order.AddCount;
+            }
+            else if(orderObj is CountOrderObj && !(orderObj is TimeLimitOrderObj) && !(orderObj is ReagonLimitOrderObj))
             {
                 var _orderObj = orderObj as CountOrderObj;
                 var _order = new CountOrder(_orderObj);
+                ordersInGame.Add(_order);
+                GamePlay.CatchedFish += _order.AddCount;
+            }
+            else if (orderObj is ItemUseCountOrderObj)
+            {
+                var _orderObj = orderObj as ItemUseCountOrderObj;
+                var _order = new ItemUseCountOrder(_orderObj);
                 ordersInGame.Add(_order);
                 GamePlay.CatchedFish += _order.AddCount;
             }
@@ -45,27 +59,36 @@ public class OrderManager : MonoBehaviour
         OrderShow.instance.ShowOrderInfo(ordersInGame);
     }
 
-    public void UpdateOrderInfo(Order order)
+    internal void UpdateOrderInfo(Order order)
     {
         int index = ordersInGame.IndexOf(order);
         OrderShow.instance.ShowOrderFinish(index);
     }
 
 
-    public void UpdateOrderAfterCatchFish(FishRarity rarity, FishReagon reagon)
+    internal void UpdateOrderAfterCatchFish(FishRarity rarity, FishReagon reagon)
     {
         //if (ordersInGame.Any(order => order is ItemUseCountOrder))
         //    StartItemCount();
     }
 
 
-
-
-
-
-    private void StartItemCount()
+    internal void ResetItemCount(ItemType itemType)
     {
+        foreach (var order in ordersInGame)
+        {
+            if (order is ItemUseCountOrder)
+            {
+                var _order = order as ItemUseCountOrder;
+                if (_order.itemType == itemType)
+                    order.count = 0;
+            }
+        }
+    }
 
+    internal void TimeCount(TimeLimitOrder timeLimitOrder)
+    {
+        StartCoroutine(timeLimitOrder.TimeCountIE());
     }
 }
 
@@ -77,6 +100,8 @@ public class Order
     internal int rewardMoney;
     internal int rewardExp;
     internal bool isUpdated = false;
+    internal int count = 0;
+    internal int requiredNum;
     internal void GetOrderBase(OrderObj orderObj)
     {
         orderName = orderObj.orderName;
@@ -84,18 +109,17 @@ public class Order
         rewardMoney = orderObj.rewardMoney;
         rewardExp = orderObj.rewardExp;
     }
+
+
 }
 
 
 
 public class CountOrder : Order
 {
-    internal int requiredNum;
 
-
-    private TypeNeed required;
-    internal int count = 0;
-    private List<FishRecord> lastFishs;
+    internal TypeNeed required;
+    internal List<FishRecord> lastFishs;
     public CountOrder(CountOrderObj orderObj)
     {
         GetOrderBase(orderObj);
@@ -104,7 +128,7 @@ public class CountOrder : Order
         lastFishs = new List<FishRecord>();
     }
 
-    internal void AddCount(Fish fish)
+    internal virtual void AddCount(Fish fish)
     {
         if (isUpdated)
             return;
@@ -117,8 +141,8 @@ public class CountOrder : Order
         }
     }
 
-    internal void CheckTargetFish(Fish fish)
-    {       
+    internal virtual void CheckTargetFish(Fish fish)
+    {
         if (lastFishs.Count > 0)
         {
             switch (required)
@@ -128,7 +152,7 @@ public class CountOrder : Order
                     if (sameRarity)
                     {
                         lastFishs.Clear();
-                        count = 0;                        
+                        count = 0;
                     }
                     break;
                 case TypeNeed.DifferentFish:
@@ -137,13 +161,50 @@ public class CountOrder : Order
                     {
                         lastFishs.Clear();
                         count = 0;
-                    }                    
+                    }
                     break;
             }
         }
         lastFishs.Add(new FishRecord(fish));
 
     }
+
+}
+
+
+public class TimeLimitOrder : CountOrder
+{
+    private float limitedTime;
+    private Coroutine timeCount;
+    public TimeLimitOrder(TimeLimitOrderObj orderObj):base (orderObj)
+    {
+        GetOrderBase(orderObj);
+        requiredNum = orderObj.requirdCount;
+        required = orderObj.rule;
+        lastFishs = new List<FishRecord>();
+        limitedTime = orderObj.timeLimit;
+    }
+
+    internal override void AddCount(Fish fish)
+    {
+        if (isUpdated)
+            return;
+        CheckTargetFish(fish);
+        count++;
+        OrderManager.instance.TimeCount(this);
+        if (count >= requiredNum)
+        {
+            OrderManager.instance.UpdateOrderInfo(this);
+            isUpdated = true;
+        }
+    }
+
+    internal IEnumerator TimeCountIE()
+    {
+        yield return new WaitForSeconds(limitedTime);
+        count--;
+    }
+
 
 }
 
@@ -158,15 +219,31 @@ public class FishRecord
     }
 }
 
-//public class ItemUseCountOrder : CountOrder
-//{
+public class ItemUseCountOrder : Order
+{
+    public ItemType itemType;
+    public ItemUseCountOrder(ItemUseCountOrderObj orderObj)
+    {
+        GetOrderBase(orderObj);
+        requiredNum = orderObj.requirdCount;
+        itemType = orderObj.itemType;
+    }
 
-
-//    //public ItemUseCountOrder(int _requiedNum)
-//    //{
-//    //    requiredNum = _requiedNum;
-//    //}
-//}
+    internal void AddCount(Fish fish)
+    {
+        if (isUpdated)
+            return;
+        if (!((itemType == ItemType.Shock && GamePlay.instance.hasShockUsed) || (itemType == ItemType.Bait && GamePlay.instance.hasBaitUsed)))        
+            return;
+        
+        count++;
+        if (count >= requiredNum)
+        {
+            OrderManager.instance.UpdateOrderInfo(this);
+            isUpdated = true;
+        }
+    }
+}
 
 public class ReagonOrder : Order
 {
@@ -174,10 +251,6 @@ public class ReagonOrder : Order
 }
 
 
-public class TimeLimitOrder : Order
-{
-
-}
 
 
 

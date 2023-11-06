@@ -13,10 +13,5 @@ public class OrderObj : ScriptableObject
 }
 
 
-public class UseItemOrder : OrderObj
-{
-    public int requirdCount;
-    public ItemType requirdItemType;
-}
 
-public enum ItemType { None, ElecticShock,Bait}
+

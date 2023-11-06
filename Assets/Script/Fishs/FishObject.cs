@@ -7,13 +7,19 @@ public class FishObject : ScriptableObject
 {
     public string fishName;
     public GameObject fishObj;
-    public string fishID;
+    public  string fishID;
     public int hitTimes;
     public float size;
     public FishRarity rarity;
     public FishReagon reagon;
     public int income;
     public int exp;
+    public float startHeight;
+    public float speed;
+    public float acceleratedSpeed;
+    public int numberOfGroup;
+    public int randomRoadCount=1;
+    
 }
 
 

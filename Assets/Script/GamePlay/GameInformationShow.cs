@@ -30,6 +30,8 @@ public class GameInformationShow : MonoBehaviour
 
     internal void UpdateCountDown(int count)
     {
+        if (count < 0)
+            count = 0;
         countDown.text = count.ToString();
     }
 

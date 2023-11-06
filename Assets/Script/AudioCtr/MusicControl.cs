@@ -262,4 +262,4 @@ public class MusicControl : MonoBehaviour
 
 }
 
-public enum bgmType { title,Lobby}
+public enum bgmType { title,Lobby,Sea1}

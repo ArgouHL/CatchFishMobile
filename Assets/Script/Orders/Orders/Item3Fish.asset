@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12566361fecd9b40b4956f0f71998b6, type: 3}
+  m_Name: Item3Fish
+  m_EditorClassIdentifier: 
+  orderName: "\u4F7F\u7528\u9053\u5177\u5F8C\u6293\u52303\u96BB\u9B5A"
+  orderInfo: "\u4F7F\u7528\u9053\u5177\u5F8C\u6293\u52303\u96BB\u9B5A"
+  rewardMoney: 0
+  rewardExp: 0
+  requirdCount: 3

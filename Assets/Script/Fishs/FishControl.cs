@@ -9,13 +9,15 @@ using UnityEngine.InputSystem;
 
 public class FishControl : MonoBehaviour
 {
+    private static System.Random random;
     public static FishControl instance;
     int remainHitTime = 0;
     private Fish hittedFish = null;
     [SerializeField] private TMP_Text t;
     [SerializeField] private List<Fish> fishsOnScreen;
     [SerializeField] private FishObject[] tempFishs;
-
+    [SerializeField] Transform fishpool;
+    private int lastRanIndex;
     private void Awake()
     {
         instance = this;
@@ -23,11 +25,8 @@ public class FishControl : MonoBehaviour
     private void Start()
     {
         Instantized();
-      
+
     }
-
-
-
 
 
 
@@ -46,17 +45,57 @@ public class FishControl : MonoBehaviour
         var fishPrefab = tempFishs[Random.Range(0, tempFishs.Length)];
         int way = Random.Range(0f, 1f) > 0.5f ? -1 : 1;
         float height = Random.Range(-9f, 4f);
-        var fishObj = Instantiate(fishPrefab.fishObj, new Vector2(8*way, height), Quaternion.identity);
-        var _fish = fishObj.AddComponent<Fish>();
-        _fish.NewFish(fishPrefab);
-        _fish.Swim(way, 3f);
-        _fish.size = fishPrefab.size;
-        _fish.hitTimes = fishPrefab.hitTimes;
-        fishsOnScreen.Add(_fish);
+        random = new System.Random(CodeHelper.GetGuidSeed());
+        var _index = random.Next(0, fishPrefab.randomRoadCount);
+        do
+        { _index = random.Next(0, fishPrefab.randomRoadCount);
+        } while (_index == lastRanIndex&& fishPrefab.randomRoadCount > 1);
+
+        lastRanIndex = _index;
+        for (int i = 0; i < fishPrefab.numberOfGroup; i++)
+        {
+            var fishObj = Instantiate(fishPrefab.fishObj, new Vector3(8 * way, fishPrefab.startHeight, 5), Quaternion.identity);
+            fishObj.transform.localScale = new Vector3(way, 1, 1);
+            fishObj.transform.parent = fishpool;
+            var _fish = fishObj.GetComponent<Fish>();
+            _fish.indexInGroup = i;
+            _fish.randomIndex = lastRanIndex;
+            _fish.NewFish(fishPrefab);
+            _fish.Swim(way);
+            //_fish.size = fishPrefab.size;
+            _fish.hitTimes = fishPrefab.hitTimes;
+            fishsOnScreen.Add(_fish);
+        }
+        
+       
     }
+
+    private void GetFishType(FishObject fishPrefab, out bool success, out Type type)
+    {
+        Type fishType = Type.GetType("Fish" + fishPrefab.fishID);
+        if (fishType == null)
+        {
+            success = false;
+            type = null;
+            Debug.Log("no fish Type");
+        }
+        else
+        {
+            success = true;
+            type = fishType;
+            Debug.Log("Get Fish Type");
+        }
+    }
+
     public void FishOutScreen(Fish fish)
     {
         fishsOnScreen.Remove(fish);
+        if (hittedFish != fish)
+            return;
+        hittedFish = null;
+        TargetMarkCtr.instance.StopTracking();
+        remainHitTime = 0;
+        UpdateHit();
     }
     public void HitFish(Vector2 touchPos)
     {
@@ -66,14 +105,17 @@ public class FishControl : MonoBehaviour
         if (hittedFish != _fish)
         {
             hittedFish = _fish;
+            TargetMarkCtr.instance.StartTracking(_fish);
             remainHitTime = _fish.hitTimes;
         }
         remainHitTime--;
+        SfxControl.instance.HitPlay(remainHitTime);
         if (remainHitTime <= 0)
         {
             ResultCount.instance.AddCatchedFish();
             GamePlay.CatchedFish.Invoke(_fish);
-            _fish.StopMove();         
+            _fish.StopMove();
+            TargetMarkCtr.instance.StopTracking();
 
         }
         UpdateHit();
@@ -81,26 +123,17 @@ public class FishControl : MonoBehaviour
 
     private Fish FindClosestFish(Vector2 touchPos)
     {
-        Fish nearestFish = null;
-        float closestDistance = 999;
-        foreach (var f in fishsOnScreen)
-        {
-            var dis = Vector2.Distance(f.transform.position, (Vector3)touchPos);
-            if (dis <= f.size)
-                if (dis < closestDistance)
-                {
-                    nearestFish = f;
-                    closestDistance = dis;
-                }
-        }
-        return nearestFish;
+        Fish hitFish = null;
+        Ray ray = Camera.main.ScreenPointToRay(touchPos);
+        RaycastHit2D hit2D = Physics2D.GetRayIntersection(ray);
+        if (hit2D.collider == null)
+            return null;
+        hitFish = hit2D.collider.GetComponentInParent<Fish>();
+
+        return hitFish;
     }
 
-    //private Vector3 RandomPos()
-    //{
-    //    Vector3 _pos = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-    //    return _pos;
-    //}
+
 
     private void UpdateHit()
     {
@@ -113,10 +146,10 @@ public class FishControl : MonoBehaviour
 
     private IEnumerator FishSpawn()
     {
-        while(!GamePlay.isGameEnd)
+        while (!GamePlay.isGameEnd)
         {
             GenerateFish();
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -125,5 +158,5 @@ public class FishControl : MonoBehaviour
 
     }
 
-    
+
 }

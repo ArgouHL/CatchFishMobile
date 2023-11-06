@@ -13,6 +13,11 @@ public class GamePlay : MonoBehaviour
     public delegate void OrderCheck(Fish fish);
     public static OrderCheck CatchedFish;
 
+    public bool hasShockUsed=false;
+    public bool hasBaitUsed = false;
+    [SerializeField]private float itemOrderDuration;
+    private Coroutine ShockCoroutine;
+    private Coroutine BaitCoroutine;
 
     private void Awake()
     {
@@ -24,8 +29,7 @@ public class GamePlay : MonoBehaviour
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
 
         OrderManager.instance.GetOrders();
-
-
+        MusicControl.instance.PlayBGM(bgmType.Sea1);    
     }
 
 
@@ -48,7 +52,8 @@ public class GamePlay : MonoBehaviour
     public void GetFish(InputAction.CallbackContext ctx)
     {
         Debug.Log("GetFish");
-        var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
+        //var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
+        var _hitPos = touchPosition.ReadValue<Vector2>();
         Debug.Log(_hitPos);
         FishControl.instance.HitFish(_hitPos);
     }
@@ -95,5 +100,37 @@ public class GamePlay : MonoBehaviour
     private void GameStop()
     {
         isGameEnd = true;
+    }
+
+    public void StartShockCount()
+    {
+        if (ShockCoroutine != null)
+            StopCoroutine(ShockCoroutine);
+        ShockCoroutine = StartCoroutine(ShockIE());
+    }
+
+    private IEnumerator ShockIE()
+    {
+        hasShockUsed = true;
+        yield return new WaitForSeconds(itemOrderDuration);
+        hasShockUsed = false;
+        OrderManager.instance.ResetItemCount(ItemType.Shock);
+        ShockCoroutine = null;
+    }
+
+    public void BaitCount()
+    {
+        if (BaitCoroutine != null)
+            StopCoroutine(BaitCoroutine);
+        BaitCoroutine = StartCoroutine(BaitIE());
+    }
+
+    private IEnumerator BaitIE()
+    {
+        hasBaitUsed = true;
+        yield return new WaitForSeconds(itemOrderDuration);
+        hasBaitUsed = false;
+        OrderManager.instance.ResetItemCount(ItemType.Bait);
+        BaitCoroutine = null;
     }
 }
