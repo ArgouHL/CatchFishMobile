@@ -12,6 +12,7 @@ public class PlayerData : ScriptableObject
     public int Player_MaxEnergy;
     public int Player_CatStick;
     public bool UseForTest;
+    public HashSet<string> unLockedFishs;
 
 
     internal void NewData(string name)
@@ -22,22 +23,38 @@ public class PlayerData : ScriptableObject
         Player_Energy = 10;
         Player_MaxEnergy = 10;
         Player_CatStick = 0;
+        unLockedFishs = new HashSet<string>();
+        unLockedFishs.Add("16");
     }
 
     internal void GetMoney(int money)
     {
 
     }
-
+    internal void AddUnlockedFish(string fishID)
+    {
+        unLockedFishs.Add(fishID);
+    }
 
     internal void Reverse(Account ac)
     {
+        
         player_Name = ac.Player_Name;
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
         Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_CatStick = ac.Player_CatStick;
+        unLockedFishs = ac.unLockedFishs;
+        if (UseForTest)
+        {
+            Player_Money = 1000000; 
+            Player_Can = 99999;
+            Player_Energy = 1000;
+            Player_MaxEnergy = 1000;
+            Player_CatStick = 1000;
+
+        }
     }
 }
 [System.Serializable]
@@ -49,6 +66,8 @@ public class Account
     internal int Player_Energy;
     internal int Player_CatStick;
     internal int Player_MaxEnergy;
+    public HashSet<string> unLockedFishs;
+
 
     internal Account(PlayerData ac)
     {
@@ -58,7 +77,18 @@ public class Account
         Player_Energy = ac.Player_Energy;
         Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_CatStick = ac.Player_CatStick;
+        unLockedFishs = ac.unLockedFishs;
+        if (ac.UseForTest)
+        {
+            Player_Money = 1000000;
+            Player_Can = 99999;
+            Player_Energy = 1000;
+            Player_MaxEnergy = 1000;
+            Player_CatStick = 1000;
+        }
     }
+
+   
 }
 
 

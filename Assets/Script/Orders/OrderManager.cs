@@ -26,7 +26,7 @@ public class OrderManager : MonoBehaviour
     {
         System.Random random = new System.Random();
         ordersInGame = new List<Order>();
-        var selectedOrders = allOrders.OrderBy(order => random.Next()).Take(3).ToArray();
+        var selectedOrders = allOrders.OrderBy(x => Guid.NewGuid()).Take(3).ToArray();
         foreach (var orderObj in selectedOrders)
         {
             if(orderObj is TimeLimitOrderObj)

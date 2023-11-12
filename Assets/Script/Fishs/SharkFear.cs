@@ -34,7 +34,7 @@ public class SharkFear : MonoBehaviour
         while(true)
         {
             foreach (var f in inrRange)
-                f.Feared();
+                f.Feared(transform.position);
             yield return new WaitForSeconds(0.5f);
         }
     }

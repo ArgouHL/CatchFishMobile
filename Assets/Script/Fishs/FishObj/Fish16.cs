@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Fish14 : Fish
+public class Fish16 : Fish
 {
-    internal override void Feared()
-    {
-        speed = accelerate;
-    }
+   
     internal override IEnumerator SwimToEndPoint(float way)
     {
         
@@ -23,12 +20,13 @@ public class Fish14 : Fish
         transform.RotateAround(centre, new Vector3(0,0,1), angle);       
         while (transform.position.x * way > -8f)
         {
-            
+            if (transform.position.x * way < -6f)
+                canbeEat = false;
             transform.position += realdirection*speed*Time.deltaTime;
             yield return null;
         }
-        FishControl.instance.FishOutScreen(this);
-        Destroy(gameObject);
+     
+        Dispawn();
     }
 
 }

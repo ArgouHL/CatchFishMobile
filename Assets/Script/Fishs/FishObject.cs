@@ -11,15 +11,15 @@ public class FishObject : ScriptableObject
     public int hitTimes;
     public float size;
     public FishRarity rarity;
-    public FishReagon reagon;
+    public FishReagon[] reagon;
     public int income;
     public int exp;
-    public float startHeight;
+    public float[] startHeights;
     public float speed;
     public float acceleratedSpeed;
     public int numberOfGroup;
     public int randomRoadCount=1;
-    
+    public int weights;
 }
 
 

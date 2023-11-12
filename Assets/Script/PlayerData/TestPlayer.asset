@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bc7459dfa18c64d9893777921d4065, type: 3}
   m_Name: TestPlayer
   m_EditorClassIdentifier: 
-  Player_Name: TestAc
-  Player_Money: 500
-  Player_Can: 500
-  Player_Energy: 100
-  Player_CatStick: 100
-  Test: 1
+  player_Name: 'YourName
+
+'
+  Player_Money: 1000000
+  Player_Can: 99999
+  Player_Energy: 1000
+  Player_MaxEnergy: 1000
+  Player_CatStick: 1000
+  UseForTest: 1

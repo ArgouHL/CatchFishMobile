@@ -18,11 +18,13 @@ MonoBehaviour:
   hitTimes: 2
   size: 1
   rarity: 0
-  reagon: 0
+  reagon: 00000000
   income: 0
   exp: 0
-  startHeight: -3
+  startHeights:
+  - -3
   speed: 3
   acceleratedSpeed: 4
   numberOfGroup: 3
   randomRoadCount: 3
+  weights: 100

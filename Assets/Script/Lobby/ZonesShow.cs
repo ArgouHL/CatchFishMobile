@@ -8,8 +8,9 @@ public class ZonesShow : MonoBehaviour
 {
     public static ZonesShow instance;
 
-    [SerializeField] CanvasGroup zone_1, zone_2, zone_3,ui;
-    private CanvasGroup nowZone;
+    [SerializeField] CanvasGroup zone_1UI, zone_2UI, zone_3UI,ui;
+    
+    private CanvasGroup nowZoneUI;
 
     public void Awake()
     {
@@ -22,13 +23,13 @@ public class ZonesShow : MonoBehaviour
         switch (zone)
         {
             case zone.zone_1:
-                ShowZone(zone_1);
+                ShowZone(zone_1UI);
                 break;
             case zone.zone_2:
-                ShowZone(zone_2);
+                ShowZone(zone_2UI);
                 break;
             case zone.zone_3:
-                ShowZone(zone_3);
+                ShowZone(zone_3UI);
                 break;
         }
     }
@@ -36,7 +37,7 @@ public class ZonesShow : MonoBehaviour
     private void ShowZone(CanvasGroup zone)
     {
         PlayerInputManager.instance.ChangeType(InputType.None);
-        nowZone = zone;
+        nowZoneUI = zone;
         zone.blocksRaycasts = true;
         zone.alpha = 1;
         ui.blocksRaycasts = true;
@@ -48,15 +49,15 @@ public class ZonesShow : MonoBehaviour
     public void Hide()
     {
         PlayerInputManager.instance.ChangeType(InputType.Lobby);
-        nowZone.blocksRaycasts = false;
-        nowZone.alpha = 0;
+        nowZoneUI.blocksRaycasts = false;
+        nowZoneUI.alpha = 0;
         ui.blocksRaycasts = false;
         ui.alpha = 0;
         ui.interactable = false;
     }
 
     public void EnterGame()
-    {
+    {       
         SceneManager.LoadScene(2);
     }
 

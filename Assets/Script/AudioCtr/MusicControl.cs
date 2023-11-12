@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+[DefaultExecutionOrder(-1)]
 public class MusicControl : MonoBehaviour
 {
     public static MusicControl instance;

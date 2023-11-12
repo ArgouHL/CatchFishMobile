@@ -8,7 +8,7 @@ public class PlayerDataControl : MonoBehaviour
 {
     public static PlayerDataControl instance; 
     public PlayerData playerData;
-
+    
     private void Awake()
     {
         if (instance != null)
@@ -94,6 +94,8 @@ public class PlayerDataControl : MonoBehaviour
             return null;
         }
     }
+
+  
 
 
 }

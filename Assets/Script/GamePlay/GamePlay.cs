@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GamePlay : MonoBehaviour
 {
@@ -62,7 +63,7 @@ public class GamePlay : MonoBehaviour
     private IEnumerator PreStart()
     {
 
-        int readytime = 3;
+        int readytime = 1;
 
         while (readytime >= 0)
         {
@@ -79,6 +80,7 @@ public class GamePlay : MonoBehaviour
     {
         FishControl.instance.StartGenFish();
         StartCoroutine(GameCountDown());
+        StartCoroutine(SpawnShark());
     }
 
     private IEnumerator GameCountDown()
@@ -100,6 +102,12 @@ public class GamePlay : MonoBehaviour
     private void GameStop()
     {
         isGameEnd = true;
+    }
+
+    private IEnumerator SpawnShark()
+    {
+        yield return new WaitForSeconds(1);
+        FishControl.instance.SpawnShark();
     }
 
     public void StartShockCount()
@@ -132,5 +140,11 @@ public class GamePlay : MonoBehaviour
         hasBaitUsed = false;
         OrderManager.instance.ResetItemCount(ItemType.Bait);
         BaitCoroutine = null;
+    }
+
+
+    public void BackMenu()
+    {
+        SceneManager.LoadScene(1);
     }
 }
