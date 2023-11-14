@@ -85,7 +85,7 @@ public class GamePlay : MonoBehaviour
 
     private IEnumerator GameCountDown()
     {
-        int readytime = 45;
+        int readytime = 30;
         yield return new WaitForSeconds(1);
 
         while (readytime >= 0)

@@ -14,27 +14,27 @@ public class PlayerInputManager : MonoBehaviour
     public static InputEvent onTypeChange;
     public static InputEvent mobileUIOn;
     public static InputEvent mobileUIOff;
-
+    public static InputType orgType;
 
     private void Awake()
     {
         if (instance != null)
         {
-            Destroy(gameObject);         
+            Destroy(gameObject);
 
         }
-           
+
         else
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            
+
             inputs = new InputManager();
         }
 
-        
 
-        inputs.UI.Enable();
+
+        // inputs.UI.Disable();
     }
 
     /// <summary>
@@ -42,16 +42,17 @@ public class PlayerInputManager : MonoBehaviour
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public InputType ChangeType(InputType type,bool andriodUIswitch=true)
+    public InputType ChangeType(InputType type)
     {
         // Disable all actions and re-enable them according to type
         inputs.Shop.Disable();
-        inputs.Lobby.Disable(); 
+        inputs.Lobby.Disable();
         inputs.Option.Disable();
-        //inputs.UI.Disable();
+        inputs.UI.Disable();
         inputs.GamePlay.Disable();
-        if (andriodUIswitch)
-            mobileUIOff?.Invoke();
+        inputs.UI.Disable();
+        //  if (andriodUIswitch)
+        //     mobileUIOff?.Invoke();
 
 
         switch (type)
@@ -73,10 +74,10 @@ public class PlayerInputManager : MonoBehaviour
                 inputs.GamePlay.Enable();
                 break;
 
-            //case InputType.UI:
-            //    inputs.UI.Enable();
-            //    break;          
-     
+            case InputType.UI:
+                inputs.UI.Enable();
+                break;          
+
             default:
                 break;
         }
@@ -92,6 +93,19 @@ public class PlayerInputManager : MonoBehaviour
     public InputType ChangeType(int type)
     {
         return ChangeType((InputType)type);
+    }
+
+
+
+    public InputType TempChangeType(InputType type)
+    {
+        orgType = current;
+        return ChangeType(type); 
+    }
+
+    public InputType TempChangeback(InputType type)
+    {
+        return ChangeType(current);
     }
 }
 

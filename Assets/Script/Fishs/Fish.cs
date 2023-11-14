@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 public abstract class Fish : MonoBehaviour
 {
@@ -14,15 +16,16 @@ public abstract class Fish : MonoBehaviour
     internal float accelerate;
     internal bool canbeEat = true;
     internal bool canbeClick = true;
-    private bool feared = false;
-
+    internal bool feared = false;
+    internal float speeduptime;
+    internal List<Fish> groupFish = new List<Fish>();
 
     public FishRarity rarity;
     public int income;
     public int exp;
     public int indexInGroup;
 
-    Coroutine swimming;
+    internal Coroutine swimming, fearing, shocking;
     internal int randomIndex;
 
     public Fish Swim(float way)
@@ -38,7 +41,7 @@ public abstract class Fish : MonoBehaviour
             transform.position += new Vector3(speed * -way * Time.deltaTime, 0, 0);
             yield return null;
         }
-
+       
         Dispawn();
     }
 
@@ -52,9 +55,15 @@ public abstract class Fish : MonoBehaviour
 
     internal void Dispawn()
     {
+        swimming = null;
+        if (fearing != null)
+            StopCoroutine(fearing);
+        if (shocking != null)
+            StopCoroutine(shocking);
         FishControl.instance.FishOutScreen(this);
         gameObject.SetActive(false);
         canbeEat = false;
+      
     }
     internal void NewFish(FishObject fishPrefab)
     {
@@ -67,7 +76,7 @@ public abstract class Fish : MonoBehaviour
         exp = fishPrefab.exp;
         speed = fishPrefab.speed;
         accelerate = fishPrefab.acceleratedSpeed;
-
+        speeduptime = fishPrefab.speedUpTime;
     }
 
 
@@ -81,25 +90,51 @@ public abstract class Fish : MonoBehaviour
 
     internal virtual void Feared(Vector3 sharkPosition)
     {
-        if (!feared)
+        if (feared)
+            return;
+        if (!gameObject.activeInHierarchy)
             return;
         Debug.Log("Feared" + gameObject.name);
-        int way = sharkPosition.x > transform.position.x ? 1 : -1;
-     //   GetComponentInChildren<SpriteRenderer>().flipX = sharkPosition.x > transform.position.x ? true : false;
-        speed = accelerate* way;
-        feared=true;
+        feared = true;
+        foreach (var f in groupFish)
+        {
+            f.Feared(sharkPosition);
+        }
+        //    int way = sharkPosition.x > transform.position.x ? 1 : -1;
+        // GetComponentInChildren<SpriteRenderer>().flipX = way > 0 ? false : true;
+        int way = speed > 0 ? 1 : -1;
+        fearing = StartCoroutine(GetFearIE(speeduptime, way));
+        
     }
+
+    internal IEnumerator GetFearIE(float speeduptime, int way)
+    {
+        Debug.Log("GetFear");
+        float _speed = speed;
+        speed = accelerate * way;
+        yield return new WaitForSeconds(speeduptime);
+        speed = _speed * way;
+        fearing = null;
+    }
+
+
+
 
     internal virtual void Eat()
     {
-        Debug.Log("eated"+gameObject.name); 
-        StopCoroutine(swimming);
+        Debug.Log("eated" + gameObject.name);
+        if (swimming != null)
+            StopCoroutine(swimming);
+        if (fearing != null)
+            StopCoroutine(fearing);
+        if (shocking != null)
+            StopCoroutine(shocking);
         Dispawn();
     }
 
     internal void GetShock(float time)
     {
-        StartCoroutine(GetShockIE(time));
+        shocking = StartCoroutine(GetShockIE(time));
     }
     private IEnumerator GetShockIE(float time)
     {
@@ -108,11 +143,13 @@ public abstract class Fish : MonoBehaviour
         speed = 0;
         yield return new WaitForSeconds(time);
         speed = _speed;
+        shocking = null;
     }
 }
 
 public abstract class Shark : Fish
 {
+    [SerializeField] internal SharkFear sharkFear;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private SpriteRenderer sprite;
     private Coroutine chasing;
@@ -149,7 +186,7 @@ public abstract class Shark : Fish
         Vector3 fromDirection = transform.up;
         Vector3 toDirection = (targetPos - transform.position).normalized;
         int way = toDirection.x > 0 ? 1 : -1;
-       // toDirection.x *= way;
+        // toDirection.x *= way;
         sprite.flipY = way < 0 ? true : false;
         //var euler = transform.rotation.eulerAngles;
         //if (way > 0) euler.y = 0;
@@ -169,7 +206,7 @@ public abstract class Shark : Fish
         //transform.rotation = newRotation;
 
         //var forward = (transform.rotation * (Vector3.right)).normalized;
-        transform.rotation = Quaternion.FromToRotation(Vector3.right,toDirection);
+        transform.rotation = Quaternion.FromToRotation(Vector3.right, toDirection);
         //sprite.flipX = way < 0 ? true : false;
         transform.position += toDirection * speed * Time.deltaTime;
 
@@ -184,7 +221,7 @@ public abstract class Shark : Fish
 
     internal void ChaseFish()
     {
-        chasing= StartCoroutine(ChaseFishIE());
+        chasing = StartCoroutine(ChaseFishIE());
     }
     internal abstract IEnumerator ChaseFishIE();
 }

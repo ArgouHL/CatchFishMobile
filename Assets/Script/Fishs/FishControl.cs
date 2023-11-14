@@ -78,13 +78,15 @@ public class FishControl : MonoBehaviour
 
         lastRanIndex = _index;
         float _startPos = fishPrefab.startHeights[UnityEngine.Random.Range(0, fishPrefab.startHeights.Length)];
+        List<Fish> fishs = new List<Fish>();
         for (int i = 0; i < fishPrefab.numberOfGroup; i++)
         {
-
+            
             var fishObj = Instantiate(fishPrefab.fishObj, new Vector3(8 * way, _startPos, 5), Quaternion.identity);
             fishObj.transform.localScale = new Vector3(way, 1, 1);
             fishObj.transform.parent = fishpool;
             var _fish = fishObj.GetComponent<Fish>();
+            fishs.Add(_fish);
             _fish.indexInGroup = i;
             _fish.randomIndex = lastRanIndex;
             _fish.NewFish(fishPrefab);
@@ -94,7 +96,13 @@ public class FishControl : MonoBehaviour
             fishsOnScreen.Add(_fish);
         }
 
-
+        if(fishPrefab.numberOfGroup > 1)
+        {
+            foreach(var f in fishs)
+            {
+                f.groupFish = new List<Fish>(fishs);
+            }
+        }
     }
 
     private void GetFishType(FishObject fishPrefab, out bool success, out Type type)

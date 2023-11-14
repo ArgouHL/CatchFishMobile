@@ -5,7 +5,7 @@ using TMPro;
 
 public class MainUICtr : MonoBehaviour
 {
-    [SerializeField] TMP_Text playName_MainUI, playMoney_MainUI, playEnergy_MainUI;
+    [SerializeField] TMP_Text playName_MainUI, playMoney_MainUI, playEnergy_MainUI, playCan_UI;
 
     private void Start()
     {

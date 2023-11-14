@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Fish16 : Fish
 {
-   
+
     internal override IEnumerator SwimToEndPoint(float way)
     {
         

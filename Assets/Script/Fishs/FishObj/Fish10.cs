@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class Fish10 : Shark
 {
- 
+    
     internal override IEnumerator EnterIE()
     {
         Vector3 targetPos = new Vector3(0, -3, 5);
@@ -30,7 +30,10 @@ public class Fish10 : Shark
             {                
                 yield return null;
             }
+            
+         //   sharkFear.RemoveInRange(selectedFish);
             selectedFish.Eat();
+            
              yield return new WaitForSeconds(0.5f);
         }
         Debug.Log("Nofish");

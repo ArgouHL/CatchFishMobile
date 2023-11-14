@@ -29,7 +29,8 @@ MonoBehaviour:
   - -3
   - -5
   speed: 4
-  acceleratedSpeed: 5
+  acceleratedSpeed: 9
   numberOfGroup: 1
   randomRoadCount: 2
   weights: 20
+  speedUpTime: 0.5

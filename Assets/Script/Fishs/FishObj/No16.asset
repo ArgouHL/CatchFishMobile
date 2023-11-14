@@ -24,7 +24,8 @@ MonoBehaviour:
   startHeights:
   - -3
   speed: 3
-  acceleratedSpeed: 4
+  acceleratedSpeed: 7
   numberOfGroup: 3
   randomRoadCount: 3
   weights: 100
+  speedUpTime: 0.5

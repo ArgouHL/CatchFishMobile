@@ -34,9 +34,14 @@ public class TargetMarkCtr : MonoBehaviour
     private IEnumerator TrackingIE()
     {
         MarkerCanvasGroup.alpha = 1;
+        float time = 0;
         while (trackingFish!=null)
         {
+            float _scale = (Mathf.Cos(time)+1)/2;
+            float scale = Mathf.Lerp(0.7f, 1f, _scale);
             Marker.position = cam.WorldToScreenPoint(trackingFish.transform.position);
+            Marker.localScale = Vector3.one * scale;
+            time += Time.deltaTime*5;
             yield return null;
         }
         MarkerCanvasGroup.alpha = 0;
@@ -48,4 +53,6 @@ public class TargetMarkCtr : MonoBehaviour
     {
         trackingFish = null;
     }
+
+
 }

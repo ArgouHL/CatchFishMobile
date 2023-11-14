@@ -2303,8 +2303,6 @@ public class LTDescr
 
 		return this;
 	}
-
-
 }
 
 //}

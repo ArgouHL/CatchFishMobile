@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class SharkFear : MonoBehaviour
 {
-    List<Fish> inrRange= new List<Fish>();
+  //  [SerializeField] List<Fish> inrRange= new List<Fish>();
     Coroutine fearCoro;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.transform.CompareTag("Fish"))
+        if (!collision.transform.CompareTag("FishMid"))
             return;
-        inrRange.Add(collision.transform.GetComponentInParent<Fish>());
+        collision.transform.GetComponentInParent<Fish>().Feared(transform.position);
+       // AddInRange(collision.transform.GetComponentInParent<Fish>());
 
 
         //Debug.Log(collision.transform.gameObject.name);
@@ -20,32 +21,49 @@ public class SharkFear : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!collision.transform.CompareTag("Fish"))
-            return;
-        inrRange.Remove(collision.transform.GetComponentInParent<Fish>());
-
+        //if (!collision.transform.CompareTag("FishMid"))
+        //    return;
+        //RemoveInRange(collision.transform.GetComponentInParent<Fish>());
 
         //Debug.Log(collision.transform.gameObject.name);
         //collision.transform.GetComponentInParent<Fish>().Fear();
     }
 
-    private IEnumerator FearIE()
-    {
-        while(true)
-        {
-            foreach (var f in inrRange)
-                f.Feared(transform.position);
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
+    //private IEnumerator FearIE()
+    //{
+    //    //while(true)
+    //    //{
+    //    //    foreach (var f in inrRange)
+    //    //    {
+    //    //        f.Feared(transform.position);
+                
+    //    //    }
+    //    //    inrRange.Clear();
+    //    // yield return new WaitForSeconds(0.2f);
+    //    //}
+    //}
 
     private void Start()
     {
-        fearCoro = StartCoroutine(FearIE());
+       // fearCoro = StartCoroutine(FearIE());
     }
 
     private void OnDestroy()
     {
-        StopCoroutine(fearCoro);
+      //  StopCoroutine(fearCoro);
+    }
+
+    public void AddInRange(Fish fish)
+    {
+        //if (fish.feared)
+        //    return;
+        //inrRange.Add(fish);
+    }
+
+    public void RemoveInRange(Fish fish)
+    {
+        //if (!inrRange.Contains(fish))
+        //    return;
+        //inrRange.Remove(fish);
     }
 }
