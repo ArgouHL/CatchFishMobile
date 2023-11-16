@@ -20,6 +20,8 @@ public class GamePlay : MonoBehaviour
     private Coroutine ShockCoroutine;
     private Coroutine BaitCoroutine;
 
+    [SerializeField] private int gameTime = 30;
+
     private void Awake()
     {
         instance = this;
@@ -30,7 +32,8 @@ public class GamePlay : MonoBehaviour
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
 
         OrderManager.instance.GetOrders();
-        MusicControl.instance.PlayBGM(bgmType.Sea1);    
+        MusicControl.instance.PlayBGM(bgmType.Sea1);
+        ResultRecord.instance.Init();
     }
 
 
@@ -85,7 +88,7 @@ public class GamePlay : MonoBehaviour
 
     private IEnumerator GameCountDown()
     {
-        int readytime = 30;
+        int readytime = gameTime;
         yield return new WaitForSeconds(1);
 
         while (readytime >= 0)
@@ -101,7 +104,17 @@ public class GamePlay : MonoBehaviour
 
     private void GameStop()
     {
+        PlayerInputManager.instance.ChangeType(InputType.None);
         isGameEnd = true;
+        OrderManager.instance.SendOrders();
+        ResultRecord.instance.CalcResult();
+        StartCoroutine(LoadResultScene());
+    }
+
+    private IEnumerator LoadResultScene()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(3);
     }
 
     private IEnumerator SpawnShark()

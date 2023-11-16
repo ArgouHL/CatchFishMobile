@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderName: "\u9023\u7E8C\u6293\u52302\u96BB\u4E0D\u540C\u7A00\u6709\u5EA6\u7684\u9B5A "
   orderInfo: "\u9023\u7E8C\u6293\u52302\u96BB\u4E0D\u540C\u7A00\u6709\u5EA6\u7684\u9B5A "
-  rewardMoney: 10
+  rewardMoney: 150
   rewardExp: 150
   requirdCount: 2
   rule: 2

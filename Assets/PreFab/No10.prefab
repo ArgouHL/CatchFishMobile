@@ -504,8 +504,6 @@ MonoBehaviour:
   fishName: 
   speed: 7
   rarity: 0
-  income: 0
-  exp: 0
   indexInGroup: 0
   sharkFear: {fileID: 0}
   rotationSpeed: 360
@@ -625,7 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff8f21ffcbb3c8c4891d77af9d575114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inrRange: []
+  shark: {fileID: -6073107083222401962}
 --- !u!50 &5118386526110790486
 Rigidbody2D:
   serializedVersion: 4

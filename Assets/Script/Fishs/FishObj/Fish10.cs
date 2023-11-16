@@ -52,6 +52,7 @@ public class Fish10 : Shark
 
     internal override IEnumerator OutScreen()
     {
+        canFear = false;
         Debug.Log("OutScreen");
         while (!ToTarget(new Vector3(14,-3,5), 0.7f))
         {

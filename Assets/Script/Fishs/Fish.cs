@@ -21,8 +21,6 @@ public abstract class Fish : MonoBehaviour
     internal List<Fish> groupFish = new List<Fish>();
 
     public FishRarity rarity;
-    public int income;
-    public int exp;
     public int indexInGroup;
 
     internal Coroutine swimming, fearing, shocking;
@@ -41,7 +39,7 @@ public abstract class Fish : MonoBehaviour
             transform.position += new Vector3(speed * -way * Time.deltaTime, 0, 0);
             yield return null;
         }
-       
+
         Dispawn();
     }
 
@@ -63,7 +61,7 @@ public abstract class Fish : MonoBehaviour
         FishControl.instance.FishOutScreen(this);
         gameObject.SetActive(false);
         canbeEat = false;
-      
+
     }
     internal void NewFish(FishObject fishPrefab)
     {
@@ -72,8 +70,6 @@ public abstract class Fish : MonoBehaviour
         //size = fishPrefab.size;
         fishName = fishPrefab.name;
         rarity = fishPrefab.rarity;
-        income = fishPrefab.income;
-        exp = fishPrefab.exp;
         speed = fishPrefab.speed;
         accelerate = fishPrefab.acceleratedSpeed;
         speeduptime = fishPrefab.speedUpTime;
@@ -104,7 +100,7 @@ public abstract class Fish : MonoBehaviour
         // GetComponentInChildren<SpriteRenderer>().flipX = way > 0 ? false : true;
         int way = speed > 0 ? 1 : -1;
         fearing = StartCoroutine(GetFearIE(speeduptime, way));
-        
+
     }
 
     internal IEnumerator GetFearIE(float speeduptime, int way)
@@ -134,7 +130,8 @@ public abstract class Fish : MonoBehaviour
 
     internal void GetShock(float time)
     {
-        shocking = StartCoroutine(GetShockIE(time));
+        if (gameObject.activeInHierarchy)
+            shocking = StartCoroutine(GetShockIE(time));
     }
     private IEnumerator GetShockIE(float time)
     {
@@ -154,6 +151,7 @@ public abstract class Shark : Fish
     [SerializeField] private SpriteRenderer sprite;
     private Coroutine chasing;
     internal FishReagon reagon;
+    internal bool canFear = true;
     internal override void Feared(Vector3 sharkPos)
     {
 
@@ -165,9 +163,11 @@ public abstract class Shark : Fish
     }
     internal override void StopMove()
     {
+        if(chasing!=null)
         StopCoroutine(chasing);
         StartCoroutine(OutScreen());
         canbeClick = false;
+        canFear = false;
     }
 
     internal abstract IEnumerator OutScreen();

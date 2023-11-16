@@ -211,6 +211,15 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TouchPosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""951af9d7-97bb-4b5e-9257-2e7c0add8058"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -642,6 +651,17 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
                     ""action"": ""AddHp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae0a1062-2e10-4b6e-a057-452f891b2bf1"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -812,6 +832,7 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         m_UI_Touch = m_UI.FindAction("Touch", throwIfNotFound: true);
         m_UI_Option = m_UI.FindAction("Option", throwIfNotFound: true);
         m_UI_AddHp = m_UI.FindAction("AddHp", throwIfNotFound: true);
+        m_UI_TouchPosition = m_UI.FindAction("TouchPosition", throwIfNotFound: true);
         // GamePlay
         m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
         m_GamePlay_TouchPosition = m_GamePlay.FindAction("TouchPosition", throwIfNotFound: true);
@@ -945,6 +966,7 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Touch;
     private readonly InputAction m_UI_Option;
     private readonly InputAction m_UI_AddHp;
+    private readonly InputAction m_UI_TouchPosition;
     public struct UIActions
     {
         private @InputManager m_Wrapper;
@@ -962,6 +984,7 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         public InputAction @Touch => m_Wrapper.m_UI_Touch;
         public InputAction @Option => m_Wrapper.m_UI_Option;
         public InputAction @AddHp => m_Wrapper.m_UI_AddHp;
+        public InputAction @TouchPosition => m_Wrapper.m_UI_TouchPosition;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1010,6 +1033,9 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
                 @AddHp.started -= m_Wrapper.m_UIActionsCallbackInterface.OnAddHp;
                 @AddHp.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnAddHp;
                 @AddHp.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnAddHp;
+                @TouchPosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTouchPosition;
+                @TouchPosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTouchPosition;
+                @TouchPosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTouchPosition;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1053,6 +1079,9 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
                 @AddHp.started += instance.OnAddHp;
                 @AddHp.performed += instance.OnAddHp;
                 @AddHp.canceled += instance.OnAddHp;
+                @TouchPosition.started += instance.OnTouchPosition;
+                @TouchPosition.performed += instance.OnTouchPosition;
+                @TouchPosition.canceled += instance.OnTouchPosition;
             }
         }
     }
@@ -1201,6 +1230,7 @@ public partial class @InputManager : IInputActionCollection2, IDisposable
         void OnTouch(InputAction.CallbackContext context);
         void OnOption(InputAction.CallbackContext context);
         void OnAddHp(InputAction.CallbackContext context);
+        void OnTouchPosition(InputAction.CallbackContext context);
     }
     public interface IGamePlayActions
     {

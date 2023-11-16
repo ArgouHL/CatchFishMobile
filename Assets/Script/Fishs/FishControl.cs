@@ -15,8 +15,7 @@ public class FishControl : MonoBehaviour
     int remainHitTime = 0;
     private Fish hittedFish = null;
     public static FishReagon reagon;
-
-
+ 
     [SerializeField] private TMP_Text t;
     [SerializeField] private List<Fish> fishsOnScreen;
     [SerializeField] internal List<Fish> FishsOnScreen { get { return fishsOnScreen; } }
@@ -24,7 +23,7 @@ public class FishControl : MonoBehaviour
 
     [SerializeField] private int normalNum, rareNum, superNum;
 
-    private List<FishObject> allFishToSpawn;
+    [SerializeField] private List<FishObject> allFishToSpawn;
 
     [SerializeField] private GameObject[] sharks;
     [SerializeField] private Shark currentShark;
@@ -37,8 +36,8 @@ public class FishControl : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log(TempData.targetReagon);
-        reagon = TempData.targetReagon;
+        Debug.Log(TempData.instance.targetReagon);
+        reagon = TempData.instance.targetReagon;
         Instantized();
         GenerateSpawnFish();
     }
@@ -55,12 +54,14 @@ public class FishControl : MonoBehaviour
     }
     private void Instantized()
     {
+        ResultRecord.instance.GetAllFishObj(allFish);
         fishsOnScreen = new List<Fish>();
         sharkDictionary = new Dictionary<FishReagon, GameObject>();
         foreach (var s in sharks)
         {
             sharkDictionary.Add(s.GetComponent<Shark>().reagon, s);
         }
+
     }
 
     public void GenerateFish(int index)
@@ -154,7 +155,7 @@ public class FishControl : MonoBehaviour
             }
             else
             {
-                ResultCount.instance.AddCatchedFish();
+                ResultRecord.instance.AddCatchedFish(_fish);
                 _fish.StopMove();
             }
 

@@ -90,6 +90,12 @@ public class OrderManager : MonoBehaviour
     {
         StartCoroutine(timeLimitOrder.TimeCountIE());
     }
+
+
+    internal void SendOrders()
+    {
+        ResultRecord.instance.GetOrder(ordersInGame);
+    }
 }
 
 
@@ -99,9 +105,10 @@ public class Order
     internal string orderInfo;
     internal int rewardMoney;
     internal int rewardExp;
-    internal bool isUpdated = false;
+    internal bool isFinished = false;
     internal int count = 0;
     internal int requiredNum;
+
     internal void GetOrderBase(OrderObj orderObj)
     {
         orderName = orderObj.orderName;
@@ -130,14 +137,14 @@ public class CountOrder : Order
 
     internal virtual void AddCount(Fish fish)
     {
-        if (isUpdated)
+        if (isFinished)
             return;
         CheckTargetFish(fish);
         count++;
         if (count >= requiredNum)
         {
             OrderManager.instance.UpdateOrderInfo(this);
-            isUpdated = true;
+            isFinished = true;
         }
     }
 
@@ -187,7 +194,7 @@ public class TimeLimitOrder : CountOrder
 
     internal override void AddCount(Fish fish)
     {
-        if (isUpdated)
+        if (isFinished)
             return;
         CheckTargetFish(fish);
         count++;
@@ -195,7 +202,7 @@ public class TimeLimitOrder : CountOrder
         if (count >= requiredNum)
         {
             OrderManager.instance.UpdateOrderInfo(this);
-            isUpdated = true;
+            isFinished = true;
         }
     }
 
@@ -231,7 +238,7 @@ public class ItemUseCountOrder : Order
 
     internal void AddCount(Fish fish)
     {
-        if (isUpdated)
+        if (isFinished)
             return;
         if (!((itemType == ItemType.Shock && GamePlay.instance.hasShockUsed) || (itemType == ItemType.Bait && GamePlay.instance.hasBaitUsed)))        
             return;
@@ -240,7 +247,7 @@ public class ItemUseCountOrder : Order
         if (count >= requiredNum)
         {
             OrderManager.instance.UpdateOrderInfo(this);
-            isUpdated = true;
+            isFinished = true;
         }
     }
 }

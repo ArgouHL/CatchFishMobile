@@ -18,8 +18,8 @@ MonoBehaviour:
   hitTimes: 2
   size: 1
   rarity: 3
-  reagon: 0
-  income: 0
+  reagon: 
+  income: 150
   exp: 0
   startHeights:
   - 3
@@ -30,3 +30,6 @@ MonoBehaviour:
   acceleratedSpeed: 5
   numberOfGroup: 1
   randomRoadCount: 1
+  weights: 0
+  speedUpTime: 0.5
+  fishIcon: {fileID: 0}
