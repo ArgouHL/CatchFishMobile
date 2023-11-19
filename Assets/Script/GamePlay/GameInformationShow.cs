@@ -12,6 +12,7 @@ public class GameInformationShow : MonoBehaviour
     [SerializeField] private TMP_Text preCount;
     [SerializeField] private TMP_Text countDown;
     [SerializeField] private TMP_Text catchedCount;
+    [SerializeField] private TMP_Text hpCount;
 
     private void Awake()
     {
@@ -38,5 +39,10 @@ public class GameInformationShow : MonoBehaviour
     internal void UpdateCatchedCount(int count)
     {
         catchedCount.text = "x"+count.ToString();
+    }
+
+    internal void UpdateHpCount(int count)
+    {
+        hpCount.text = count.ToString();
     }
 }

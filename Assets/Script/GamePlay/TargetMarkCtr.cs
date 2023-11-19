@@ -10,7 +10,7 @@ public class TargetMarkCtr : MonoBehaviour
 
     [SerializeField] private RectTransform Marker;
     [SerializeField] private CanvasGroup MarkerCanvasGroup;
-    private Fish trackingFish;
+    private Transform trackingFish;
     private Coroutine TrackingCoro;
     private Camera cam;
 
@@ -23,7 +23,7 @@ public class TargetMarkCtr : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void StartTracking(Fish fish)
+    public void StartTracking(Transform fish)
     {
 
         trackingFish = fish;

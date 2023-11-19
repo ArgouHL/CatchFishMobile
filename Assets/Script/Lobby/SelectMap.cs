@@ -55,6 +55,12 @@ public class SelectMap : MonoBehaviour
         TempData.instance.targetReagon = FishReagon.Pacific;
         ZonesShow.instance.ShowZone(zone.zone_1);
     }
+
+    public void ShowSharkZone_1()
+    {
+        TempData.instance.targetReagon = FishReagon.Pacific;
+        ZonesShow.instance.ShowSharkZone();
+    }
     public void ShowZone2()
     {
         TempData.instance.targetReagon = FishReagon.Indian;

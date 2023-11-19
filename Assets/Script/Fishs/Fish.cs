@@ -147,7 +147,6 @@ public abstract class Fish : MonoBehaviour
 public abstract class Shark : Fish
 {
     [SerializeField] internal SharkFear sharkFear;
-    [SerializeField] private float rotationSpeed;
     [SerializeField] private SpriteRenderer sprite;
     private Coroutine chasing;
     internal FishReagon reagon;
@@ -163,8 +162,8 @@ public abstract class Shark : Fish
     }
     internal override void StopMove()
     {
-        if(chasing!=null)
-        StopCoroutine(chasing);
+        if (chasing != null)
+            StopCoroutine(chasing);
         StartCoroutine(OutScreen());
         canbeClick = false;
         canFear = false;
@@ -186,28 +185,11 @@ public abstract class Shark : Fish
         Vector3 fromDirection = transform.up;
         Vector3 toDirection = (targetPos - transform.position).normalized;
         int way = toDirection.x > 0 ? 1 : -1;
-        // toDirection.x *= way;
+
         sprite.flipY = way < 0 ? true : false;
-        //var euler = transform.rotation.eulerAngles;
-        //if (way > 0) euler.y = 0;
-        //else euler.y = 0;
-        //transform.rotation = Quaternion.Euler(euler);
-        //float angle = Vector2.Angle(new Vector2(fromDirection.x, fromDirection.y), new Vector2(toDirection.x, toDirection.y));
 
-        //// Calculate the step angle based on the desired rotation speed
-        //float step = rotationSpeed * Time.deltaTime;
-
-
-        //float newZRotation = Mathf.Atan2(toDirection.y, toDirection.x) * Mathf.Rad2Deg;
-
-        // Interpolate the rotation with Slerp
-        //Quaternion newRotation = Quaternion.Euler(0, 0, newZRotation);
-        //newRotation = Quaternion.Slerp(transform.rotation, newRotation, step / angle);
-        //transform.rotation = newRotation;
-
-        //var forward = (transform.rotation * (Vector3.right)).normalized;
         transform.rotation = Quaternion.FromToRotation(Vector3.right, toDirection);
-        //sprite.flipX = way < 0 ? true : false;
+
         transform.position += toDirection * speed * Time.deltaTime;
 
         return false;
@@ -225,5 +207,9 @@ public abstract class Shark : Fish
     }
     internal abstract IEnumerator ChaseFishIE();
 }
+
+
+
+
 public enum FishRarity { Normal, Rare, SuperRare, Shark, Chest, None }
 public enum FishReagon { Pacific, Indian, Atlantic, None }

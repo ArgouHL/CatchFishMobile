@@ -9,8 +9,9 @@ public class SfxControl : MonoBehaviour
     [SerializeField] private AudioSource buttonClick, coin, sad, rain, pass, fail;
 
     [SerializeField] private AudioSource hitSoundsPlayer;
-    [SerializeField] private AudioClip[] hitSounds;
 
+    [SerializeField] private AudioClip[] hitSounds;
+    [SerializeField] private AudioClip catchSound;
     [SerializeField] private AudioMixer mixer;
 
 
@@ -31,8 +32,13 @@ public class SfxControl : MonoBehaviour
     {
         int index = hitSounds.Length-1 - count;
         hitSoundsPlayer.PlayOneShot(hitSounds[index]);
-    }    
+    }
 
+    public void CatchPlay()
+    {
+        
+        hitSoundsPlayer.PlayOneShot(catchSound);
+    }
 
     //public void PlayClick()
     //{

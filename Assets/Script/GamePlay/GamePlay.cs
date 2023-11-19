@@ -109,6 +109,7 @@ public class GamePlay : MonoBehaviour
         OrderManager.instance.SendOrders();
         ResultRecord.instance.CalcResult();
         StartCoroutine(LoadResultScene());
+        MusicControl.instance.SoftStopBGM();
     }
 
     private IEnumerator LoadResultScene()

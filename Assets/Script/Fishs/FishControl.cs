@@ -135,13 +135,13 @@ public class FishControl : MonoBehaviour
     }
     public void HitFish(Vector2 touchPos)
     {
-        var _fish = FindClosestFish(touchPos);
+        var _fish = TouchFunc.FindClosestFish(touchPos);
         if (_fish == null)
             return;
         if (hittedFish != _fish)
         {
             hittedFish = _fish;
-            TargetMarkCtr.instance.StartTracking(_fish);
+            TargetMarkCtr.instance.StartTracking(_fish.transform);
             remainHitTime = _fish.hitTimes > 0 ? _fish.hitTimes : 1;
         }
         remainHitTime--;
@@ -156,6 +156,7 @@ public class FishControl : MonoBehaviour
             else
             {
                 ResultRecord.instance.AddCatchedFish(_fish);
+                SfxControl.instance.CatchPlay();
                 _fish.StopMove();
             }
 
@@ -167,35 +168,7 @@ public class FishControl : MonoBehaviour
         UpdateHit();
     }
 
-    private Fish FindClosestFish(Vector2 touchPos)
-    {
-        Fish hitFish = null;
-        Ray ray = Camera.main.ScreenPointToRay(touchPos);
-        RaycastHit2D[] hit2D = Physics2D.GetRayIntersectionAll(ray);
-        if (hit2D.Length == 0)
-            return null;
-        float mindist = 9999999;
 
-        foreach (var hit in hit2D)
-        {
-            if (hit.collider.CompareTag("Fish"))
-            {
-                var _dis = Vector3.Distance(touchPos, hit.collider.transform.position);
-                if (_dis < mindist)
-                {
-                    var f = hit.collider.GetComponentInParent<Fish>();
-                    if (f.canbeClick)
-                    {
-                        mindist = _dis;
-                        hitFish = f;
-                    }
-
-                }
-            }
-        }
-
-        return hitFish;
-    }
 
 
 

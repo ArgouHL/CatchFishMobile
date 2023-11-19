@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1aad979f8e4af49a5c74e29b71ba44, type: 3}
   m_Name: Sea1
   m_EditorClassIdentifier: 
-  bgm: {fileID: 8300000, guid: f0c677b61f21f314e9c7ad64c798a5c5, type: 3}
+  bgm: {fileID: 8300000, guid: 7e7c86f5760f20a4586c0f56ae815909, type: 3}
   offset: 0
-  bars: 48
+  bars: 16
   bpm: 120
   beatType: 2
   type: 2
