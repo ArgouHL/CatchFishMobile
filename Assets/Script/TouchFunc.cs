@@ -51,12 +51,10 @@ public static class TouchFunc
                 var _dis = Vector3.Distance(touchPos, hit.collider.transform.position);
                 if (_dis < mindist)
                 {
-                    var f = hit.collider.GetComponentInParent<PPShark>();
-                    if (f.canbeClick)
-                    {
+                    var f = hit.collider.GetComponentInParent<PPShark>();                    
                         mindist = _dis;
                         hitShark = f;
-                    }
+                    
 
                 }
             }

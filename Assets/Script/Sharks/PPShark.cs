@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class PPShark : MonoBehaviour
 {
-    internal bool canbeClick = false;
-    internal bool canbeShock = false;
+
     private Coroutine nowAction=null;
     private SpriteRenderer spriteRenderer;
 
@@ -19,27 +18,26 @@ public class PPShark : MonoBehaviour
     internal void Swim()
     {
         spriteRenderer.color = Color.white;
-        canbeShock = true;
-        canbeClick = true;
-        if (nowAction != null)
-            return;
+        if(nowAction!=null)
+        StopCoroutine(nowAction);
         nowAction = StartCoroutine(SwimIE());
     }
+
 
     private  IEnumerator SwimIE()
     {
         //play swim Ani
+        spriteRenderer.color = Color.white;
         Debug.Log("SwimIE");
         yield return new WaitForSeconds(5);
-        nowAction = null;
-        Skillpre();
+        
+       
     }
 
-    private void Skillpre()
+    internal void Skillpre()
     {
-
         if (nowAction != null)
-            return;
+            StopCoroutine(nowAction);
         nowAction = StartCoroutine(SkillpreIE());
     }
 
@@ -49,22 +47,22 @@ public class PPShark : MonoBehaviour
 
         //play pre Ani
         float time = 0;
-        while(time<2)
+        while (true)
         {
-            spriteRenderer.color = Color.Lerp(Color.white, Color.red, time / 2);
+            float d = Mathf.Sin(time * 10) / 2 + 0.5f;
+          //  Debug.Log(d);
+            spriteRenderer.color = Color.Lerp(new Color(0.5f,0,0,1), Color.red, d);
             time += Time.deltaTime;
             yield return null;
         }
-        spriteRenderer.color = new Color(1, 1, 1, 0);
-        nowAction = null;
-        Hide();
+
+        
     }
 
     internal void Shocked()
     {
-        if (!canbeShock)
-            return;
-        StopCoroutine(nowAction);
+        if (nowAction != null)
+            StopCoroutine(nowAction);
         nowAction = StartCoroutine(ShockedIE());
     }
 
@@ -72,35 +70,42 @@ public class PPShark : MonoBehaviour
     private IEnumerator ShockedIE()
     {
         Debug.Log("ShockedIE");
-        canbeShock = false;
-        canbeClick = true;
+
         //play shock Ani
         float time = 0;
-        while (time < 2.5f)
+        while (true)
         {
             float d = Mathf.Sin(time*50) / 2 +0.5f;
-            Debug.Log(d);
+            //Debug.Log(d);
             spriteRenderer.color = Color.Lerp(Color.white, Color.yellow, d);
             time += Time.deltaTime;
             yield return null;
         }
-        spriteRenderer.color = Color.white;
-        nowAction = null;
-        Swim();
+       
+       
+        
     }
 
-    private void Hide()
-    {      
+    internal void Hide()
+    {
+        spriteRenderer.color = new Color(1,1,1,0);
+        if (nowAction != null)
+            StopCoroutine(nowAction);
         nowAction = StartCoroutine(HideIE());
     }
 
     private IEnumerator HideIE()
     {
         Debug.Log("HideIE");
-        canbeShock = false;
-        canbeClick = false;
+
         yield return new WaitForSeconds(5);
-        nowAction = null;
-        Swim();
+
+        
+    }
+
+    internal void StopCoro()
+    {
+        if (nowAction != null)
+            StopCoroutine(nowAction);
     }
 }

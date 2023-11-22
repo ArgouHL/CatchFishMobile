@@ -40,11 +40,12 @@ public class GamePlay : MonoBehaviour
     private void OnEnable()
     {
         PlayerInputManager.inputs.GamePlay.Hit.performed += GetFish;
-
+        GameInformationShow.StopCoro += StopCoro;
     }
     private void OnDisable()
     {
         PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
+        GameInformationShow.StopCoro -= StopCoro;
     }
 
     public void GamePreStart()
@@ -156,9 +157,9 @@ public class GamePlay : MonoBehaviour
         BaitCoroutine = null;
     }
 
-
-    public void BackMenu()
+    public void StopCoro()
     {
-        SceneManager.LoadScene(1);
+        StopAllCoroutines();
     }
+    
 }

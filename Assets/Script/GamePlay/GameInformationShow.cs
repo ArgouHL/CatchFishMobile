@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameInformationShow : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameInformationShow : MonoBehaviour
     [SerializeField] private TMP_Text countDown;
     [SerializeField] private TMP_Text catchedCount;
     [SerializeField] private TMP_Text hpCount;
+    public delegate void StopEvent();
+    public static StopEvent StopCoro;
 
     private void Awake()
     {
@@ -44,5 +47,12 @@ public class GameInformationShow : MonoBehaviour
     internal void UpdateHpCount(int count)
     {
         hpCount.text = count.ToString();
+    }
+
+
+    public void BackLobby()
+    {
+        StopCoro.Invoke();
+        SceneManager.LoadScene(1);
     }
 }

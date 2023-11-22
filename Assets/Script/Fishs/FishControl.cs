@@ -34,6 +34,17 @@ public class FishControl : MonoBehaviour
     {
         instance = this;
     }
+
+    private void OnEnable()
+    {
+        
+        GameInformationShow.StopCoro += StopCoro;
+    }
+    private void OnDisable()
+    {
+
+        GameInformationShow.StopCoro -= StopCoro;
+    }
     private void Start()
     {
         Debug.Log(TempData.instance.targetReagon);
@@ -282,5 +293,11 @@ public class FishControl : MonoBehaviour
     private HashSet<FishObject> GetFishWithRarity(FishRarity rarity)
     {
         return allFish.Where(p => (p.reagon.Contains(reagon) && p.rarity.Equals(rarity))).ToHashSet();
+    }
+
+
+    public void StopCoro()
+    {
+        StopAllCoroutines();
     }
 }
