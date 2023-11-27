@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class ResultShow : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class ResultShow : MonoBehaviour
     private List<FishByType> fishByTypes;
 
     [SerializeField] private RectTransform fishboarder;
+    [SerializeField] private CanvasGroup backBtn;
 
     void Start()
     {
@@ -104,7 +106,11 @@ public class ResultShow : MonoBehaviour
         exp.text = "x" + targetExp;
 
 
-      
+        LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
+        {
+            backBtn.alpha = val;
+        })
+          .setOnComplete(() => { backBtn.interactable = true; });
     }
 
     private IEnumerator OrderCheckShow()
@@ -155,6 +161,11 @@ public class ResultShow : MonoBehaviour
             }
             orgPoint.y -= 300;
         }
+
+
+    
+       
+        
     }
 
     private void GetAndPrintOrder()
@@ -165,9 +176,8 @@ public class ResultShow : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BackLobby()
     {
-
+        SceneManager.LoadScene(1);
     }
 }

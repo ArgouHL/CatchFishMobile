@@ -17,7 +17,7 @@ MonoBehaviour:
   fishID: 21
   hitTimes: 4
   size: 1
-  rarity: 2
+  rarity: 1
   reagon: 00000000
   income: 20
   exp: 0

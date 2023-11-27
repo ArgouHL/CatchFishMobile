@@ -40,9 +40,9 @@ public class GamePlay : MonoBehaviour
     private void OnEnable()
     {
         DragControl.dragoff += GetFish;
+        GameInformationShow.StopCoro += StopCoro;
       
         //PlayerInputManager.inputs.GamePlay.Hit.performed += GetFish;
-
     }
 
     
@@ -52,6 +52,7 @@ public class GamePlay : MonoBehaviour
         DragControl.dragoff -= GetFish;
       //  CatchDeter.EndDete -= GetFishDete;
         // PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
+        GameInformationShow.StopCoro -= StopCoro;
     }
 
     public void GamePreStart()
@@ -166,9 +167,9 @@ public class GamePlay : MonoBehaviour
         BaitCoroutine = null;
     }
 
-
-    public void BackMenu()
+    public void StopCoro()
     {
-        SceneManager.LoadScene(1);
+        StopAllCoroutines();
     }
+    
 }

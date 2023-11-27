@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UnityEngine.InputSystem;
 
 public class SharkGameSys : MonoBehaviour
@@ -13,6 +14,10 @@ public class SharkGameSys : MonoBehaviour
     int hitTime = 0;
     int remainHP = 0;
     private InputAction touchPosition;
+    private SharkState state;
+    private Coroutine nowStateCoro;
+    private bool deterSuccess=false;
+    private bool shockSuccess = false;
 
     void Start()
     {
@@ -39,21 +44,18 @@ public class SharkGameSys : MonoBehaviour
         }
 
         _shark= Instantiate(_setting.shark).GetComponent<PPShark>();
-        SetHp(_setting.hp);
-        
-
-    }
-
-  
+        SetHp(_setting.hp);        
+    }  
 
     private void OnEnable()
     {
-       // PlayerInputManager.inputs.GamePlay.Hit.performed += GetShark;
-
+        PlayerInputManager.inputs.GamePlay.Touch.performed += GetShark;
+        GameInformationShow.StopCoro += StopCoro;
     }
     private void OnDisable()
     {
-       // PlayerInputManager.inputs.GamePlay.Hit.performed -= GetShark;
+        PlayerInputManager.inputs.GamePlay.Touch.performed -= GetShark;
+        GameInformationShow.StopCoro -= StopCoro;
     }
 
     public void GamePreStart()
@@ -80,7 +82,7 @@ public class SharkGameSys : MonoBehaviour
 
     private void GameStart()
     {
-        _shark.Swim();
+        SharkSwim();
         StartCoroutine(GameCountDown());
     }
 
@@ -110,11 +112,12 @@ public class SharkGameSys : MonoBehaviour
 
     public void HitShark(Vector2 touchPos)
     {
+        if (state != SharkState.swimming)
+            return;
         var _fish = TouchFunc.FindClosestShark(touchPos);
         if (_fish == null)
             return;
-        if (!_fish.canbeClick)
-            return;
+
         TargetMarkCtr.instance.StartTracking(_fish.gameObject.transform);
         hitTime++;
 
@@ -149,9 +152,132 @@ public class SharkGameSys : MonoBehaviour
         }
     }
 
-    public void Shock()
+   
+
+
+
+    private void SharkSwim()
     {
-        _shark.Shocked();
+        ChangeState(SharkState.swimming);
+        _shark.Swim();
+        if (nowStateCoro != null)
+            return;
+        StartCoroutine(SwimTime());
     }
 
+    private IEnumerator SwimTime()
+    {
+       float t= UnityEngine.Random.Range(5, 10);
+        yield return new WaitForSeconds(5);
+        nowStateCoro = null;
+        SkillPre();
+    }
+
+    private void SkillPre()
+    {
+        hitTime = 0;
+        TargetMarkCtr.instance.StopTracking();
+        _shark.StopCoro();
+        _shark.Skillpre();
+        ChangeState(SharkState.skillPre);
+        if(nowStateCoro != null)
+            return;
+        StartCoroutine(SkillPreDete());
+    }
+
+
+    private IEnumerator SkillPreDete()
+    {
+        float showUpTime = 0.5f;
+        float prefailTime = 0.5f;
+        float successTime = 1f;
+        float afterfailTime = 0.5f;
+        DeteBar.instance.ShowBar(successTime, prefailTime + successTime + afterfailTime);
+        //showbar
+        yield return new WaitForSeconds(showUpTime);
+        DeteBar.instance.StartDete();
+        float detetime = 0;
+        deterSuccess = false;
+        shockSuccess = false;
+        while (detetime < prefailTime)
+        {            
+            DeteBar.instance.UpdateBar(detetime);
+            detetime += Time.deltaTime;
+            yield return null;
+        }
+        deterSuccess = true;
+        while (detetime < prefailTime+ successTime)
+        {
+            DeteBar.instance.UpdateBar(detetime);
+            detetime += Time.deltaTime;
+            yield return null;
+        }
+        deterSuccess = false;
+        while (detetime < prefailTime + successTime+ afterfailTime)
+        {
+            DeteBar.instance.UpdateBar(detetime);
+            detetime += Time.deltaTime;
+            yield return null;
+        }
+        if (shockSuccess)
+            Shocked();
+        else        
+            SharkHide();
+        
+        DeteBar.instance.StopDete();     
+     
+        nowStateCoro = null;
+
+    }
+
+    private void Shocked()
+    {
+        _shark.Shocked();
+        StartCoroutine(ShockIE());
+    }
+
+
+    private IEnumerator ShockIE()
+    {
+        ChangeState(SharkState.swimming);
+        yield return new WaitForSeconds(2);
+        SharkSwim();
+    }
+
+        public void Shock()
+    {
+        DeteBar.instance.ShockDisable();
+        if (deterSuccess)
+            shockSuccess = true;           
+
+    }
+
+    private void SharkHide()
+    {
+        StartCoroutine(SharkHideIE());
+    }
+
+
+    private IEnumerator SharkHideIE()
+    {
+        _shark.Hide();
+        yield return new WaitForSeconds(3);
+        SharkSwim();
+    }
+
+
+    private void ChangeState(SharkState s)
+    {
+        Debug.Log(s);
+        state = s;
+    }
+
+
+    public void StopCoro()
+    {
+        StopAllCoroutines();
+    }
 }
+
+public enum SharkState { swimming,skillPre,hiding}
+    
