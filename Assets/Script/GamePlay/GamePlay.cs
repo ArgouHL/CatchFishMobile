@@ -19,7 +19,7 @@ public class GamePlay : MonoBehaviour
     [SerializeField]private float itemOrderDuration;
     private Coroutine ShockCoroutine;
     private Coroutine BaitCoroutine;
-
+    
     [SerializeField] private int gameTime = 30;
 
     private void Awake()
@@ -28,7 +28,7 @@ public class GamePlay : MonoBehaviour
     }
     void Start()
     {
-        PlayerInputManager.instance.ChangeType(InputType.GamePlay);
+      
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
 
         OrderManager.instance.GetOrders();
@@ -39,12 +39,19 @@ public class GamePlay : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputManager.inputs.GamePlay.Hit.performed += GetFish;
+        DragControl.dragoff += GetFish;
+      
+        //PlayerInputManager.inputs.GamePlay.Hit.performed += GetFish;
 
     }
+
+    
+
     private void OnDisable()
     {
-        PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
+        DragControl.dragoff -= GetFish;
+      //  CatchDeter.EndDete -= GetFishDete;
+        // PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
     }
 
     public void GamePreStart()
@@ -53,14 +60,16 @@ public class GamePlay : MonoBehaviour
         isGameEnd = false;
     }
 
-    public void GetFish(InputAction.CallbackContext ctx)
+    public void GetFish(Vector3 aimPoint)
     {
         Debug.Log("GetFish");
         //var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
-        var _hitPos = touchPosition.ReadValue<Vector2>();
-        Debug.Log(_hitPos);
-        FishControl.instance.HitFish(_hitPos);
+       // var _hitPos = touchPosition.ReadValue<Vector2>();
+      //  Debug.Log(aimPoint);
+        FishControl.instance.HitFish(aimPoint);
     }
+
+
 
 
     private IEnumerator PreStart()
@@ -81,6 +90,7 @@ public class GamePlay : MonoBehaviour
 
     private void GameStart()
     {
+        PlayerInputManager.instance.ChangeType(InputType.GamePlay);
         FishControl.instance.StartGenFish();
         StartCoroutine(GameCountDown());
         StartCoroutine(SpawnShark());

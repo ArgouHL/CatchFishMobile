@@ -48,12 +48,12 @@ public class SharkGameSys : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputManager.inputs.GamePlay.Hit.performed += GetShark;
+       // PlayerInputManager.inputs.GamePlay.Hit.performed += GetShark;
 
     }
     private void OnDisable()
     {
-        PlayerInputManager.inputs.GamePlay.Hit.performed -= GetShark;
+       // PlayerInputManager.inputs.GamePlay.Hit.performed -= GetShark;
     }
 
     public void GamePreStart()

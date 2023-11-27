@@ -15,7 +15,7 @@ MonoBehaviour:
   fishName: Fish16
   fishObj: {fileID: 5406272352078813806, guid: 314e207e107e7df4ca507021ef07fb99, type: 3}
   fishID: 16
-  hitTimes: 2
+  hitTimes: 4
   size: 1
   rarity: 0
   reagon: 00000000

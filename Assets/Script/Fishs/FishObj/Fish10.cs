@@ -7,13 +7,13 @@ using Unity.VisualScripting;
 
 public class Fish10 : Shark
 {
-    
+
     internal override IEnumerator EnterIE()
     {
         Vector3 targetPos = new Vector3(0, -3, 5);
-        Vector3 spawnPos =  RandomSide();
+        Vector3 spawnPos = RandomSide();
         transform.position = spawnPos;
-        while (!ToTarget(targetPos,4f, speed/2))
+        while (!ToTarget(targetPos, 4f, speed / 2))
         {
             yield return null;
         }
@@ -22,27 +22,32 @@ public class Fish10 : Shark
     internal override IEnumerator ChaseFishIE()
     {
         System.Random random = new System.Random();
-        while (FishControl.instance.FishsOnScreen.Count>0)
-        {        
+        while (FishControl.instance.FishsOnScreen.Count > 0)
+        {
             var fishs = new List<Fish>(FishControl.instance.FishsOnScreen);
-            Fish selectedFish = fishs.OrderBy(order => random.Next()).ToArray()[0];
-            while (selectedFish.canbeEat&&!ToTarget(selectedFish.transform.position, 0.2f))
-            {                
-                yield return null;
+            var fishsOnScreen = fishs.Where(x => x.spawned == true).OrderBy(x => Guid.NewGuid()).Take(1).ToArray();
+            if (fishsOnScreen.Length > 0)
+            {
+                Fish selectedFish = fishsOnScreen[0];
+                while (selectedFish.canbeEat && !ToTarget(selectedFish.transform.position, 0.2f))
+                {
+                    yield return null;
+                }
+                //   sharkFear.RemoveInRange(selectedFish);
+                selectedFish.Eat();
             }
-            
-         //   sharkFear.RemoveInRange(selectedFish);
-            selectedFish.Eat();
-            
-             yield return new WaitForSeconds(0.5f);
+
+
+
+            yield return new WaitForSeconds(1f);
         }
         Debug.Log("Nofish");
         StopMove();
     }
-       
-        private Vector3 RandomSide()
+
+    private Vector3 RandomSide()
     {
-       return new Vector3(8.5f, UnityEngine.Random.Range(-6f,-5f),5);
+        return new Vector3(8.5f, UnityEngine.Random.Range(-6f, -5f), 5);
     }
 
     private Vector3 RandomBottom()
@@ -54,7 +59,7 @@ public class Fish10 : Shark
     {
         canFear = false;
         Debug.Log("OutScreen");
-        while (!ToTarget(new Vector3(14,-3,5), 0.7f))
+        while (!ToTarget(new Vector3(14, -3, 5), 0.7f))
         {
             yield return null;
         }

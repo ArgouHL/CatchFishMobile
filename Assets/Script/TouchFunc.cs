@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class TouchFunc 
 {
-    public static Fish FindClosestFish(Vector2 touchPos)
+    public static Fish FindClosestFish(Vector3 touchPos)
     {
         Fish hitFish = null;
         Ray ray = Camera.main.ScreenPointToRay(touchPos);
@@ -64,4 +64,7 @@ public static class TouchFunc
 
         return hitShark;
     }
+
+
+
 }

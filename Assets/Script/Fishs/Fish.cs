@@ -16,6 +16,7 @@ public abstract class Fish : MonoBehaviour
     internal float accelerate;
     internal bool canbeEat = true;
     internal bool canbeClick = true;
+    internal bool spawned = false;
     internal bool feared = false;
     internal float speeduptime;
     internal List<Fish> groupFish = new List<Fish>();
@@ -25,12 +26,30 @@ public abstract class Fish : MonoBehaviour
 
     internal Coroutine swimming, fearing, shocking;
     internal int randomIndex;
+    internal bool isPause = false;
+    internal int way=1;
+
+    public void Swim()
+    {
+        Swim(way);
+    }
 
     public Fish Swim(float way)
     {
+        spawned = true;
         swimming = StartCoroutine(SwimToEndPoint(way));
         return this;
     }
+
+    internal void PauseMove()
+    {
+        isPause = true;
+    }
+    internal void ContinueMove()
+    {
+        isPause = false;
+    }
+
 
     internal virtual IEnumerator SwimToEndPoint(float way)
     {
@@ -45,7 +64,8 @@ public abstract class Fish : MonoBehaviour
 
     internal virtual void StopMove()
     {
-        StopCoroutine(swimming);
+        if (swimming != null)
+            StopCoroutine(swimming);
         canbeClick = false;
         Dispawn();
 
@@ -86,6 +106,8 @@ public abstract class Fish : MonoBehaviour
 
     internal virtual void Feared(Vector3 sharkPosition)
     {
+        if (!spawned)
+            return;
         if (feared)
             return;
         if (!gameObject.activeInHierarchy)

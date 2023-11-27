@@ -5,6 +5,7 @@ using Cinemachine;
 using UnityEditor;
 using System;
 
+[DefaultExecutionOrder(-1)]
 public class FitScreenScale : MonoBehaviour
 {
 	private CinemachineVirtualCamera vCam;	

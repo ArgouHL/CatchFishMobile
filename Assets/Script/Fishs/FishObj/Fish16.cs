@@ -23,6 +23,7 @@ public class Fish16 : Fish
             if (transform.position.x * way < -6f)
                 canbeEat = false;
             transform.position += realdirection*speed*Time.deltaTime;
+            yield return new WaitWhile(() => isPause);
             yield return null;
         }
      

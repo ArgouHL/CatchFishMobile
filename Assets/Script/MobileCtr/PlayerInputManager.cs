@@ -50,7 +50,7 @@ public class PlayerInputManager : MonoBehaviour
         inputs.Option.Disable();
         inputs.UI.Disable();
         inputs.GamePlay.Disable();
-        inputs.UI.Disable();
+        inputs.Determine.Disable();
         //  if (andriodUIswitch)
         //     mobileUIOff?.Invoke();
 
@@ -76,8 +76,10 @@ public class PlayerInputManager : MonoBehaviour
 
             case InputType.UI:
                 inputs.UI.Enable();
-                break;          
-
+                break;
+            case InputType.Determine:
+                inputs.Determine.Enable();
+                break;
             default:
                 break;
         }
@@ -116,5 +118,6 @@ public enum InputType
     Lobby,
     Option,
     UI,
-    GamePlay
+    GamePlay,
+    Determine
 }

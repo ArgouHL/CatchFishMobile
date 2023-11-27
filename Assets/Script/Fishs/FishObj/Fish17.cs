@@ -21,6 +21,7 @@ public class Fish17 : Fish
             if (transform.position.x * Mathf.Sign(speed) < -6f)
                 canbeEat = false;
             transform.position += direction * speed*Time.deltaTime;
+            yield return new WaitWhile(() => isPause);
             yield return null;
         }
      

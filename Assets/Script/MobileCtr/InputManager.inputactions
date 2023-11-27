@@ -657,7 +657,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Hit",
+                    "name": "Touch",
                     "type": "Button",
                     "id": "377d6e3a-ff73-45ad-9171-fdc03a4525ef",
                     "expectedControlType": "Button",
@@ -685,7 +685,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Hit",
+                    "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -782,6 +782,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "TouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Determine",
+            "id": "6ee90180-bf87-4eb6-afb4-74ffa51f538d",
+            "actions": [
+                {
+                    "name": "Touch",
+                    "type": "Button",
+                    "id": "18590bd3-a756-47fd-9076-9f69df7b992f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "892358e9-204b-4a2d-8ffd-e06c9211a58e",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

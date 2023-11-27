@@ -19,7 +19,7 @@ public class Fish21 : Fish
         //realdirection = ChangeWay(direction, angle);
         //transform.RotateAround(transform.position, new Vector3(0,0,1), angle);
 
-       float  time = Random.Range(0, period);
+        float time = Random.Range(0, period);
         while (transform.position.x * way > -8f)
         {
             if (transform.position.x * way < -6f)
@@ -33,16 +33,18 @@ public class Fish21 : Fish
             var dist = tangent * Time.deltaTime * speed;
             dist.x *= -way;
             transform.position += dist;
-            time += Time.deltaTime;
+            if (speed > 0)
+                time += Time.deltaTime;
+            yield return new WaitWhile(() => isPause);
             yield return null;
-           
+
 
         }
-        
+
         Dispawn();
     }
 
-    
+
 
 
 }

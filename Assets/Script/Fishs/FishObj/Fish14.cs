@@ -29,11 +29,14 @@ public class Fish14 : Fish
 
                 transform.position += realdirection * speed * Time.deltaTime;
                 time += Time.deltaTime * (speed > 0 ? 1 : 0);
+                yield return new WaitWhile(()=>isPause);
                 yield return null;
 
             }
             updown *= -1;
+   
             yield return new WaitForSeconds(0.75f);
+            yield return new WaitWhile(() => isPause);
             yield return new WaitUntil(() => speed > 0);
             transform.RotateAround(transform.position, new Vector3(0, 0, 1), 40 * updown);
             realdirection = ChangeWay(direction, updown * 20);
