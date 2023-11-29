@@ -15,13 +15,12 @@ public class Fish14 : Fish
 
         float angle = 20 * updown;
 
-        Vector3 direction = new Vector3(-way, 0, 0);
+        Vector3 direction = new Vector3(way, 0, 0);
         realdirection = ChangeWay(direction, angle);
         transform.RotateAround(transform.position, new Vector3(0, 0, 1), angle);
-        while (transform.position.x * way > -8f)
+        while (!IsOutScreen())
         {
-            if (transform.position.x * way < -6f)
-                canbeEat = false;
+           
             float time = 0;
             while (time <= 1)
             {

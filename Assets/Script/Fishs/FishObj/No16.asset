@@ -23,10 +23,11 @@ MonoBehaviour:
   exp: 0
   startHeights:
   - -3
+  - 0
   speed: 3
   acceleratedSpeed: 7
   numberOfGroup: 3
   randomRoadCount: 3
   weights: 20
   speedUpTime: 0.5
-  fishIcon: {fileID: 0}
+  fishIcon: {fileID: 21300000, guid: 9c953a14a9fb7b243a06bde92508d2d2, type: 3}

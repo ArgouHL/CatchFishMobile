@@ -123,8 +123,8 @@ public class FishControl : MonoBehaviour
         for (int i = 0; i < fishPrefab.numberOfGroup; i++)
         {
 
-            var fishObj = Instantiate(fishPrefab.fishObj, new Vector3(8.5f * way, _startPos, 5), Quaternion.identity);
-            fishObj.transform.localScale = new Vector3(way, 1, 1);
+            var fishObj = Instantiate(fishPrefab.fishObj, new Vector3(8.5f * -way, _startPos, 5), Quaternion.identity);
+            //fishObj.transform.localScale = new Vector3(way, 1, 1);
             fishObj.transform.parent = fishpool;
             var _fish = fishObj.GetComponent<Fish>();
             fishs.Add(_fish);
@@ -147,6 +147,14 @@ public class FishControl : MonoBehaviour
             }
         }
         return fishs;
+    }
+
+    internal void StopDete(Fish fish)
+    {
+        if (fish != nowFish)
+            return;
+        TargetMarkCtr.instance.StopTracking();
+        CatchDeter.instance.CancelDete();
     }
 
     private void GetFishType(FishObject fishPrefab, out bool success, out Type type)
@@ -187,16 +195,19 @@ public class FishControl : MonoBehaviour
             // TargetMarkCtr.instance.StartTracking(_fish.transform);
             // remainHitTime = _fish.hitTimes > 0 ? _fish.hitTimes : 1;
         }
+        if (!_fish.canInteract)
+            return;
         //  remainHitTime--;
    //     SfxControl.instance.HitPlay(0);
 
         if (_fish is Shark)
         {
-
-            _fish.StopMove();
+            var _shark = _fish as Shark;
+            _shark.beHit();
         }
         else if (_fish.hitTimes > 1)
         {
+            SfxControl.instance.HitPlay(0);
             nowFish = _fish;
             CatchDeter.instance.StartDete(_fish.hitTimes, 2);
             nowFish.PauseMove();
@@ -221,8 +232,6 @@ public class FishControl : MonoBehaviour
     {
         //t.text = remainHitTime.ToString();
         //t.gameObject.SetActive(remainHitTime > 0);
-
-
     }
 
 
@@ -235,20 +244,12 @@ public class FishControl : MonoBehaviour
                 break;
             foreach (var f in SpawnedFish[i])
             {
-
-               f.Swim();
-               
+               f.Swim();               
             }
-
-            // GenerateFish(i);
             yield return new WaitForSeconds(fishSpawnPeriod);
         }
 
-        //while (!GamePlay.isGameEnd)
-        //{
 
-
-        //}
     }
 
     internal void ShockAllFish(float time)
@@ -261,7 +262,7 @@ public class FishControl : MonoBehaviour
 
     public void SpawnShark()
     {
-
+        Debug.Log("SpawnShark");
         currentShark = Instantiate(sharkDictionary[reagon], new Vector3(100, 0, 0), quaternion.identity).GetComponent<Shark>();
         currentShark.Enter();
     }

@@ -21,6 +21,8 @@ public static class TouchFunc
                 if (_dis < mindist)
                 {
                     var f = hit.collider.GetComponentInParent<Fish>();
+                    if (f is Shark)
+                        return f;
                     if (f.canbeClick)
                     {
                         mindist = _dis;

@@ -35,14 +35,14 @@ public class ResultRecord : MonoBehaviour
         catchedFishList.Add(fish);
         catchedFishCount++;
         GameInformationShow.instance.UpdateCatchedCount(catchedFishCount);
-        var _fishObj = fishDict[fish.fishID];
-        if (!_FishByTypeList.Any(x => x.fishObj.fishID == _fishObj.fishID))
+        var _fishID = fishDict[fish.fishID].fishID;
+        if (!_FishByTypeList.Any(x => x.fishID == _fishID))
         {
-            _FishByTypeList.Add(new FishByType(_fishObj));
+            _FishByTypeList.Add(new FishByType(_fishID));
         }
         else
         {
-            _FishByTypeList.Find(x => x.fishObj.fishID == _fishObj.fishID).count++;
+            _FishByTypeList.Find(x => x.fishID == _fishID).count++;
         }
 
     }
@@ -103,19 +103,19 @@ public class ResultRecord : MonoBehaviour
 
     public List<FishByType> FishByTypeCount()
     {
-        return _FishByTypeList.OrderByDescending(x => x.fishObj.rarity).ToList();
+        return _FishByTypeList.OrderByDescending(x => FishData.instance.GetRarity(x.fishID)).ToList();
     }
 
 }
 
 public class FishByType
 {
-    public FishObject fishObj;
+    public string fishID;
     public int count;
 
-    public FishByType(FishObject _fishObj)
+    public FishByType(string _fishId)
     {
-        fishObj = _fishObj;
+        fishID = _fishId;
         count = 1;
     }
 

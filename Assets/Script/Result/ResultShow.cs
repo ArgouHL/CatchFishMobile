@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class ResultShow : MonoBehaviour
 {
@@ -21,40 +20,24 @@ public class ResultShow : MonoBehaviour
 
     [SerializeField] private RectTransform fishboarder;
     [SerializeField] private CanvasGroup backBtn;
+    private int targetIncome;
+    private int targetExp;
 
     void Start()
     {
         fishByTypes = new List<FishByType>(ResultRecord.instance.FishByTypeCount());
+        AddToPlayer();
         StartCoroutine(PlayAni());
         //StartCoroutine(Test());
     }
 
-    private IEnumerator Test()
+    private void AddToPlayer()
     {
-        yield return new WaitForSeconds(1f);
-        int count = 10;
-        int _count = 0;
-        Vector2 orgPoint = Vector2.zero;
-        while (_count < count)
-        {
-            orgPoint.x = 0;
-            for (int j = 0; j < 4; j++)
-            {
-                var f = Instantiate(fishboarder);
-                var fq = f.GetComponent<FishSquare>();
-                // fq.ShowUP(new FishObject());
-                f.SetParent(FishType);
-                f.anchoredPosition = orgPoint;
-                _count++;
-
-                if (_count == count)
-                    break;
-                orgPoint.x += 300;
-                yield return new WaitForSeconds(0.1f);
-            }
-            orgPoint.y -= 300;
-        }
-
+        targetIncome = ResultRecord.instance.income;
+        targetExp = ResultRecord.instance.exp;
+        PlayerDataControl.instance.playerData.GetMoneyAndExp(targetIncome, targetExp);
+        PlayerDataControl.instance.playerData.AddUnlockedFish(fishByTypes.Select(f => f.fishID).ToArray());
+        PlayerDataControl.instance.Save();
     }
 
     private IEnumerator PlayAni()
@@ -63,7 +46,6 @@ public class ResultShow : MonoBehaviour
         GetAndPrintOrder();
         StartCoroutine(ResultDataShow());
     }
-
 
     private IEnumerator ResultDataShow()
     {
@@ -79,17 +61,15 @@ public class ResultShow : MonoBehaviour
         LeanTween.value(0, 1, 0.5f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
         {
             moneyexpUI.alpha = val;
-        });        
+        });
         yield return ShowMoneyAndExp();
     }
 
     private IEnumerator ShowMoneyAndExp()
     {
-        var targetIncome = ResultRecord.instance.income;
-        var targetExp = ResultRecord.instance.exp;
         float _income = 0;
         float _exp = 0;
-        while(_income< targetIncome)
+        while (_income < targetIncome)
         {
             _income += 150 * Time.deltaTime;
             money.text = "x" + Mathf.Ceil(_income).ToString();
@@ -138,7 +118,7 @@ public class ResultShow : MonoBehaviour
 
     private IEnumerator ShowCatchedFish()
     {
-        fishByTypes = ResultRecord.instance.FishByTypeCount();
+
         int count = fishByTypes.Count;
         int index = 0;
         Vector2 orgPoint = Vector2.zero;
@@ -163,9 +143,9 @@ public class ResultShow : MonoBehaviour
         }
 
 
-    
-       
-        
+
+
+
     }
 
     private void GetAndPrintOrder()

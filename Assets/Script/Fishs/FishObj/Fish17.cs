@@ -12,14 +12,13 @@ public class Fish17 : Fish
         _way = (int)way;
         // Generate a random number between 0 and 10
 
-        Vector3 direction = new Vector3(-way, 0, 0);
+        Vector3 direction = new Vector3(way, 0, 0);
        
        // transform.position += new Vector3(way * 1.8f* (indexInGroup>0?0:-1), indexInGroup > 0 ? (3.6f - 2.4f * indexInGroup) : 0, 0);
         
-        while (transform.position.x * Mathf.Sign(speed) > -8f)
+        while (!IsOutScreen())
         {
-            if (transform.position.x * Mathf.Sign(speed) < -6f)
-                canbeEat = false;
+        
             transform.position += direction * speed*Time.deltaTime;
             yield return new WaitWhile(() => isPause);
             yield return null;

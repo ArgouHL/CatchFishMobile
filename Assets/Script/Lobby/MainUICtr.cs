@@ -31,4 +31,9 @@ public class MainUICtr : MonoBehaviour
     {
         OptionUICtr.instance.ShowOptionUI();
     }
+
+    public void EnterZone()
+    {
+        SelectMap.instance.ShowNowZone();
+    }
 }

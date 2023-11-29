@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishName: Fish10
   fishObj: {fileID: 5406272352078813806, guid: c3974c776bd39b240910748f4d459f4c, type: 3}
-  fishID: 16
+  fishID: 10
   hitTimes: 1
   size: 1
   rarity: 3
@@ -32,4 +32,4 @@ MonoBehaviour:
   randomRoadCount: 1
   weights: 0
   speedUpTime: 0.5
-  fishIcon: {fileID: 0}
+  fishIcon: {fileID: 21300000, guid: b77eb3b9f9e3b684bbb4b3d9b7245544, type: 3}

@@ -17,7 +17,7 @@ MonoBehaviour:
   fishID: 17
   hitTimes: 4
   size: 1
-  rarity: 1
+  rarity: 0
   reagon: 00000000
   income: 10
   exp: 0
@@ -34,4 +34,4 @@ MonoBehaviour:
   randomRoadCount: 1
   weights: 40
   speedUpTime: 1
-  fishIcon: {fileID: 0}
+  fishIcon: {fileID: 21300000, guid: 9c5050ed75044c74d8cd08e4333f2b19, type: 3}

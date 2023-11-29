@@ -9,14 +9,10 @@ public abstract class Fish : MonoBehaviour
 
     public string fishID;
     public int hitTimes;
-
-    public string fishName;
-    internal Vector2 realSize;
     [SerializeField] internal float speed;
     internal float accelerate;
-    internal bool canbeEat = true;
     internal bool canbeClick = true;
-    internal bool spawned = false;
+    internal bool canInteract = false;
     internal bool feared = false;
     internal float speeduptime;
     internal List<Fish> groupFish = new List<Fish>();
@@ -27,7 +23,7 @@ public abstract class Fish : MonoBehaviour
     internal Coroutine swimming, fearing, shocking;
     internal int randomIndex;
     internal bool isPause = false;
-    internal int way=1;
+    internal int way = 1;
 
     public void Swim()
     {
@@ -36,11 +32,15 @@ public abstract class Fish : MonoBehaviour
 
     public Fish Swim(float way)
     {
-        spawned = true;
+        StartCoroutine(DelayCanInteract());
         swimming = StartCoroutine(SwimToEndPoint(way));
         return this;
     }
-
+    internal IEnumerator DelayCanInteract()
+    {
+        yield return new WaitForSeconds(1f);
+        canInteract = true;
+    }
     internal void PauseMove()
     {
         isPause = true;
@@ -50,10 +50,19 @@ public abstract class Fish : MonoBehaviour
         isPause = false;
     }
 
+    internal bool IsOutScreen()
+    {
+        if (transform.position.x * way < -6f)
+        {
+            canInteract = false;
+        }
 
+        bool b = transform.position.x * way > 7.5f ? true:false;
+        return b;
+    }
     internal virtual IEnumerator SwimToEndPoint(float way)
     {
-        while (transform.position.x * way > -8f)
+        while (!IsOutScreen())
         {
             transform.position += new Vector3(speed * -way * Time.deltaTime, 0, 0);
             yield return null;
@@ -80,7 +89,7 @@ public abstract class Fish : MonoBehaviour
             StopCoroutine(shocking);
         FishControl.instance.FishOutScreen(this);
         gameObject.SetActive(false);
-        canbeEat = false;
+        canInteract = false;
 
     }
     internal void NewFish(FishObject fishPrefab)
@@ -88,7 +97,6 @@ public abstract class Fish : MonoBehaviour
         fishID = fishPrefab.fishID;
         hitTimes = fishPrefab.hitTimes;
         //size = fishPrefab.size;
-        fishName = fishPrefab.name;
         rarity = fishPrefab.rarity;
         speed = fishPrefab.speed;
         accelerate = fishPrefab.acceleratedSpeed;
@@ -106,7 +114,7 @@ public abstract class Fish : MonoBehaviour
 
     internal virtual void Feared(Vector3 sharkPosition)
     {
-        if (!spawned)
+        if (!canInteract)
             return;
         if (feared)
             return;
@@ -127,7 +135,7 @@ public abstract class Fish : MonoBehaviour
 
     internal IEnumerator GetFearIE(float speeduptime, int way)
     {
-        Debug.Log("GetFear");
+
         float _speed = speed;
         speed = accelerate * way;
         yield return new WaitForSeconds(speeduptime);
@@ -140,6 +148,7 @@ public abstract class Fish : MonoBehaviour
 
     internal virtual void Eat()
     {
+        FishControl.instance.StopDete(this);
         Debug.Log("eated" + gameObject.name);
         if (swimming != null)
             StopCoroutine(swimming);
@@ -168,11 +177,15 @@ public abstract class Fish : MonoBehaviour
 
 public abstract class Shark : Fish
 {
+    private int hp = 3;
     [SerializeField] internal SharkFear sharkFear;
     [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private int waitTime;
     private Coroutine chasing;
     internal FishReagon reagon;
     internal bool canFear = true;
+    Fish _eatingFish;
+
     internal override void Feared(Vector3 sharkPos)
     {
 
@@ -184,6 +197,7 @@ public abstract class Shark : Fish
     }
     internal override void StopMove()
     {
+        Debug.Log(gameObject.name + "Stop");
         if (chasing != null)
             StopCoroutine(chasing);
         StartCoroutine(OutScreen());
@@ -221,13 +235,110 @@ public abstract class Shark : Fish
     {
         StartCoroutine(EnterIE());
     }
-    internal abstract IEnumerator EnterIE();
-
-    internal void ChaseFish()
+    internal IEnumerator EnterIE()
     {
-        chasing = StartCoroutine(ChaseFishIE());
+        Vector3 targetPos = new Vector3(0, -3, 5);
+        Vector3 spawnPos = RandomSide();
+        transform.position = spawnPos;
+        Debug.Log("SharKenter");
+        while (!ToTarget(targetPos, 0.5f, 2))
+        {
+            yield return null;
+        }
+        Debug.Log("SharKentered");
+        StartChaseFish();
     }
-    internal abstract IEnumerator ChaseFishIE();
+
+    private Vector3 RandomSide()
+    {
+        return new Vector3(9f, UnityEngine.Random.Range(-6f, -5f), 5);
+    }
+
+    internal void StartChaseFish()
+    {
+        Debug.Log("StartChaseFish");
+        NextFish();
+    }
+
+
+    internal void NextFish()
+    {
+        Debug.Log("NextFish");
+        var fishs = new List<Fish>(FishControl.instance.FishsOnScreen);
+        var fishsOnScreen = fishs.Where(x => x.canInteract).OrderBy(x => Guid.NewGuid()).Take(1).ToArray();
+
+        Fish selectedFish = fishsOnScreen[0];
+
+        chasing = StartCoroutine(ChaseTargetFish(selectedFish));
+
+
+
+    }
+
+    internal IEnumerator ChaseTargetFish(Fish _fish)
+    {
+        Debug.Log(gameObject.name + "ChaseTargetFish");
+        Debug.Log(_fish.canInteract);
+
+        while (_fish.canInteract && !ToTarget(_fish.transform.position, 0.2f))
+        {
+            yield return null;
+        }
+        if (_fish.canInteract)
+        {
+            chasing = StartCoroutine(EatFish(_fish));
+
+        }
+        else
+        {
+            NextFish();
+        }
+
+    }
+
+    internal IEnumerator EatFish(Fish _fish)
+    {
+        _eatingFish = _fish;
+        _fish.PauseMove();
+        canInteract = true;
+        yield return new WaitForSeconds(waitTime);
+        canInteract = false;
+        _fish.Eat();
+        NextFish();
+    }
+
+
+    internal void beHit()
+    {
+        if (!canInteract)
+            return;
+        var s = GetComponentInChildren<SpriteRenderer>();
+        LeanTween.value(0, 1, 0.5f).setOnUpdate((float val) => s.color = new Color(1, val, val, 1));
+        hp--;
+        canInteract = false;
+        if (_eatingFish != null)
+            _eatingFish.ContinueMove();
+        StopCoroutine(chasing);
+
+        if (hp <= 0)
+        {
+            StopMove();
+        }
+        else
+            chasing = StartCoroutine(StunIE());
+
+
+
+    }
+
+    internal IEnumerator StunIE()
+    {
+        //stunani
+        canInteract = false;
+        yield return new WaitForSeconds(3);
+        NextFish();
+
+    }
 }
 
 

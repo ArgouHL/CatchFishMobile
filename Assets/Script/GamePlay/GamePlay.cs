@@ -131,7 +131,7 @@ public class GamePlay : MonoBehaviour
 
     private IEnumerator SpawnShark()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(5);
         FishControl.instance.SpawnShark();
     }
 

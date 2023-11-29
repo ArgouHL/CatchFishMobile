@@ -11,7 +11,7 @@ public class FishSquare : MonoBehaviour
     [SerializeField] private Image boarder;
     [SerializeField] private Image fishicon;
     [SerializeField] private TMP_Text countText;
-
+    [SerializeField] private Sprite normal, rare, super,box;
     internal void ShowUP(FishByType t)
     {
         ChangeData(t);
@@ -23,22 +23,22 @@ public class FishSquare : MonoBehaviour
 
     private void ChangeData(FishByType t)
     {
-        switch (t.fishObj.rarity)
+        switch (FishData.instance.GetRarity(t.fishID))
         {
             case FishRarity.Normal:
-                boarder.color = Color.blue;
+                boarder.sprite= normal;
                 break;
             case FishRarity.Rare:
-                boarder.color = Color.yellow;
+                boarder.sprite = rare;
                 break;
             case FishRarity.SuperRare:
-                boarder.color = new Color(1,0.7f,0,1);
+                boarder.sprite = super;
                 break;
             case FishRarity.Chest:
-                boarder.color = Color.red;
+                boarder.sprite = box;
                 break;
         }
-     //   fishicon.sprite = t.fishObj.fishIcon;
+        fishicon.sprite = FishData.instance.GetFishIcon(t.fishID);
         countText.text ="x"+ t.count.ToString();
     }
 }

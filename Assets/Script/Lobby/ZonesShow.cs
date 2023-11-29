@@ -8,7 +8,7 @@ public class ZonesShow : MonoBehaviour
 {
     public static ZonesShow instance;
 
-    [SerializeField] CanvasGroup zone_1UI, zone_2UI, zone_3UI,enterGameBtn;
+    [SerializeField] CanvasGroup zone_1UI, zone_2UI, zone_3UI, enterGameBtn;
     [SerializeField] CanvasGroup sharkzone_1UI, enterSharkGameBtn;
 
     private CanvasGroup nowZoneUI;
@@ -19,19 +19,23 @@ public class ZonesShow : MonoBehaviour
     }
 
 
-    public void ShowZone(zone zone)
-    {      
+    public void ShowZone(Zone zone)
+    {
         switch (zone)
         {
-            case zone.zone_1:
+            case Zone.zone_1:
                 ShowZone(zone_1UI);
                 break;
-            case zone.zone_2:
+            case Zone.zone_2:
                 ShowZone(zone_2UI);
                 break;
-            case zone.zone_3:
+            case Zone.zone_3:
                 ShowZone(zone_3UI);
                 break;
+            case Zone.SharkZone_1:
+                ShowSharkZone();
+                break;
+
         }
     }
 
@@ -70,7 +74,7 @@ public class ZonesShow : MonoBehaviour
     }
 
     public void EnterGame()
-    {       
+    {
 
         SceneManager.LoadScene(2);
     }
@@ -83,4 +87,4 @@ public class ZonesShow : MonoBehaviour
 
 }
 
-public enum zone { zone_1, zone_2, zone_3 }
+

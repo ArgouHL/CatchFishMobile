@@ -10,9 +10,9 @@ public class PlayerData : ScriptableObject
     public int Player_Can;
     public int Player_Energy;
     public int Player_MaxEnergy;
-    public int Player_CatStick;
     public bool UseForTest;
     public HashSet<string> unLockedFishs;
+    public int Player_Exp;
 
 
     internal void NewData(string name)
@@ -22,18 +22,28 @@ public class PlayerData : ScriptableObject
         Player_Can = 0;
         Player_Energy = 10;
         Player_MaxEnergy = 10;
-        Player_CatStick = 0;
+        Player_Exp = 0;
         unLockedFishs = new HashSet<string>();
         unLockedFishs.Add("16");
     }
 
-    internal void GetMoney(int money)
+    internal void GetMoneyAndExp(int money,int exp)
     {
-
+        Player_Money += money;
+        Player_Exp += exp;
     }
     internal void AddUnlockedFish(string fishID)
     {
         unLockedFishs.Add(fishID);
+    }
+
+    internal void AddUnlockedFish(string[] fishIDs)
+    {
+        foreach(var fishID in fishIDs)
+        {
+            AddUnlockedFish(fishID);
+        }
+      
     }
 
     internal void Reverse(Account ac)
@@ -44,7 +54,7 @@ public class PlayerData : ScriptableObject
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
         Player_MaxEnergy = ac.Player_MaxEnergy;
-        Player_CatStick = ac.Player_CatStick;
+        Player_Exp = ac.Player_Exp;
         unLockedFishs = ac.unLockedFishs;
         if (UseForTest)
         {
@@ -52,7 +62,7 @@ public class PlayerData : ScriptableObject
             Player_Can = 99999;
             Player_Energy = 1000;
             Player_MaxEnergy = 1000;
-            Player_CatStick = 1000;
+            Player_Exp = 1000;
 
         }
     }
@@ -64,7 +74,7 @@ public class Account
     internal int Player_Money;
     internal int Player_Can;
     internal int Player_Energy;
-    internal int Player_CatStick;
+    internal int Player_Exp;
     internal int Player_MaxEnergy;
     public HashSet<string> unLockedFishs;
 
@@ -76,7 +86,7 @@ public class Account
         Player_Can = ac.Player_Can;
         Player_Energy = ac.Player_Energy;
         Player_MaxEnergy = ac.Player_MaxEnergy;
-        Player_CatStick = ac.Player_CatStick;
+        Player_Exp = ac.Player_Exp;
         unLockedFishs = ac.unLockedFishs;
         if (ac.UseForTest)
         {
@@ -84,7 +94,7 @@ public class Account
             Player_Can = 99999;
             Player_Energy = 1000;
             Player_MaxEnergy = 1000;
-            Player_CatStick = 1000;
+            Player_Exp = 1000;
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
 
 public class CatchDeter : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class CatchDeter : MonoBehaviour
     }
     public void StartDete(int hittime, float remainTime)
     {
+
         if (deteCoro != null)
             return;
         deteCoro = StartCoroutine(deteIE(hittime, remainTime));
@@ -53,10 +55,16 @@ public class CatchDeter : MonoBehaviour
         UpdateBar();
         PlayerInputManager.instance.ChangeType(InputType.Determine);
         yield return new WaitForSeconds(remainTime);
-         deteCoro = null;
+        deteCoro = null;
         StopDete(false);
     }
 
+    internal void fishBeEated()
+    {
+        StopCoroutine(deteCoro);
+        deteCoro = null;
+        StopDete(false);
+    }
 
     private void StopDete(bool isSuccess)
     {
@@ -69,11 +77,12 @@ public class CatchDeter : MonoBehaviour
     public void DeteHit(InputAction.CallbackContext ctx)
     {
         if (deteCoro == null)
-                return;
+            return;
         nowTimes++;
+        SfxControl.instance.HitPlay(nowTimes);
         UpdateBar();
         if (nowTimes >= targetTimes)
-        {          
+        {
             StopCoroutine(deteCoro);
             deteCoro = null;
             StopDete(true);
@@ -86,5 +95,14 @@ public class CatchDeter : MonoBehaviour
     {
         deterBar.maxValue = targetTimes;
         deterBar.value = nowTimes;
+    }
+
+    internal void CancelDete()
+    {
+        if (deteCoro == null)
+            return;
+        StopCoroutine(deteCoro);
+        deteCoro = null;
+        StopDete(true);
     }
 }

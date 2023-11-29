@@ -8,12 +8,7 @@ public class FishUnlockCtr : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
+
         instance = this;
     }
 
