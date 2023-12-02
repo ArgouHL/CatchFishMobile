@@ -26,7 +26,7 @@ MonoBehaviour:
   - 0
   - -3
   - -6
-  speed: 5
+  speed: 8
   acceleratedSpeed: 5
   numberOfGroup: 1
   randomRoadCount: 1

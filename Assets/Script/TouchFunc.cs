@@ -21,8 +21,11 @@ public static class TouchFunc
                 if (_dis < mindist)
                 {
                     var f = hit.collider.GetComponentInParent<Fish>();
-                    if (f is Shark)
+                    if (f is Shark && f.canInteract)
+                    {                      
                         return f;
+                    }                        
+                       
                     if (f.canbeClick)
                     {
                         mindist = _dis;
@@ -37,32 +40,28 @@ public static class TouchFunc
     }
 
 
-    public static PPShark FindClosestShark(Vector2 touchPos)
+    public static PPShark FindClosestShark(Vector3 touchPos)
     {
         PPShark hitShark = null;
         Ray ray = Camera.main.ScreenPointToRay(touchPos);
+        Debug.DrawRay(ray.origin, ray.direction * 2000, Color.red,5);
         RaycastHit2D[] hit2D = Physics2D.GetRayIntersectionAll(ray);
         if (hit2D.Length == 0)
             return null;
-        float mindist = 9999999;
+      
 
         foreach (var hit in hit2D)
         {
-            if (hit.collider.CompareTag("Fish"))
+            if (hit.collider.CompareTag("Shark"))
             {
-                var _dis = Vector3.Distance(touchPos, hit.collider.transform.position);
-                if (_dis < mindist)
-                {
-                    var f = hit.collider.GetComponentInParent<PPShark>();                    
-                        mindist = _dis;
-                        hitShark = f;
-                    
-
-                }
+                Debug.Log(hit.collider.transform.parent.name);
+                hitShark = hit.collider.GetComponentInParent<PPShark>();
+                return hitShark;
             }
-        }
 
-        return hitShark;
+        }
+        return null ;
+
     }
 
 

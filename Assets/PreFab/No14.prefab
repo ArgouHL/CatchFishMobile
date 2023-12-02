@@ -335,9 +335,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 490e28116a0d56041af757ba53b262fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3789461b2d4ae4a46a541282de5921ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -396,10 +396,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishID: 
   hitTimes: 0
-  fishName: 
   speed: 0
+  canInteract: 0
   rarity: 0
-  income: 0
-  exp: 0
   indexInGroup: 0
   realdirection: {x: 0, y: 0, z: 0}

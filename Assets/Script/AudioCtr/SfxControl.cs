@@ -28,9 +28,9 @@ public class SfxControl : MonoBehaviour
         }
     }
 
-    public void HitPlay(int count)
+    public void HitPlay(int index)
     {
-        int index = hitSounds.Length-1 - count;
+      //  int index = hitSounds.Length-1 - count;
         hitSoundsPlayer.PlayOneShot(hitSounds[index]);
     }
 

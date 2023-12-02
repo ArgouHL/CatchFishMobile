@@ -13,7 +13,7 @@ public class PlayerData : ScriptableObject
     public bool UseForTest;
     public HashSet<string> unLockedFishs;
     public int Player_Exp;
-
+    public string currentSkin;
 
     internal void NewData(string name)
     {
@@ -25,6 +25,7 @@ public class PlayerData : ScriptableObject
         Player_Exp = 0;
         unLockedFishs = new HashSet<string>();
         unLockedFishs.Add("16");
+        currentSkin = "01";
     }
 
     internal void GetMoneyAndExp(int money,int exp)
@@ -56,6 +57,7 @@ public class PlayerData : ScriptableObject
         Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_Exp = ac.Player_Exp;
         unLockedFishs = ac.unLockedFishs;
+        currentSkin = ac.currentSkin;
         if (UseForTest)
         {
             Player_Money = 1000000; 
@@ -77,6 +79,7 @@ public class Account
     internal int Player_Exp;
     internal int Player_MaxEnergy;
     public HashSet<string> unLockedFishs;
+    public string currentSkin;
 
 
     internal Account(PlayerData ac)
@@ -88,6 +91,7 @@ public class Account
         Player_MaxEnergy = ac.Player_MaxEnergy;
         Player_Exp = ac.Player_Exp;
         unLockedFishs = ac.unLockedFishs;
+        currentSkin = ac.currentSkin;
         if (ac.UseForTest)
         {
             Player_Money = 1000000;

@@ -67,6 +67,7 @@ public class FishControl : MonoBehaviour
         if (success)
         {
             ResultRecord.instance.AddCatchedFish(nowFish);
+            CatCtr.instance.Atk();
             SfxControl.instance.CatchPlay();
             nowFish.StopMove();
             GamePlay.CatchedFish.Invoke(nowFish);
@@ -124,7 +125,7 @@ public class FishControl : MonoBehaviour
         {
 
             var fishObj = Instantiate(fishPrefab.fishObj, new Vector3(8.5f * -way, _startPos, 5), Quaternion.identity);
-            //fishObj.transform.localScale = new Vector3(way, 1, 1);
+            fishObj.transform.localScale = new Vector3(way, 1, 1);
             fishObj.transform.parent = fishpool;
             var _fish = fishObj.GetComponent<Fish>();
             fishs.Add(_fish);
@@ -182,7 +183,7 @@ public class FishControl : MonoBehaviour
         hittedFish = null;
      
      
-        UpdateHit();
+      
     }
     public void HitFish(Vector3 aimPoint)
     {
@@ -192,18 +193,17 @@ public class FishControl : MonoBehaviour
         if (hittedFish != _fish)
         {
             hittedFish = _fish;
-            // TargetMarkCtr.instance.StartTracking(_fish.transform);
-            // remainHitTime = _fish.hitTimes > 0 ? _fish.hitTimes : 1;
+           
         }
         if (!_fish.canInteract)
             return;
-        //  remainHitTime--;
-   //     SfxControl.instance.HitPlay(0);
 
         if (_fish is Shark)
         {
             var _shark = _fish as Shark;
             _shark.beHit();
+            Debug.Log("isShark");
+            CatCtr.instance.Atk();
         }
         else if (_fish.hitTimes > 1)
         {
@@ -219,6 +219,7 @@ public class FishControl : MonoBehaviour
             SfxControl.instance.CatchPlay();
             _fish.StopMove();
             GamePlay.CatchedFish.Invoke(_fish);
+            CatCtr.instance.Atk();
             // TargetMarkCtr.instance.StopTracking();
         }
         // UpdateHit();
@@ -226,13 +227,6 @@ public class FishControl : MonoBehaviour
 
 
 
-
-
-    private void UpdateHit()
-    {
-        //t.text = remainHitTime.ToString();
-        //t.gameObject.SetActive(remainHitTime > 0);
-    }
 
 
     private IEnumerator FishSpawn()

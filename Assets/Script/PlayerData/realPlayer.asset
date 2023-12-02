@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bc7459dfa18c64d9893777921d4065, type: 3}
   m_Name: realPlayer
   m_EditorClassIdentifier: 
-  Player_Name: 
+  player_Name: Test
   Player_Money: 0
   Player_Can: 0
-  Player_Energy: 0
-  Player_CatStick: 0
+  Player_Energy: 10
+  Player_MaxEnergy: 10
+  UseForTest: 0
+  Player_Exp: 0
+  currentSkin: {fileID: 11400000, guid: da98012940a078b43b10fd12d414a445, type: 2}

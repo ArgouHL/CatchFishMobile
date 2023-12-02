@@ -15,9 +15,10 @@ public class FishUnlockCtr : MonoBehaviour
 
     internal bool CheckIfUnlocked(string fishID)
     {
-        if (PlayerDataControl.instance.playerData.UseForTest)
-            return true;
-        return PlayerDataControl.instance.playerData.unLockedFishs.Contains(fishID);
+        return true;
+        //if (PlayerDataControl.instance.playerData.UseForTest)
+        //    return true;
+        //return PlayerDataControl.instance.playerData.unLockedFishs.Contains(fishID);
     }
 
     internal void UnlockFish(string fishID)

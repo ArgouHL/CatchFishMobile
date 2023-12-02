@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1377396832570485999}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.104, y: 0.155, z: 0}
-  m_LocalScale: {x: 5.99, y: 2.35, z: 1}
+  m_LocalScale: {x: 6.49, y: 2.42, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4826420118439370508}
@@ -391,9 +391,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4907382661146204992}
   m_LocalRotation: {x: -0, y: -0, z: -0.012595558, w: 0.9999207}
-  m_LocalPosition: {x: -0.21, y: 0, z: 0}
-  m_LocalScale: {x: -0.4, y: 0.4, z: 1.2}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.46, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 2.1000001}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4826420118439370508}
   m_RootOrder: 0
@@ -439,9 +439,9 @@ SpriteRenderer:
   m_SortingLayerID: 868031169
   m_SortingLayer: 1
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 98c50a3612292014b8a7cd7b29b6a331, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a214476c427852a4382fcc055cc5501b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -502,6 +502,7 @@ MonoBehaviour:
   fishID: 
   hitTimes: 10
   speed: 7
+  canInteract: 0
   rarity: 0
   indexInGroup: 0
   sharkFear: {fileID: 0}

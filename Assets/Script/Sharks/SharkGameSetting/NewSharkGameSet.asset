@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13121d8e0c1603469034fa0fce6f5df, type: 3}
   m_Name: NewSharkGameSet
   m_EditorClassIdentifier: 
-  hp: 5
+  hp: 10
   shark: {fileID: 6469483666187012602, guid: 8c0538f9e85f91f48bc1f98ef975df4d, type: 3}
   reagon: 0
+  hpThresholds:
+  - 0.8
+  - 0.5
+  - 0.2

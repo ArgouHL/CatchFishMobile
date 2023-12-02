@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7279961269777394114}
   - component: {fileID: 5086187232968391522}
   - component: {fileID: 458940029917687053}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Collider
-  m_TagString: Fish
+  m_TagString: Shark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 131648987583496059}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.24600002, y: 0.015000001, z: 0}
-  m_LocalScale: {x: 5.29, y: 2.09, z: 1}
+  m_LocalScale: {x: 3.69, y: 1.69, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5779291050447735960}
@@ -140,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6996982705508126115}
   - component: {fileID: 3257893251278082057}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 1045632282503570770}
   - component: {fileID: 3254768956945108235}
   - component: {fileID: 1648192042972156682}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: EatCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,9 +376,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2394283137866139868}
   - component: {fileID: 982017377619348585}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Shark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,9 +391,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6256713289018853588}
   m_LocalRotation: {x: -0, y: -0, z: -0.012595558, w: 0.9999207}
-  m_LocalPosition: {x: -0.59, y: -0.14, z: 0}
-  m_LocalScale: {x: -0.4, y: 0.4, z: 1.2}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: -0.14, z: 0}
+  m_LocalScale: {x: -0.55, y: 0.55, z: 1.6500001}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5779291050447735960}
   m_RootOrder: 0
@@ -436,10 +436,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 868031169
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 98c50a3612292014b8a7cd7b29b6a331, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a214476c427852a4382fcc055cc5501b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -460,9 +460,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5779291050447735960}
   - component: {fileID: 6469483666187012601}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Shark1
-  m_TagString: Fish
+  m_TagString: Shark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -498,3 +498,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e27c1019d8cdb741832a8fe0ab14839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 15

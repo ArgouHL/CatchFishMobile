@@ -11,17 +11,20 @@ public class SharkGameSys : MonoBehaviour
     [SerializeField] private SharkGameSet pacific, indian, atlantic;
     private SharkGameSet _setting;
     private PPShark _shark;
-    int hitTime = 0;
-    int remainHP = 0;
+    private int nowHP;
+    private int maxHP;
     private InputAction touchPosition;
     private SharkState state;
-    private Coroutine nowStateCoro;
-    private bool deterSuccess=false;
-    private bool shockSuccess = false;
+    private Coroutine SkillPreCoro;
+
+    private float hpThreshold;
+    [SerializeField] private float deteTime = 1f;
+    
+    int hpThresholdIndex = 0;
 
     void Start()
     {
-        PlayerInputManager.instance.ChangeType(InputType.GamePlay);
+        PlayerInputManager.instance.ChangeType(InputType.None);
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
         Init();
         //MusicControl.instance.PlayBGM(bgmType.Sea1);
@@ -43,20 +46,30 @@ public class SharkGameSys : MonoBehaviour
                 break;
         }
 
-        _shark= Instantiate(_setting.shark).GetComponent<PPShark>();
-        SetHp(_setting.hp);        
-    }  
+        _shark = Instantiate(_setting.shark).GetComponent<PPShark>();
+        SetHp(_setting.hp);
+    }
 
     private void OnEnable()
     {
-        PlayerInputManager.inputs.GamePlay.Touch.performed += GetShark;
+        DragControl.dragoff += GetShark;
+        PlayerInputManager.inputs.Determine.Touch.performed += DeteHit;
+        //  PlayerInputManager.inputs.GamePlay.Touch.performed += GetShark;
         GameInformationShow.StopCoro += StopCoro;
+        // PlayerInputManager.inputs.Determine.Touch.performed += DeteHit;
     }
+
+   
+
     private void OnDisable()
     {
-        PlayerInputManager.inputs.GamePlay.Touch.performed -= GetShark;
+        DragControl.dragoff -= GetShark;
         GameInformationShow.StopCoro -= StopCoro;
+        PlayerInputManager.inputs.Determine.Touch.performed -= DeteHit;
+        // PlayerInputManager.inputs.Determine.Touch.performed -= DeteHit;
     }
+
+
 
     public void GamePreStart()
     {
@@ -82,6 +95,7 @@ public class SharkGameSys : MonoBehaviour
 
     private void GameStart()
     {
+        PlayerInputManager.instance.ChangeType(InputType.GamePlay);
         SharkSwim();
         StartCoroutine(GameCountDown());
     }
@@ -101,134 +115,129 @@ public class SharkGameSys : MonoBehaviour
         GameInformationShow.instance.UpdateCountDown(readytime);
         //GameStop();
     }
-    public void GetShark(InputAction.CallbackContext ctx)
+    public void GetShark(Vector3 aimPoint)
     {
         Debug.Log("GetShark");
-        //var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
-        var _hitPos = touchPosition.ReadValue<Vector2>();
-        Debug.Log(_hitPos);
-        HitShark(_hitPos);
+        HitShark(aimPoint);
     }
 
-    public void HitShark(Vector2 touchPos)
+    public void HitShark(Vector3 aimPoint)
     {
-        if (state != SharkState.swimming)
-            return;
-        var _fish = TouchFunc.FindClosestShark(touchPos);
+        Debug.Log("HitShark");
+        var _fish = TouchFunc.FindClosestShark(aimPoint);
         if (_fish == null)
             return;
+        Debug.Log("Found");
+        ChangeHp(1);
 
-        TargetMarkCtr.instance.StartTracking(_fish.gameObject.transform);
-        hitTime++;
-
-        SfxControl.instance.HitPlay(10 - hitTime);
-        // SfxControl.instance.HitPlay(remainHitTime);
-        if (hitTime >= 10)
-        {
-
-            hitTime = 0;
-            ChangeHp(-1);
-            SfxControl.instance.CatchPlay();
-
-
-
-        }
-        // UpdateHit();
     }
 
     private void SetHp(int hp)
     {
-        remainHP = hp;
+        nowHP = hp;
+        maxHP = hp;
+        hpThreshold = _setting.hpThresholds[0];
         GameInformationShow.instance.UpdateHpCount(hp);
     }
 
     private void ChangeHp(int change)
     {
-        remainHP += change;
-        GameInformationShow.instance.UpdateHpCount(remainHP);
-        if(remainHP<=0)
+        if (!_shark.canBeHit)
+            return;
+        nowHP -= change;
+        GameInformationShow.instance.UpdateHpCount(nowHP);
+        float duration = 1;
+        _shark.BeHit(duration);
+        if (nowHP <= 0)
         {
             Debug.Log("win");
         }
+        else if ((float)nowHP / (float)maxHP <= hpThreshold)
+        {
+            PlayerInputManager.instance.ChangeType(InputType.None);
+            _shark.swimTimeIndex++;
+            Debug.Log((float)nowHP / (float)maxHP);
+            Debug.Log(hpThreshold);
+            if (hpThresholdIndex < _setting.hpThresholds.Length - 1)
+                hpThresholdIndex++;
+            hpThreshold = _setting.hpThresholds[hpThresholdIndex];
+
+            SkillPre();
+        }
+        else
+        {
+            LeanTween.delayedCall(duration, () => SharkSwim());
+        }      
+       
     }
 
-   
+
 
 
 
     private void SharkSwim()
     {
-        ChangeState(SharkState.swimming);
-        _shark.Swim();
-        if (nowStateCoro != null)
-            return;
-        StartCoroutine(SwimTime());
+      //  ChangeState(SharkState.swimming);
+        _shark.SwimToNext();
+  
     }
 
-    private IEnumerator SwimTime()
-    {
-       float t= UnityEngine.Random.Range(5, 10);
-        yield return new WaitForSeconds(5);
-        nowStateCoro = null;
-        SkillPre();
-    }
 
     private void SkillPre()
     {
-        hitTime = 0;
-        TargetMarkCtr.instance.StopTracking();
+        Debug.Log("SkillPre");
         _shark.StopCoro();
         _shark.Skillpre();
-        ChangeState(SharkState.skillPre);
-        if(nowStateCoro != null)
+       // ChangeState(SharkState.skillPre);
+        if (SkillPreCoro != null)
             return;
-        StartCoroutine(SkillPreDete());
+        SkillPreCoro= StartCoroutine(SkillPreDete());
     }
 
 
     private IEnumerator SkillPreDete()
     {
-        float showUpTime = 0.5f;
-        float prefailTime = 0.5f;
-        float successTime = 1f;
-        float afterfailTime = 0.5f;
-        DeteBar.instance.ShowBar(successTime, prefailTime + successTime + afterfailTime);
-        //showbar
-        yield return new WaitForSeconds(showUpTime);
-        DeteBar.instance.StartDete();
-        float detetime = 0;
-        deterSuccess = false;
-        shockSuccess = false;
-        while (detetime < prefailTime)
-        {            
-            DeteBar.instance.UpdateBar(detetime);
-            detetime += Time.deltaTime;
-            yield return null;
-        }
-        deterSuccess = true;
-        while (detetime < prefailTime+ successTime)
-        {
-            DeteBar.instance.UpdateBar(detetime);
-            detetime += Time.deltaTime;
-            yield return null;
-        }
-        deterSuccess = false;
-        while (detetime < prefailTime + successTime+ afterfailTime)
-        {
-            DeteBar.instance.UpdateBar(detetime);
-            detetime += Time.deltaTime;
-            yield return null;
-        }
-        if (shockSuccess)
-            Shocked();
-        else        
-            SharkHide();
-        
-        DeteBar.instance.StopDete();     
      
-        nowStateCoro = null;
+        DeteBar.instance.ShowBar(deteTime);
+        float showUpTime = 1.5f;
+        yield return new WaitForSeconds(showUpTime);
+        PlayerInputManager.instance.ChangeType(InputType.Determine);
+        
+        //showbar
+      
+     
+        float time = 0;
+
+        while (time < deteTime)
+        {
+            DeteBar.instance.UpdateBar(time);
+            time += Time.deltaTime;
+            yield return null;
+        }
+      
+
+            SharkHide();
+
+        DeteBar.instance.StopDete(false);
+
+        SkillPreCoro = null;
+        LeanTween.delayedCall(2, () => PlayerInputManager.instance.ChangeType(InputType.GamePlay));
+        
+    }
+
+
+    private void DeteHit(InputAction.CallbackContext obj)
+    {
+        if (SkillPreCoro != null)
+            StopCoroutine(SkillPreCoro);
+        SkillPreCoro = null;
+        Shocked();
+        PlayerInputManager.instance.ChangeType(InputType.None);
+        DeteBar.instance.StopDete(true);
+        LeanTween.delayedCall(2, () => PlayerInputManager.instance.ChangeType(InputType.GamePlay));
 
     }
+
 
     private void Shocked()
     {
@@ -239,18 +248,12 @@ public class SharkGameSys : MonoBehaviour
 
     private IEnumerator ShockIE()
     {
-        ChangeState(SharkState.swimming);
+     
         yield return new WaitForSeconds(2);
         SharkSwim();
     }
 
-        public void Shock()
-    {
-        DeteBar.instance.ShockDisable();
-        if (deterSuccess)
-            shockSuccess = true;           
 
-    }
 
     private void SharkHide()
     {
@@ -266,11 +269,6 @@ public class SharkGameSys : MonoBehaviour
     }
 
 
-    private void ChangeState(SharkState s)
-    {
-        Debug.Log(s);
-        state = s;
-    }
 
 
     public void StopCoro()
@@ -279,5 +277,5 @@ public class SharkGameSys : MonoBehaviour
     }
 }
 
-public enum SharkState { swimming,skillPre,hiding}
-    
+public enum SharkState { swimming, skillPre, hiding }
+

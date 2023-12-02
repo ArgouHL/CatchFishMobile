@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 public abstract class Fish : MonoBehaviour
 {
-
+    [SerializeField] private Animator fishAni;
     public string fishID;
     public int hitTimes;
     [SerializeField] internal float speed;
     internal float accelerate;
     internal bool canbeClick = true;
-    internal bool canInteract = false;
+    [SerializeField] internal bool canInteract = false;
     internal bool feared = false;
     internal float speeduptime;
     internal List<Fish> groupFish = new List<Fish>();
@@ -27,6 +27,7 @@ public abstract class Fish : MonoBehaviour
 
     public void Swim()
     {
+        PlayAni("Stunned", false);
         Swim(way);
     }
 
@@ -38,8 +39,9 @@ public abstract class Fish : MonoBehaviour
     }
     internal IEnumerator DelayCanInteract()
     {
-        yield return new WaitForSeconds(1f);
-        canInteract = true;
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log(gameObject.name + "canInteract");
+        SetCanInteract(true);
     }
     internal void PauseMove()
     {
@@ -52,9 +54,9 @@ public abstract class Fish : MonoBehaviour
 
     internal bool IsOutScreen()
     {
-        if (transform.position.x * way < -6f)
+        if (transform.position.x * way > 6f)
         {
-            canInteract = false;
+            SetCanInteract(false);
         }
 
         bool b = transform.position.x * way > 7.5f ? true:false;
@@ -166,12 +168,29 @@ public abstract class Fish : MonoBehaviour
     }
     private IEnumerator GetShockIE(float time)
     {
+        PlayAni("Stunned", true);
         Debug.Log("GetShot");
         float _speed = speed;
         speed = 0;
         yield return new WaitForSeconds(time);
+        PlayAni("Stunned", false);
         speed = _speed;
         shocking = null;
+    }
+
+    internal void SetCanInteract(bool b)
+    {
+       // Debug.Log("Set CanInteract to " + b);
+        canInteract = b;
+
+    }
+
+    public void PlayAni(string key,bool b)
+    {
+        if (fishAni != null)
+        {
+            fishAni.SetBool(key, b);
+        }
     }
 }
 
@@ -266,11 +285,15 @@ public abstract class Shark : Fish
         Debug.Log("NextFish");
         var fishs = new List<Fish>(FishControl.instance.FishsOnScreen);
         var fishsOnScreen = fishs.Where(x => x.canInteract).OrderBy(x => Guid.NewGuid()).Take(1).ToArray();
+        if (fishsOnScreen.Length <= 0)
+        {
+            LeanTween.delayedCall(1, () => NextFish());
+            return;
+        }
 
         Fish selectedFish = fishsOnScreen[0];
-
         chasing = StartCoroutine(ChaseTargetFish(selectedFish));
-
+        
 
 
     }
@@ -280,7 +303,7 @@ public abstract class Shark : Fish
         Debug.Log(gameObject.name + "ChaseTargetFish");
         Debug.Log(_fish.canInteract);
 
-        while (_fish.canInteract && !ToTarget(_fish.transform.position, 0.2f))
+        while (_fish.canInteract && !ToTarget(_fish.transform.position, 1.6f))
         {
             yield return null;
         }
@@ -300,9 +323,9 @@ public abstract class Shark : Fish
     {
         _eatingFish = _fish;
         _fish.PauseMove();
-        canInteract = true;
+        SetCanInteract(true);
         yield return new WaitForSeconds(waitTime);
-        canInteract = false;
+        SetCanInteract(false);
         _fish.Eat();
         NextFish();
     }
@@ -315,7 +338,7 @@ public abstract class Shark : Fish
         var s = GetComponentInChildren<SpriteRenderer>();
         LeanTween.value(0, 1, 0.5f).setOnUpdate((float val) => s.color = new Color(1, val, val, 1));
         hp--;
-        canInteract = false;
+        SetCanInteract(false);
         if (_eatingFish != null)
             _eatingFish.ContinueMove();
         StopCoroutine(chasing);
@@ -334,7 +357,7 @@ public abstract class Shark : Fish
     internal IEnumerator StunIE()
     {
         //stunani
-        canInteract = false;
+        SetCanInteract(false);
         yield return new WaitForSeconds(3);
         NextFish();
 

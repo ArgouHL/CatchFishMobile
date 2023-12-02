@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DeteBar : MonoBehaviour
 {
 
     public static DeteBar instance;
-    [SerializeField] private RectTransform area,successbar;
-    [SerializeField] private Slider detebar;
-    [SerializeField] private CanvasGroup dete, button;
 
+    [SerializeField] private Slider detebar;
+    [SerializeField] private CanvasGroup dete;
+    [SerializeField] private TMP_Text resultText ;
     public void Awake()
     {
         instance = this;
@@ -20,25 +21,26 @@ public class DeteBar : MonoBehaviour
     private void Start()
     {
         dete.alpha = 0;
-        button.interactable = false;
+   
     }
     
 
-    public void ShowBar(float success, float total)
+    public void ShowBar(float time)
     {
-        SetBar(success, total);
+        resultText.text = "";
+        SetBar(time);
         dete.alpha = 1;
-        button.interactable = false;
+
     }
 
-    internal void StartDete()
+
+    internal void StopDete(bool success)
     {
-        button.interactable = true;
-    }
-    internal void StopDete()
-    {
-        dete.alpha = 0;
-        button.interactable = false;
+        if (success)
+            resultText.text = "SUCCESS";
+        else
+            resultText.text = "Fail";
+       LeanTween.delayedCall(1,()=> dete.alpha = 0);
     }
 
     internal void UpdateBar(float value)
@@ -46,15 +48,11 @@ public class DeteBar : MonoBehaviour
         detebar.value = value;
     }
 
-    void SetBar(float success, float total)
+    void SetBar(float time)
     {
         detebar.value = 0;
-        successbar.sizeDelta = new Vector2((success / total) * area.rect.width, successbar.rect.height);
-        detebar.maxValue = total;
+        detebar.maxValue = time;
     }
 
-    internal void ShockDisable()
-    {
-        button.interactable = false;
-    }
+
 }

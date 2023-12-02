@@ -19,5 +19,6 @@ MonoBehaviour:
   Player_Can: 99999
   Player_Energy: 1000
   Player_MaxEnergy: 1000
-  Player_CatStick: 1000
   UseForTest: 1
+  Player_Exp: 1000
+  currentSkin: {fileID: 11400000, guid: da98012940a078b43b10fd12d414a445, type: 2}

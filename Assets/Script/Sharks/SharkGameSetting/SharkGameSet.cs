@@ -8,4 +8,5 @@ public class SharkGameSet : ScriptableObject
     public int hp = 5;
     public GameObject shark;
     public FishReagon reagon;
+    public float[] hpThresholds;
 }

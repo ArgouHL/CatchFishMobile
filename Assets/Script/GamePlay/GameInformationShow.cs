@@ -50,7 +50,7 @@ public class GameInformationShow : MonoBehaviour
     }
 
 
-    public void BackLobby()
+    public void BackLobby() 
     {
         StopCoro.Invoke();
         SceneManager.LoadScene(1);
