@@ -103,6 +103,7 @@ public class ResultRecord : MonoBehaviour
 
     public List<FishByType> FishByTypeCount()
     {
+
         return _FishByTypeList.OrderByDescending(x => FishData.instance.GetRarity(x.fishID)).ToList();
     }
 
@@ -118,6 +119,14 @@ public class FishByType
         fishID = _fishId;
         count = 1;
     }
+    public FishByType(string _fishId,int _count)
+    {
+        fishID = _fishId;
+        count = _count;
+    }
 
-
+    public static int FishCount(List<FishByType> fishByTypes)
+    {
+        return fishByTypes.Sum(f => f.count);
+    }
 }

@@ -28,6 +28,7 @@ public class GamePlay : MonoBehaviour
     }
     void Start()
     {
+    
         PlayerInputManager.instance.ChangeType(InputType.None);
         touchPosition = PlayerInputManager.inputs.GamePlay.TouchPosition;
 

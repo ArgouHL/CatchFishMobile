@@ -27,7 +27,7 @@ public abstract class Fish : MonoBehaviour
 
     public void Swim()
     {
-        PlayAni("Stunned", false);
+        PlayAni("shocked", false);
         Swim(way);
     }
 
@@ -168,12 +168,12 @@ public abstract class Fish : MonoBehaviour
     }
     private IEnumerator GetShockIE(float time)
     {
-        PlayAni("Stunned", true);
+        PlayAni("shocked", true);
         Debug.Log("GetShot");
         float _speed = speed;
         speed = 0;
         yield return new WaitForSeconds(time);
-        PlayAni("Stunned", false);
+        PlayAni("shocked", false);
         speed = _speed;
         shocking = null;
     }

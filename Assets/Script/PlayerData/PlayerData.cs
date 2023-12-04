@@ -12,6 +12,7 @@ public class PlayerData : ScriptableObject
     public int Player_MaxEnergy;
     public bool UseForTest;
     public HashSet<string> unLockedFishs;
+    public List<string> unLockedSkins;
     public int Player_Exp;
     public string currentSkin;
 
@@ -24,8 +25,18 @@ public class PlayerData : ScriptableObject
         Player_MaxEnergy = 10;
         Player_Exp = 0;
         unLockedFishs = new HashSet<string>();
+        unLockedSkins = new List<string>();
         unLockedFishs.Add("16");
+        unLockedSkins.Add("01");
         currentSkin = "01";
+        if(UseForTest)
+        {
+            unLockedSkins.Add("02");
+            unLockedSkins.Add("03");
+            unLockedSkins.Add("04");
+            unLockedSkins.Add("05");
+            unLockedSkins.Add("06");
+        }    
     }
 
     internal void GetMoneyAndExp(int money,int exp)
@@ -49,7 +60,7 @@ public class PlayerData : ScriptableObject
 
     internal void Reverse(Account ac)
     {
-        
+        unLockedSkins = ac.unLockedSkins;
         player_Name = ac.Player_Name;
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
@@ -79,11 +90,13 @@ public class Account
     internal int Player_Exp;
     internal int Player_MaxEnergy;
     public HashSet<string> unLockedFishs;
+    public List<string> unLockedSkins;
     public string currentSkin;
 
 
     internal Account(PlayerData ac)
     {
+        unLockedSkins=ac.unLockedSkins;
         Player_Name = ac.player_Name;
         Player_Money = ac.Player_Money;
         Player_Can = ac.Player_Can;
@@ -99,6 +112,7 @@ public class Account
             Player_Energy = 1000;
             Player_MaxEnergy = 1000;
             Player_Exp = 1000;
+
         }
     }
 

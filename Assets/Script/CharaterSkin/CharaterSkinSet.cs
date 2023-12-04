@@ -9,6 +9,8 @@ public class CharaterSkinSet : ScriptableObject
     public string SkinID;
     public Sprite skinImg;
     public AnimatorOverrideController overrideController;
-
+    public SkinType skinType;
 
 }
+
+public enum SkinType { Normal,Magic}

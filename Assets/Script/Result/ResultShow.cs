@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
 
 public class ResultShow : MonoBehaviour
 {
@@ -25,10 +26,20 @@ public class ResultShow : MonoBehaviour
 
     void Start()
     {
-        fishByTypes = new List<FishByType>(ResultRecord.instance.FishByTypeCount());
-        AddToPlayer();
-        StartCoroutine(PlayAni());
+         fishByTypes = new List<FishByType>(ResultRecord.instance.FishByTypeCount());
+
+       // StartCoroutine(FishBox.instance.PlayBoxAni(FakeList()));
+          AddToPlayer();
+
+         StartCoroutine(PlayResultAni());
         //StartCoroutine(Test());
+    }
+
+    private List<FishByType> FakeList()
+    {
+        var l = new List<FishByType>();
+        l.Add(new FishByType("16", 30));
+        return l;
     }
 
     private void AddToPlayer()
@@ -40,8 +51,11 @@ public class ResultShow : MonoBehaviour
         PlayerDataControl.instance.Save();
     }
 
-    private IEnumerator PlayAni()
+    private IEnumerator PlayResultAni()
     {
+        yield return FishBox.instance.PlayBoxAni(fishByTypes);
+
+
         yield return new WaitForSeconds(2);
         GetAndPrintOrder();
         StartCoroutine(ResultDataShow());

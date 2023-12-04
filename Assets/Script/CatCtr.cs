@@ -28,7 +28,9 @@ public class CatCtr : MonoBehaviour
 
     private void GetSkin()
     {
+        PlayerDataControl.instance.Load();
         var skinID = PlayerDataControl.instance.playerData.currentSkin;
+        Debug.Log(skinID);
         var _skin = SkinController.instance.GetSkin(skinID);
         sp.sprite = _skin.skinImg;
         animator.runtimeAnimatorController = _skin.overrideController;
