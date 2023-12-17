@@ -7,7 +7,9 @@ using UnityEngine;
 public class CharaterSkinSet : ScriptableObject
 {
     public string SkinID;
+    public string skinName;
     public Sprite skinImg;
+    public Sprite skinIcon;
     public AnimatorOverrideController overrideController;
     public SkinType skinType;
 

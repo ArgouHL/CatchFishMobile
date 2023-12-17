@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bc7459dfa18c64d9893777921d4065, type: 3}
   m_Name: TestPlayer
   m_EditorClassIdentifier: 
-  player_Name: 'YourName
+  player_Name: 'ForTest
 
 '
-  Player_Money: 1000000
+  Player_Coin: 99999
   Player_Can: 99999
-  Player_Energy: 1000
-  Player_MaxEnergy: 1000
+  Player_Energy: 100
+  Player_MaxEnergy: 100
   UseForTest: 1
+  unLockedSkins:
+  - 01
   Player_Exp: 1000
-  currentSkin: {fileID: 11400000, guid: da98012940a078b43b10fd12d414a445, type: 2}
+  currentSkin: 01
+  shockItemCount: 0
+  freeShockItemCount: 0
+  currentShip: 01
+  unLockedShip:
+  - 01

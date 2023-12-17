@@ -10,7 +10,7 @@ public class MultiClick : MonoBehaviour
     [SerializeField] private float duration;
     [SerializeField] private float requireTime;
     [SerializeField] private UnityEvent buttonFunction;
-    [SerializeField] private int count = 0;
+    private int count = 0;
 
     public Coroutine CheckingCoro;
 

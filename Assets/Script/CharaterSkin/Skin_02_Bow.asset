@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Skin_02_Bow
   m_EditorClassIdentifier: 
   SkinID: 02
+  skinName: 
   skinImg: {fileID: 21300000, guid: fd0b252300db7cb42a75b5c5e568505a, type: 3}
+  skinIcon: {fileID: 21300000, guid: 31827b0b1c372634d921e102096f663e, type: 3}
   overrideController: {fileID: 22100000, guid: 15bfde3672b0f7a47aaa1f947730682c, type: 2}
+  skinType: 0

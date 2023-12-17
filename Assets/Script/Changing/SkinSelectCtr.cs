@@ -7,19 +7,24 @@ using UnityEngine;
 public class SkinSelectCtr : MonoBehaviour
 {
     public static SkinSelectCtr instance;
-    public List<SkinBtn> skinBtns;
+    internal List<SkinBtn> skinBtns;
     public RectTransform[] normalBtnRects;
     public RectTransform[] magicBtnRects;
     public RectTransform skinBtnPre;
-    public List<string> skins;
+    private List<string> skins;
+
+
+
     private void Awake()
     {
         instance = this;
     }
 
+
     private void Start()
     {
         GenerateAllBtn();
+        PlayerInputManager.instance.ChangeType(InputType.Shop);
     }
 
     private void GenerateAllBtn()
@@ -35,8 +40,20 @@ public class SkinSelectCtr : MonoBehaviour
             RectTransform btnRect = Instantiate(skinBtnPre, normalBtnRects[i]);
             btnRect.anchoredPosition = Vector2.zero;
             var btn = btnRect.GetComponent<SkinBtn>();
-            btn.SetButtonInfo(iDsNormal[i]);
+            btn.SetButtonInfo(SkinController.instance.GetSkin(iDsNormal[i]));
             if(iDsNormal[i]== PlayerDataControl.instance.playerData.currentSkin)
+                btn.Seletable(false);
+            skinBtns.Add(btn);
+
+        }
+
+        for (int i = 0; i < iDsMagic.Count; i++)
+        {
+            RectTransform btnRect = Instantiate(skinBtnPre, magicBtnRects[i]);
+            btnRect.anchoredPosition = Vector2.zero;
+            var btn = btnRect.GetComponent<SkinBtn>();
+            btn.SetButtonInfo(SkinController.instance.GetSkin(iDsMagic[i]));
+            if (iDsMagic[i] == PlayerDataControl.instance.playerData.currentSkin)
                 btn.Seletable(false);
             skinBtns.Add(btn);
 
@@ -60,6 +77,5 @@ public class SkinSelectCtr : MonoBehaviour
         PlayerDataControl.instance.Save();
         PlayerDataControl.instance.Load();
     }
-
 
 }

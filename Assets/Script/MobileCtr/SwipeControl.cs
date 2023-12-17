@@ -24,7 +24,7 @@ public class SwipeControl : MonoBehaviour
     public static SwipeEvent SwipeUp, SwipeDown, SwipeLeft, SwipeRight;
 
     public delegate void SwipeShopPageEvent();
-    public static SwipeShopPageEvent SwipeLeftPage, SwipeRightPage;
+    public static SwipeShopPageEvent SwipeRightPage, SwipeLeftPage;
 
     //public delegate void SwipeCheckEvent();
     //public static SwipeCheckEvent SwipeLeftCheck, SwipeRightCheck;
@@ -185,12 +185,12 @@ public class SwipeControl : MonoBehaviour
         if (Vector2.Dot(Vector2.left, direction) > dirThreshold)
         {
             Debug.Log("swipeleft");
-            SwipeRightPage?.Invoke();
+            SwipeLeftPage?.Invoke();
         }
         if (Vector2.Dot(Vector2.right, direction) > dirThreshold)
         {
             Debug.Log("swiperight");
-            SwipeLeftPage?.Invoke();
+            SwipeRightPage?.Invoke();
             
         }
 

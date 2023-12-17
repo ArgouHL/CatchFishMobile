@@ -58,12 +58,11 @@ public class PlayerInputManager : MonoBehaviour
         switch (type)
         {
             case InputType.Shop:
-                inputs.Shop.Enable();
+                inputs.Shop.Enable();              
                 break;
 
             case InputType.Lobby:
-                inputs.Lobby.Enable();
-
+                inputs.Lobby.Enable();                    
                 break;
 
             case InputType.Option:

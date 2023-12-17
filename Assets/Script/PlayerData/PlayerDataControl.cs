@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+[DefaultExecutionOrder(-1)]
 public class PlayerDataControl : MonoBehaviour
 {
     public static PlayerDataControl instance; 

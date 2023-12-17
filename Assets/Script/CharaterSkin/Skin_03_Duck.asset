@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Skin_03_Duck
   m_EditorClassIdentifier: 
   SkinID: 03
+  skinName: 
   skinImg: {fileID: 21300000, guid: a51558d825ddc0b43925cbe65c474a4c, type: 3}
+  skinIcon: {fileID: 21300000, guid: 1ab2edfcd49807244bf07e5bdd372cf1, type: 3}
   overrideController: {fileID: 22100000, guid: 9110affda9a9df64da7f7c79c3ca61b5, type: 2}
-  type: 0
+  skinType: 0

@@ -40,9 +40,9 @@ public class GamePlay : MonoBehaviour
 
     private void OnEnable()
     {
-        DragControl.dragoff += GetFish;
+      //  DragControl.dragoff += GetFish;
         GameInformationShow.StopCoro += StopCoro;
-      
+        MarkerHit.HitFish += GetFish;
         //PlayerInputManager.inputs.GamePlay.Hit.performed += GetFish;
     }
 
@@ -50,10 +50,11 @@ public class GamePlay : MonoBehaviour
 
     private void OnDisable()
     {
-        DragControl.dragoff -= GetFish;
+       // DragControl.dragoff -= GetFish;
       //  CatchDeter.EndDete -= GetFishDete;
         // PlayerInputManager.inputs.GamePlay.Hit.performed -= GetFish;
         GameInformationShow.StopCoro -= StopCoro;
+        MarkerHit.HitFish -= GetFish;
     }
 
     public void GamePreStart()
@@ -62,13 +63,13 @@ public class GamePlay : MonoBehaviour
         isGameEnd = false;
     }
 
-    public void GetFish(Vector3 aimPoint)
+    public void GetFish(Fish fish)
     {
         Debug.Log("GetFish");
         //var _hitPos = (Vector2)Camera.main.ScreenToWorldPoint(touchPosition.ReadValue<Vector2>());
        // var _hitPos = touchPosition.ReadValue<Vector2>();
       //  Debug.Log(aimPoint);
-        FishControl.instance.HitFish(aimPoint);
+        FishControl.instance.HitFish(fish);
     }
 
 
@@ -95,7 +96,7 @@ public class GamePlay : MonoBehaviour
         PlayerInputManager.instance.ChangeType(InputType.GamePlay);
         FishControl.instance.StartGenFish();
         StartCoroutine(GameCountDown());
-        StartCoroutine(SpawnShark());
+       // StartCoroutine(SpawnShark());
     }
 
     private IEnumerator GameCountDown()

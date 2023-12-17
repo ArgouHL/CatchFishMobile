@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 18
   m_IsActive: 1
 --- !u!4 &8631525980147972694
 Transform:
@@ -145,7 +145,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 18
   m_IsActive: 0
 --- !u!4 &8346453941524209207
 Transform:
@@ -229,7 +229,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 18
   m_IsActive: 1
 --- !u!4 &3743892916680039240
 Transform:
@@ -313,7 +313,7 @@ GameObject:
   m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 18
   m_IsActive: 1
 --- !u!4 &4826420118439370508
 Transform:
@@ -346,9 +346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a2e883c362eca44a2d627034871e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fishAni: {fileID: 0}
   fishID: 
   hitTimes: 0
   speed: 0
+  canInteract: 0
   rarity: 0
   indexInGroup: 0
 --- !u!1 &7149442655652152031
@@ -366,7 +368,7 @@ GameObject:
   m_TagString: FishMid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 18
   m_IsActive: 1
 --- !u!4 &5816830654219841704
 Transform:

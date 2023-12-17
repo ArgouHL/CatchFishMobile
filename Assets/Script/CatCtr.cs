@@ -21,9 +21,16 @@ public class CatCtr : MonoBehaviour
 
     internal void Atk()
     {
-        Debug.Log("Atk");
-       
-        animator.SetTrigger("Attack");        
+  
+        animator.SetTrigger("Attack");
+        animator.ResetTrigger("Pre");
+
+    }
+    internal void PreAtk()
+    {
+        Debug.Log("Ptr");
+        animator.SetTrigger("Pre");
+        animator.ResetTrigger("Attack");
     }
 
     private void GetSkin()
@@ -34,5 +41,11 @@ public class CatCtr : MonoBehaviour
         var _skin = SkinController.instance.GetSkin(skinID);
         sp.sprite = _skin.skinImg;
         animator.runtimeAnimatorController = _skin.overrideController;
+    }
+
+    internal void BackIdle()
+    {
+        animator.SetTrigger("Idle");
+       
     }
 }

@@ -21,9 +21,5 @@ public class FishUnlockCtr : MonoBehaviour
         //return PlayerDataControl.instance.playerData.unLockedFishs.Contains(fishID);
     }
 
-    internal void UnlockFish(string fishID)
-    {
-        var s = fishID.Trim(' ');
-        PlayerDataControl.instance.playerData.AddUnlockedFish(s);
-    }
+
 }

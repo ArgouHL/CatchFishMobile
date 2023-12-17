@@ -5,10 +5,12 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using UnityEngine.UIElements;
 
 public class ResultShow : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] private CanvasGroup title;
     [SerializeField] private CanvasGroup orderUI;
     [SerializeField] private TMP_Text[] orderTexts;
     [SerializeField] private CanvasGroup[] orderChecks;
@@ -16,23 +18,33 @@ public class ResultShow : MonoBehaviour
     [SerializeField] private TMP_Text money;
     [SerializeField] private TMP_Text exp;
     [SerializeField] private RectTransform FishType;
-
+    [SerializeField] private Sprite doneIcon, notDoneIcon;
     private List<FishByType> fishByTypes;
 
     [SerializeField] private RectTransform fishboarder;
     [SerializeField] private CanvasGroup backBtn;
     private int targetIncome;
     private int targetExp;
-
+    [SerializeField]
+    private bool test;
+    Vector2 screenSize;
     void Start()
     {
-         fishByTypes = new List<FishByType>(ResultRecord.instance.FishByTypeCount());
 
-       // StartCoroutine(FishBox.instance.PlayBoxAni(FakeList()));
-          AddToPlayer();
+        List<FishByType> fakeList;
+        if (test)
+        {
+            fakeList = FakeList();
+            fishByTypes = new List<FishByType>(fakeList);
+        }
+        else
+        {
+            fishByTypes = new List<FishByType>(ResultRecord.instance.FishByTypeCount());
+        }
 
-         StartCoroutine(PlayResultAni());
-        //StartCoroutine(Test());
+        AddToPlayer();
+        StartCoroutine(PlayResultAni());
+
     }
 
     private List<FishByType> FakeList()
@@ -44,10 +56,15 @@ public class ResultShow : MonoBehaviour
 
     private void AddToPlayer()
     {
+        if (test)
+            return;
         targetIncome = ResultRecord.instance.income;
         targetExp = ResultRecord.instance.exp;
-        PlayerDataControl.instance.playerData.GetMoneyAndExp(targetIncome, targetExp);
-        PlayerDataControl.instance.playerData.AddUnlockedFish(fishByTypes.Select(f => f.fishID).ToArray());
+        PlayerDataControl.instance.playerData.GetMoneyAndExp(targetIncome, targetExp);      
+        foreach(var f in fishByTypes)
+        {
+            FishData.instance.AddRecord(f.fishID, f.count);
+        }
         PlayerDataControl.instance.Save();
     }
 
@@ -63,6 +80,12 @@ public class ResultShow : MonoBehaviour
 
     private IEnumerator ResultDataShow()
     {
+
+        LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
+        {
+            title.alpha = val;
+        });
+        yield return new WaitForSeconds(1.5f);
         LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
         {
             orderUI.alpha = val;
@@ -112,10 +135,9 @@ public class ResultShow : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Debug.Log(i);
-            if (ResultRecord.instance.orderIngame[i].isFinished)
-            {
-                ShowCheck(i);
-            }
+
+            ShowCheck(i);
+
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -126,6 +148,11 @@ public class ResultShow : MonoBehaviour
     {
         LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
         {
+            if (ResultRecord.instance.orderIngame[i].isFinished)
+
+                orderChecks[i].gameObject.GetComponent<Image>().sprite = doneIcon;
+            else
+                orderChecks[i].gameObject.GetComponent<Image>().sprite = notDoneIcon;
             orderChecks[i].alpha = val;
         });
     }
@@ -141,10 +168,11 @@ public class ResultShow : MonoBehaviour
             orgPoint.x = 0;
             for (int j = 0; j < 4; j++)
             {
-                var f = Instantiate(fishboarder);
+                var f = Instantiate(fishboarder, FishType, false);
+
                 var fq = f.GetComponent<FishSquare>();
                 fq.ShowUP(fishByTypes[index]);
-                f.SetParent(FishType);
+                //    f.SetParent(FishType);  
                 f.anchoredPosition = orgPoint;
                 index++;
 
@@ -173,5 +201,17 @@ public class ResultShow : MonoBehaviour
     public void BackLobby()
     {
         SceneManager.LoadScene(1);
+    }
+
+
+    private void GetScreenRatio()
+    {
+
+        screenSize = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+#if UNITY_EDITOR
+        screenSize = new Vector2(Camera.main.scaledPixelWidth, Camera.main.scaledPixelHeight);
+
+#endif
+
     }
 }

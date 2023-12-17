@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SkinDuck
+  m_Controller: {fileID: 9100000, guid: 7708b7d463472e14aaf202f79f3da550, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 97b55097c44912f418f4547bba0f9c6e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e60f8b22a0437af49965808a282f6a43, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 94182b3aed988e845982da15768e55f2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5fa3a2fa8feb293458ae848cf8659a9f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c4cf12df099f12949acbf48d133c72f7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a0279fda72a9cc4429b5332b1263a66c, type: 2}

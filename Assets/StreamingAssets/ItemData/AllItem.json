@@ -1,0 +1,116 @@
+﻿{
+  "skinsData": [
+    {
+      "skinID": "02",
+      "currency": 0,
+      "price": 100
+    },
+    {
+      "skinID": "03",
+      "currency": 1,
+      "price": 150
+    },
+    {
+      "skinID": "04",
+      "currency": 1,
+      "price": 150
+    },
+    {
+      "skinID": "04",
+      "currency": 1,
+      "price": 150
+    }
+  ],
+  "itemsData": [
+    {
+      "itemName": "電擊(免費)",
+      "itemCount": 5,
+      "type": 0,
+      "currency": 0,
+      "price": 1000
+    },
+    {
+      "itemName": "電擊",
+      "itemCount": 5,
+      "type": 0,
+      "currency": 1,
+      "price": 50
+    },
+    {
+      "itemName": "電擊",
+      "itemCount": 10,
+      "type": 0,
+      "currency": 1,
+      "price": 90
+    },
+    {
+      "itemName": "電擊",
+      "itemCount": 10,
+      "type": 0,
+      "currency": 1,
+      "price": 120
+    },
+    {
+      "itemName": "電擊",
+      "itemCount": 10,
+      "type": 0,
+      "currency": 1,
+      "price": 150
+    }
+  ],
+  "energysData": [
+    {
+      "energyItemName": "體力",
+      "energy": 5,
+      "currency": 1,
+      "price": 10
+    },
+    {
+      "energyItemName": "體力",
+      "energy": 15,
+      "currency": 1,
+      "price": 20
+    },
+    {
+      "energyItemName": "體力",
+      "energy": 40,
+      "currency": 1,
+      "price": 40
+    }
+  ],
+  "cansData": [
+    {
+      "canCount": 29,
+      "price": 10
+    },
+    {
+      "canCount": 49,
+      "price": 25
+    },
+    {
+      "canCount": 199,
+      "price": 120
+    }
+
+  ],
+  "shipData": [
+    {
+      "shipID": "01",
+      "shipName": "獨木船",
+      "price": 0
+    },
+    {
+      "shipID": "02",
+      "shipName": "高級漁船",
+      "price": 5000
+    },
+    {
+      "shipID": "03",
+      "shipName": "???",
+      "price": 9999999
+    }
+
+
+  ]
+
+}

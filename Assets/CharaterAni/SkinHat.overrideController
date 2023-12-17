@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SkinHat
+  m_Controller: {fileID: 9100000, guid: 7708b7d463472e14aaf202f79f3da550, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 97b55097c44912f418f4547bba0f9c6e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3232e7ad101a88d4cb165cb3867381ac, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 94182b3aed988e845982da15768e55f2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 46997fbcb8351a34abad65ee3b9df70e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c4cf12df099f12949acbf48d133c72f7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 295054288c30167409fb3430b50ca732, type: 2}

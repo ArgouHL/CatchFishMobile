@@ -6,7 +6,7 @@ public class ShopUICtr : MonoBehaviour
 {
 
     public static ShopUICtr instance;
-    [SerializeField] Canvas[] ShopPages;
+    [SerializeField] CanvasGroup[] ShopPages;
 
     [SerializeField] CanvasGroup ShopUI;
     [SerializeField] private int nowIndex = 0;
@@ -17,15 +17,21 @@ public class ShopUICtr : MonoBehaviour
     }
     public void OnEnable()
     {
-        SwipeControl.SwipeRightPage += ToRight;
         SwipeControl.SwipeLeftPage += ToLeft;
+        SwipeControl.SwipeRightPage += ToRight;
 
     }
     public void OnDisable()
     {
-        SwipeControl.SwipeRightPage -= ToRight;
         SwipeControl.SwipeLeftPage -= ToLeft;
+        SwipeControl.SwipeRightPage -= ToRight;
 
+    }
+
+
+    private void Start()
+    {
+        HideShopUI();
     }
     public void ShowShopUI()
     {
@@ -33,20 +39,20 @@ public class ShopUICtr : MonoBehaviour
         RaisePage(nowIndex);
         UIHelper.ShowAndClickable(ShopUI, true);
         PlayerInputManager.instance.ChangeType(InputType.Shop);
-      
+
     }
     public void HideShopUI()
     {
         Debug.Log("back");
         UIHelper.ShowAndClickable(ShopUI, false);
         PlayerInputManager.instance.ChangeType(InputType.Lobby);
-       
+
     }
 
     public void ToLeft()
     {
         if (nowIndex <= 0)
-            return;       
+            return;
         nowIndex--;
         RaisePage(nowIndex);
     }
@@ -68,9 +74,16 @@ public class ShopUICtr : MonoBehaviour
         foreach (var page in ShopPages)
         {
             if (page != ShopPages[nowIndex])
-                page.sortingOrder = 5;
+            {
+                UIHelper.ShowAndClickable(page, false);
+            }
             else
-                ShopPages[nowIndex].sortingOrder = 6;
+            {
+                UIHelper.ShowAndClickable(ShopPages[nowIndex], true);
+                
+            }
+
+
         }
     }
 

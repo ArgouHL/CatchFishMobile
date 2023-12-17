@@ -3,88 +3,81 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ZonesShow : MonoBehaviour
 {
     public static ZonesShow instance;
 
-    [SerializeField] CanvasGroup zone_1UI, zone_2UI, zone_3UI, enterGameBtn;
-    [SerializeField] CanvasGroup sharkzone_1UI, enterSharkGameBtn;
-
-    private CanvasGroup nowZoneUI;
+    [SerializeField] CanvasGroup enterGameUI;
+    [SerializeField] private TMP_Text infoText;
+    private Zone nowZone;
 
     public void Awake()
     {
         instance = this;
     }
-
+    private void Start()
+    {
+        UIHelper.ShowAndClickable(enterGameUI, false);
+    }
 
     public void ShowZone(Zone zone)
     {
+        nowZone = zone;
         switch (zone)
         {
             case Zone.zone_1:
-                ShowZone(zone_1UI);
+                ShowZone("太平洋");
                 break;
             case Zone.zone_2:
-                ShowZone(zone_2UI);
+                ShowZone("印度洋");
                 break;
             case Zone.zone_3:
-                ShowZone(zone_3UI);
+                ShowZone("大西洋");
                 break;
-            case Zone.SharkZone_1:
-                ShowSharkZone();
-                break;
+
+
 
         }
     }
 
-    private void ShowZone(CanvasGroup zone)
+    private void ShowZone(string info)
     {
         PlayerInputManager.instance.ChangeType(InputType.None);
-        nowZoneUI = zone;
-        zone.blocksRaycasts = true;
-        zone.alpha = 1;
-        enterGameBtn.blocksRaycasts = true;
-        enterGameBtn.alpha = 1;
-        enterGameBtn.interactable = true;
-
+        infoText.text = "確認進入" + info + "?";
+        UIHelper.ShowAndClickable(enterGameUI, true);
+    
     }
 
-    public void ShowSharkZone()
-    {
-        PlayerInputManager.instance.ChangeType(InputType.None);
-        nowZoneUI = sharkzone_1UI;
-        sharkzone_1UI.blocksRaycasts = true;
-        sharkzone_1UI.alpha = 1;
-        enterSharkGameBtn.blocksRaycasts = true;
-        enterSharkGameBtn.alpha = 1;
-        enterSharkGameBtn.interactable = true;
-
-    }
 
     public void Hide()
     {
         PlayerInputManager.instance.ChangeType(InputType.Lobby);
-        nowZoneUI.blocksRaycasts = false;
-        nowZoneUI.alpha = 0;
-        enterGameBtn.blocksRaycasts = false;
-        enterGameBtn.alpha = 0;
-        enterGameBtn.interactable = false;
+        UIHelper.ShowAndClickable(enterGameUI, false);
+    
+        MainUICtr.instance.SetEnterBtnEnable(true);
     }
 
     public void EnterGame()
     {
-
-        SceneManager.LoadScene(2);
+        switch (nowZone)
+        {
+            case Zone.zone_1:
+                SceneManager.LoadScene(2);
+                break;
+            case Zone.zone_2:
+               // ShowZone("印度洋");
+                break;
+            case Zone.zone_3:
+            //   ShowZone("大西洋");
+                break;
+        }
+       
     }
 
-    public void EnterSharkGame()
-    {
-
-        SceneManager.LoadScene(4);
-    }
-
+ 
+  
 }
 
 

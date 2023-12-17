@@ -4,19 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using TMPro;
 
 public class CatchDeter : MonoBehaviour
 {
     public static CatchDeter instance;
     private CanvasGroup ui;
     private Slider deterBar;
-    private int targetTimes;
+    // private int targetTimes;
     private int nowTimes;
     Coroutine deteCoro;
     public delegate void DeteEvent(bool success);
     public static DeteEvent EndDete;
-
-
+    float deterValue = 100;
+    [SerializeField] private TMP_Text timer;
 
     private void OnEnable()
     {
@@ -36,28 +37,58 @@ public class CatchDeter : MonoBehaviour
         ui = GetComponent<CanvasGroup>();
         deterBar = GetComponentInChildren<Slider>();
     }
-    public void StartDete(int hittime, float remainTime)
+    public void StartDete(string fishID)
     {
 
         if (deteCoro != null)
             return;
-        deteCoro = StartCoroutine(deteIE(hittime, remainTime));
+        deteCoro = StartCoroutine(deteIE(fishID));
 
 
     }
 
 
-    public IEnumerator deteIE(int hittime, float remainTime)
+    public IEnumerator deteIE(string fishID)
     {
-        ui.alpha = 1;
-        targetTimes = hittime;
-        nowTimes = 0;
-        UpdateBar();
         PlayerInputManager.instance.ChangeType(InputType.Determine);
-        yield return new WaitForSeconds(remainTime);
+        if (!FishData.instance.GetFishDeteData(fishID, out float deterTime, out float deterSpeed))
+            Debug.Log("No Fish Data");
+        ui.alpha = 1;
+        float time = 0;
+        deterValue = 100;
+        CheckTime(ref deterTime, deterSpeed);
+        deterBar.maxValue = deterValue;
+        deterBar.value = deterValue;
+        do
+        {
+
+
+            deterValue -= deterSpeed * Time.deltaTime;
+            UpdateBar(deterValue, time, deterTime);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        while (time < deterTime);
         deteCoro = null;
-        StopDete(false);
+        StopDete(true);
     }
+
+    private void CheckTime(ref float deterTime, float deterSpeed)
+    {
+        if(deterSpeed* deterTime<100)
+        {
+            deterTime = 100 / deterSpeed +0.5f;
+        }
+    }
+
+    private void CheckDeterValue(float v)
+    {
+        if (v <= 0)
+        {
+            CancelDete();
+        }
+    }
+
 
     internal void fishBeEated()
     {
@@ -68,33 +99,36 @@ public class CatchDeter : MonoBehaviour
 
     private void StopDete(bool isSuccess)
     {
+
         ui.alpha = 0;
-        EndDete.Invoke(isSuccess);
+
         Debug.Log("Dete:" + isSuccess);
+        ShowIsSuccess(isSuccess);
+        EndDete.Invoke(isSuccess);
+
+    }
+
+    private void ShowIsSuccess(bool isSuccess)
+    {
 
     }
 
     public void DeteHit(InputAction.CallbackContext ctx)
     {
-        if (deteCoro == null)
-            return;
-        nowTimes++;
-        SfxControl.instance.HitPlay(nowTimes);
-        UpdateBar();
-        if (nowTimes >= targetTimes)
+        if (deterValue + 10 > 100)
         {
-            StopCoroutine(deteCoro);
-            deteCoro = null;
-            StopDete(true);
-
+            deterValue = 100;
         }
+        else
+            deterValue += 10    ;
     }
 
 
-    private void UpdateBar()
+    private void UpdateBar(float deterValue, float time, float deterTime)
     {
-        deterBar.maxValue = targetTimes;
-        deterBar.value = nowTimes;
+        deterBar.value = deterValue;
+        timer.text = (deterTime - time).ToString("F");
+        CheckDeterValue(deterValue);
     }
 
     internal void CancelDete()
@@ -103,6 +137,6 @@ public class CatchDeter : MonoBehaviour
             return;
         StopCoroutine(deteCoro);
         deteCoro = null;
-        StopDete(true);
+        StopDete(false);
     }
 }

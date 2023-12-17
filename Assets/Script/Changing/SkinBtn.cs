@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.UI;
 
 public class SkinBtn : MonoBehaviour
 {
     internal string skinID;
-    [SerializeReference] private TMP_Text tempIdText;
+    [SerializeReference] private Image icon;
     [SerializeReference] private CanvasGroup cover;
     
-    internal void SetButtonInfo(string iD)
+    internal void SetButtonInfo(CharaterSkinSet set)
     {
-        skinID = iD;
-        tempIdText.text = iD;
+        skinID = set.SkinID;
+        icon.sprite = set.skinIcon;
     }
 
     internal void Seletable(bool b)

@@ -52,7 +52,7 @@ public class SharkGameSys : MonoBehaviour
 
     private void OnEnable()
     {
-        DragControl.dragoff += GetShark;
+     //   DragControl.dragoff += GetShark;
         PlayerInputManager.inputs.Determine.Touch.performed += DeteHit;
         //  PlayerInputManager.inputs.GamePlay.Touch.performed += GetShark;
         GameInformationShow.StopCoro += StopCoro;
@@ -63,7 +63,7 @@ public class SharkGameSys : MonoBehaviour
 
     private void OnDisable()
     {
-        DragControl.dragoff -= GetShark;
+       // DragControl.dragoff -= GetShark;
         GameInformationShow.StopCoro -= StopCoro;
         PlayerInputManager.inputs.Determine.Touch.performed -= DeteHit;
         // PlayerInputManager.inputs.Determine.Touch.performed -= DeteHit;
