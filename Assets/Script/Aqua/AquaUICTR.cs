@@ -14,4 +14,9 @@ public class AquaUICTR : MonoBehaviour
     {
         SceneManager.LoadScene(5);
     }
+
+    public void LoadCollection()
+    {
+        SceneManager.LoadScene(6);
+    }
 }

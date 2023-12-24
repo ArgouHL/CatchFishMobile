@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-1)]
 public class CollectionFish : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
@@ -33,15 +34,21 @@ public class CollectionFish : MonoBehaviour
       
 
         if (record.count <= 0)
+        {
+            fishIcon.sprite = CollectionShow.instance.GetUnknow() ;
             return;
+        }
+           
         border.sprite = CollectionShow.instance.GetBoarder(fishObject.rarity);
+        fishIcon.rectTransform.sizeDelta = new Vector2(200, 200);
         fishIcon.sprite = fishObject.fishIcon;
         fishName.text = fishObject.fishName;
-        count.text = record.count + "/30";
-        if (record.count < 30)
+        count.text = record.count + "/"+ fishObject.collectionRequire;
+        if (record.count < fishObject.collectionRequire)
             return;
         btn.interactable = true;
         shinyEffect.enabled = true;
+        shinyEffect.GetComponent<ShineEffectCtr>().Shining();
 
     }
 

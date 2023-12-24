@@ -40,6 +40,7 @@ public class Items : ItemInterface
             ShopSys.instance.ShowBuyFail();
             return;
         }
+        
         PlayerDataControl.instance.playerData.AddItemCount(itemData.type, itemData.itemCount);
         ShopSys.instance.ShowBuySuccess();
         MainUICtr.instance.UpdateShownData();

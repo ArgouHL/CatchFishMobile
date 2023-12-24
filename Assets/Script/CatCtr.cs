@@ -7,7 +7,8 @@ public class CatCtr : MonoBehaviour
     public static CatCtr instance;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer sp;
-
+    [SerializeField] private Animator cathcEffect;
+   
 
     private void Awake()
     {
@@ -41,6 +42,9 @@ public class CatCtr : MonoBehaviour
         var _skin = SkinController.instance.GetSkin(skinID);
         sp.sprite = _skin.skinImg;
         animator.runtimeAnimatorController = _skin.overrideController;
+        cathcEffect.runtimeAnimatorController = _skin.catchEffectController;
+
+
     }
 
     internal void BackIdle()

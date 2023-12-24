@@ -9,8 +9,8 @@ public class ShootTargetSys : MonoBehaviour
     [SerializeField] private Transform catOrg;
     [SerializeField] private Transform marker;
     [SerializeField] private float speed = 10;
-    [SerializeField] private GameObject tempCatHand;
-    [SerializeField] private Color catHandColor;
+    [SerializeField] private GameObject catHand, star;
+
     private GameObject _catHand;
 
     private Coroutine markerShooting;
@@ -32,7 +32,19 @@ public class ShootTargetSys : MonoBehaviour
 
     private void Start()
     {
-        _catHand = Instantiate(tempCatHand, marker);
+        switch (SkinController.instance.GetSkin(PlayerDataControl.instance.playerData.currentSkin).skinType)
+        {
+            case SkinType.Normal:
+            default:
+                _catHand = Instantiate(catHand, marker);
+                break;
+            case SkinType.Magic:
+                _catHand = Instantiate(star, marker);
+                break;
+        }
+            ;
+       
+       
     }
     public void ShootMarker(float way, float maxDis)
     {
@@ -58,7 +70,8 @@ public class ShootTargetSys : MonoBehaviour
 
        
       //  var aimRotate = Quaternion.AngleAxis(angle, Vector3.forward);
-        _catHand.GetComponent<SpriteRenderer>().color = catHandColor;
+        _catHand.GetComponent<SpriteRenderer>().color = Color.white;
+        _catHand.GetComponentInChildren<ParticleSystem>().Play();
         marker.GetComponent<MarkerHit>().tracking = true;
         while (Vector3.Distance(marker.position, catOrg.position) < maxDis)
         {
@@ -71,7 +84,7 @@ public class ShootTargetSys : MonoBehaviour
     internal void MarkerDissapper()
     {
         _catHand.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
-
+        _catHand.GetComponentInChildren<ParticleSystem>().Stop();
         marker.GetComponent<MarkerHit>().tracking = false;
     }
 

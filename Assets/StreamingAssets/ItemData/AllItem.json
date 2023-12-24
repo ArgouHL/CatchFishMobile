@@ -16,16 +16,16 @@
       "price": 150
     },
     {
-      "skinID": "04",
+      "skinID": "05",
       "currency": 1,
-      "price": 150
+      "price": 500
     }
   ],
   "itemsData": [
     {
       "itemName": "電擊(免費)",
       "itemCount": 5,
-      "type": 0,
+      "type": 1,
       "currency": 0,
       "price": 1000
     },

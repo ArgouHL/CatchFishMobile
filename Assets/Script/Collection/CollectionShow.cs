@@ -4,6 +4,7 @@ using UnityEngine;
 
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class CollectionShow : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class CollectionShow : MonoBehaviour
     private FishColletRecord[] recordList1, recordList2, recordList3;
     [SerializeField] private CollectionFish[] fishes1, fishes2, fishes3;
     [SerializeField] private Sprite normalBoarder, rareBoarder, superBoarder;
-
+    [SerializeField] private Sprite unknow;
 
     private void Awake()
     {
@@ -21,12 +22,12 @@ public class CollectionShow : MonoBehaviour
     private void Start()
     {
         PlayerInputManager.instance.ChangeType(InputType.Shop);
-      var recordList= FishData.instance.GetRecord().OrderBy(x=>x.fishID).ToArray();
-        recordList1 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Pacific).ToArray();
-        recordList2 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Indian).ToArray();
-        recordList3 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Atlantic).ToArray();
+        var recordList = FishData.instance.GetRecord().OrderBy(x => x.fishID).ToArray();
+        recordList1 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Pacific).OrderBy(x=>x.fishID).ToArray();
+        recordList2 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Indian).OrderBy(x => x.fishID).ToArray();
+        recordList3 = recordList.Where(x => FishData.instance.GetRegion(x.fishID) == FishReagon.Atlantic).OrderBy(x => x.fishID).ToArray();
 
-        for (int i=0;i < recordList1.Length;i++)
+        for (int i = 0; i < recordList1.Length; i++)
         {
             fishes1[i].Show(recordList1[i]);
         }
@@ -64,5 +65,16 @@ public class CollectionShow : MonoBehaviour
         return boarder;
     }
 
+    public Sprite GetUnknow()
+    {
+        return unknow;
+    }
+
+
+
+    public void LoadAqua()
+    {
+        SceneManager.LoadScene(5);
+    }
 
 }

@@ -23,6 +23,7 @@ public class FishObject : ScriptableObject
     public int weights;
     public float speedUpTime = 0.5f;
     public Sprite fishIcon;
+    public int collectionRequire=30;
 }
 
 

@@ -18,3 +18,5 @@ MonoBehaviour:
   skinIcon: {fileID: 21300000, guid: 0d10b5ad59afc544999d0fcbaf6476af, type: 3}
   overrideController: {fileID: 22100000, guid: a4b8ffe4ec47fc74580d700aba773518, type: 2}
   skinType: 0
+  shotOutSprite: {fileID: 21300000, guid: d1502d8bd4ffe874d8f77434c1dc1b04, type: 3}
+  catchEffectController: {fileID: 22100000, guid: 880879eb25fff5f4bb8df10eb5302173, type: 2}

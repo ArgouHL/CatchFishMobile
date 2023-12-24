@@ -149,7 +149,6 @@ public class ResultShow : MonoBehaviour
         LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
         {
             if (ResultRecord.instance.orderIngame[i].isFinished)
-
                 orderChecks[i].gameObject.GetComponent<Image>().sprite = doneIcon;
             else
                 orderChecks[i].gameObject.GetComponent<Image>().sprite = notDoneIcon;

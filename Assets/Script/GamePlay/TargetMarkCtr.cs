@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetMarkCtr : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class TargetMarkCtr : MonoBehaviour
 
     [SerializeField] private RectTransform Marker;
     [SerializeField] private CanvasGroup MarkerCanvasGroup;
+    [SerializeField] private Image markerImg;
+    [SerializeField] private Sprite org,bubble;
     private Transform trackingFish;
     private Coroutine TrackingCoro;
     private Camera cam;
@@ -21,6 +24,17 @@ public class TargetMarkCtr : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
+        switch (SkinController.instance.GetSkin(PlayerDataControl.instance.playerData.currentSkin).skinType)
+        {
+            case SkinType.Normal:
+            default:
+                markerImg.sprite = org;
+                break;
+            case SkinType.Magic:
+                markerImg.sprite = bubble;
+                break;
+        }
+            ;
     }
 
     public void StartTracking(Transform fish)
@@ -38,7 +52,7 @@ public class TargetMarkCtr : MonoBehaviour
         while (trackingFish!=null)
         {
             float _scale = (Mathf.Cos(time)+1)/2;
-            float scale = Mathf.Lerp(0.7f, 1f, _scale);
+            float scale = Mathf.Lerp(0.9f, 1.2f, _scale);
             Marker.position = cam.WorldToScreenPoint(trackingFish.transform.position);
             Marker.localScale = Vector3.one * scale;
             time += Time.deltaTime*5;

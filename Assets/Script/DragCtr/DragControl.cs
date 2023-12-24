@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,17 +15,19 @@ public class DragControl : MonoBehaviour
     private Coroutine dragCoro;
     private Vector2 screenRect;
     [SerializeField] private Image startImage, aimImage, aimTarget;
-    [SerializeField] private RectTransform targetLine,chargeBar;
-   
+    [SerializeField] private RectTransform targetLine, chargeBar;
+
     //[SerializeField] private Image[] backPoints;
-    public delegate void DragEvent(float angle,float maxDis);
+    public delegate void DragEvent(float angle, float maxDis);
     public static DragEvent dragoff;
-    [SerializeField] private Transform catTransform;  
+    [SerializeField] private Transform catTransform;
     private float draggedTime;
     [SerializeField] private float MaxDraggedTime = 3;
-
+    [SerializeField] private ParticleSystem charging;
     private float wayAngle;
     private float disOnWorld;
+    private Coroutine effCoro;
+
 
     private void Awake()
     {
@@ -67,27 +70,36 @@ public class DragControl : MonoBehaviour
     }
     private void EndDrag(InputAction.CallbackContext ctx)
     {
+        if (effCoro != null)
+        {
+            StopCoroutine(effCoro);
+            effCoro = null;
+        }
+        else
+            charging.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         //  Debug.Log("EndDrag");
         if (dragCoro == null)
             return;
+
         StopCoroutine(dragCoro);
         dragCoro = null;
         // dragLine.positionCount = 0;
         HideAim();
+
         if (disOnWorld < 2f)
         {
             CatCtr.instance.BackIdle();
             return;
         }
-            
-       dragoff.Invoke(wayAngle, disOnWorld);
+
+        dragoff.Invoke(wayAngle, disOnWorld);
         CatCtr.instance.Atk();
     }
 
 
     private IEnumerator DragShowIE()
     {
-
+        effCoro = StartCoroutine(effIE());
         var sp = PlayerInputManager.inputs.GamePlay.TouchPosition.ReadValue<Vector2>();
         startP.anchoredPosition = sp;
         // dragLine.positionCount = 2;
@@ -151,7 +163,7 @@ public class DragControl : MonoBehaviour
     {
         var maxDis = Mathf.Lerp(0, 2500, draggedTime / MaxDraggedTime);
 
-       var   _wayVector = sp - ep;
+        var _wayVector = sp - ep;
         //500>-500
         float angle = Mathf.Lerp(-80, 80, (_wayVector.x + 400) / 800);
 
@@ -164,18 +176,18 @@ public class DragControl : MonoBehaviour
 
 
 
-       // float angle = Mathf.Atan2(_wayVector.x, _wayVector.y)*Mathf.Rad2Deg;
+        // float angle = Mathf.Atan2(_wayVector.x, _wayVector.y)*Mathf.Rad2Deg;
         Debug.Log(angle);
 
         wayAngle = angle;
-        var aimRotate= Quaternion.AngleAxis(wayAngle + 180, -Vector3.forward);
+        var aimRotate = Quaternion.AngleAxis(wayAngle + 180, -Vector3.forward);
         targetLine.rotation = aimRotate;
         chargeBar.rotation = aimRotate;
         var vector = _wayVector * maxDis;
         chargeBar.sizeDelta = new Vector2(chargeBar.sizeDelta.x, maxDis);
 
-        disOnWorld= maxDis * (Camera.main.orthographicSize * 2) / screenRect.y;
-        
+        disOnWorld = maxDis * (Camera.main.orthographicSize * 2) / screenRect.y;
+
         //   aimTarget.rectTransform.anchoredPosition = vector + startImage.rectTransform.anchoredPosition;
 
         //
@@ -206,6 +218,12 @@ public class DragControl : MonoBehaviour
 
 
 
+    private IEnumerator effIE()
+    {
+        yield return new WaitForSeconds(0.15f);
+        charging.Play();
+        effCoro = null;
+    }
 
 
 

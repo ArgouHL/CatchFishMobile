@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[DefaultExecutionOrder(-1)]
+[DefaultExecutionOrder(-2)]
 public class ShopSys : MonoBehaviour
 {
     public static ShopSys instance;
@@ -29,11 +29,12 @@ public class ShopSys : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        BetterStreamingAssets.Initialize();
+      
     }
 
     private void Start()
     {
+        BetterStreamingAssets.Initialize();
         LoadAllGoods();
         GetItem();
     }
@@ -137,7 +138,8 @@ public class ShopSys : MonoBehaviour
 
     void LoadAllGoods()
     {
-        var jsonString = BetterStreamingAssets.ReadAllText("ItemData/AllItem.json");
+        string jsonString = null;
+        jsonString = BetterStreamingAssets.ReadAllText("ItemData/AllItem.json");
         Debug.Log(jsonString);
         itemList = JsonUtility.FromJson<GoodsDatas>(jsonString);
     }
@@ -219,4 +221,4 @@ public class ShipData
    
 }
 public enum currencyType { Coin, Can, Money }
-public enum itemType { Shock }
+public enum itemType { PaidShock ,FreeShock}

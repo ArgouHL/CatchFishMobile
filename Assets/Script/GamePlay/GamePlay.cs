@@ -21,7 +21,8 @@ public class GamePlay : MonoBehaviour
     private Coroutine BaitCoroutine;
     
     [SerializeField] private int gameTime = 30;
-
+    [SerializeField] private Transform catchEffectTransform;
+    private Animator catchEffectAni;
     private void Awake()
     {
         instance = this;
@@ -35,6 +36,9 @@ public class GamePlay : MonoBehaviour
         OrderManager.instance.GetOrders();
         MusicControl.instance.PlayBGM(bgmType.Sea1);
         ResultRecord.instance.Init();
+
+        catchEffectAni = catchEffectTransform.GetComponent<Animator>();
+
     }
 
 
@@ -131,11 +135,7 @@ public class GamePlay : MonoBehaviour
         SceneManager.LoadScene(3);
     }
 
-    private IEnumerator SpawnShark()
-    {
-        yield return new WaitForSeconds(5);
-        FishControl.instance.SpawnShark();
-    }
+
 
     public void StartShockCount()
     {
@@ -174,4 +174,9 @@ public class GamePlay : MonoBehaviour
         StopAllCoroutines();
     }
     
+    internal void PlayCatchEff(Vector3 worldPos)
+    {
+        catchEffectTransform.position = worldPos;
+        catchEffectAni.SetTrigger("Atk");
+    }
 }

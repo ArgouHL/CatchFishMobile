@@ -25,8 +25,7 @@ public class FishControl : MonoBehaviour
 
     [SerializeField] private List<FishObject> allFishToSpawn;
 
-    [SerializeField] private GameObject[] sharks;
-    [SerializeField] private Shark currentShark;
+
     [SerializeField] private Dictionary<FishReagon, GameObject> sharkDictionary;
     [SerializeField] Transform fishpool;
     private int lastRanIndex;
@@ -73,6 +72,7 @@ public class FishControl : MonoBehaviour
             SfxControl.instance.CatchPlay();
             nowFish.StopMove();
             GamePlay.CatchedFish.Invoke(nowFish);
+            GamePlay.instance.PlayCatchEff(nowFish.transform.position);
         }
         else
         {
@@ -99,11 +99,8 @@ public class FishControl : MonoBehaviour
       //  SpawnedFish = new List<List<Fish>>();
         ResultRecord.instance.GetAllFishObj(FishData.instance.allFishObjects);
         fishsOnScreen = new LinkedList<Fish>();
-        sharkDictionary = new Dictionary<FishReagon, GameObject>();
-        foreach (var s in sharks)
-        {
-            sharkDictionary.Add(s.GetComponent<Shark>().reagon, s);
-        }
+
+
 
     }
 
@@ -251,12 +248,7 @@ public class FishControl : MonoBehaviour
         }
     }
 
-    public void SpawnShark()
-    {
-        Debug.Log("SpawnShark");
-        currentShark = Instantiate(sharkDictionary[reagon], new Vector3(100, 0, 0), quaternion.identity).GetComponent<Shark>();
-        currentShark.Enter();
-    }
+
 
 
     private List<FishObject> GetGenFishList()

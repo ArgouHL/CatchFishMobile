@@ -68,8 +68,11 @@ public class PlayerData : ScriptableObject
     {
         switch (type)
         {
-            case itemType.Shock:
+            case itemType.PaidShock:
                 shockItemCount += itemCount;
+                break;
+            case itemType.FreeShock:
+                freeShockItemCount += itemCount;
                 break;
             default:
                 break;
