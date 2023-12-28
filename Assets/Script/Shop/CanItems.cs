@@ -8,6 +8,8 @@ public class CanItems : ItemInterface
     private CanData canData;
     [SerializeField] private TMP_Text itemCountShow;
 
+
+
     internal void ShowItem(CanData _itemData)
     {
         canData = _itemData;
@@ -17,8 +19,8 @@ public class CanItems : ItemInterface
     private void ShowItem()
     {
         icon.sprite = ShopSys.instance.GetCanIcon(canData.canCount);
-        currencyIcon.sprite = ShopSys.instance.GetCurrencyIcon(currencyType.Money);
-        priceShow.text = canData.price.ToString();
+        //currencyIcon.sprite = ShopSys.instance.GetCurrencyIcon(currencyType.Money);
+        priceShow.text = "NT"+canData.price.ToString();
         itemCountShow.text = canData.canCount.ToString();
         nameShow.text = canData.canCount.ToString() + "ÅøÅø";
 
@@ -48,4 +50,6 @@ public class CanItems : ItemInterface
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
     }
+
+  
 }

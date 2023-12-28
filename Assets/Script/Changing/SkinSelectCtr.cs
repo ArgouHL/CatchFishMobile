@@ -74,6 +74,7 @@ public class SkinSelectCtr : MonoBehaviour
         {
             btn.Seletable(true);
         }
+        SfxControl.instance.CatSoundPlay();
         PlayerDataControl.instance.Save();
         PlayerDataControl.instance.Load();
     }

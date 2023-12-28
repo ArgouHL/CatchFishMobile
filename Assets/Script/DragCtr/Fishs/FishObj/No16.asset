@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a6d0e3a64bf4b4198820b4857cb9a0, type: 3}
   m_Name: No16
   m_EditorClassIdentifier: 
-  fishName: Fish16
+  fishName: "\u5E1D\u738B\u9BAD"
   fishObj: {fileID: 5406272352078813806, guid: 314e207e107e7df4ca507021ef07fb99, type: 3}
   fishID: 16
   deterSpeed: 40
@@ -28,7 +28,7 @@ MonoBehaviour:
   acceleratedSpeed: 7
   numberOfGroup: 1
   randomRoadCount: 3
-  weights: 20
+  weights: 50
   speedUpTime: 0.5
-  fishIcon: {fileID: 21300000, guid: 4c3333905ff7738499d3fbffe0839a4d, type: 3}
-  collectionRequire: 10
+  fishIcon: {fileID: 21300000, guid: 9c953a14a9fb7b243a06bde92508d2d2, type: 3}
+  collectionRequire: 1

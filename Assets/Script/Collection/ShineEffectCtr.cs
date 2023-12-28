@@ -9,14 +9,13 @@ using UnityEngine.UI;
 public class ShineEffectCtr : MonoBehaviour
 {
     [SerializeField] private Sprite[] effImg;
-    private Image img;
+    [SerializeField] private Image img;
     private Coroutine shineCoro;
     public delegate void CollectBtnEvent();
     public CollectBtnEvent GetReward;
 
     private void Start()
-    {
-        img = GetComponent<Image>();
+    {        
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerDown;
@@ -26,8 +25,10 @@ public class ShineEffectCtr : MonoBehaviour
 
     public void Shining()
     {
+       
         shineCoro = StartCoroutine(ShineIE());
     }
+
 
     private IEnumerator ShineIE()
     {

@@ -112,5 +112,10 @@ public class FishColletRecord
         hasGetReward = false;
     }
 
+    public void GetReward()
+    {
+        hasGetReward = true;
+    }
+
 
 }

@@ -12,7 +12,6 @@ public class CharaterSkinSet : ScriptableObject
     public Sprite skinIcon;
     public AnimatorOverrideController overrideController;
     public SkinType skinType;
-    public Sprite shotOutSprite;
     public AnimatorOverrideController catchEffectController;
 }
 

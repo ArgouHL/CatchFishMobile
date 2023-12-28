@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewPlayer", menuName = "NewPlayer")]
@@ -12,6 +14,9 @@ public class PlayerData : ScriptableObject
     public int Player_MaxEnergy;
     public bool UseForTest;
     public Dictionary<string,FishColletRecord> fishCollection;
+
+    
+
     public List<string> unLockedSkins;
     public int Player_Exp;
     public string currentSkin;
@@ -25,8 +30,8 @@ public class PlayerData : ScriptableObject
         player_Name = name;
         Player_Coin = 0;
         Player_Can = 0;
-        Player_Energy = 10;
-        Player_MaxEnergy = 10;
+        Player_Energy = 100;
+        Player_MaxEnergy = 100;
         Player_Exp = 0;
         fishCollection = new Dictionary<string, FishColletRecord>();
         unLockedSkins = new List<string>() { "01" };
@@ -41,8 +46,6 @@ public class PlayerData : ScriptableObject
         {
             Player_Coin = 100000;
             Player_Can = 100;
-            Player_Energy = 100;
-            Player_MaxEnergy = 100;
             Player_Exp = 1000;
             shockItemCount = 100;
         }
@@ -79,7 +82,10 @@ public class PlayerData : ScriptableObject
         }
     }
 
-   
+    internal void GetCollectReward(string fishID)
+    {
+        fishCollection[fishID].GetReward();
+    }
 
     internal bool TakeCurrency(currencyType currency, int price)
     {
@@ -164,6 +170,20 @@ public class PlayerData : ScriptableObject
         currentShip = ac.currentShip;
         unLockedShip = ac.unLockedShip;
         freeShockItemCount = ac.freeShockItemCount;
+    }
+
+
+    internal List<string> GetColletedFish()
+    {
+        return fishCollection.Where(x => x.Value.hasGetReward).Select(x => x.Key).ToList();
+    }
+
+    internal bool UseEnergy(int e)
+    {
+        if (Player_Energy - e < 0)
+            return false;
+        Player_Energy -= e;
+        return true;
     }
 }
 [System.Serializable]

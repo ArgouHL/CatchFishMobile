@@ -74,4 +74,9 @@ public class GameStart : MonoBehaviour
         yield return new WaitForSeconds(2);
         asyncLoad.allowSceneActivation = true;
     }
+
+    public void ClearData()
+    {
+        PlayerDataControl.instance.DeleteSave();
+    }
 }

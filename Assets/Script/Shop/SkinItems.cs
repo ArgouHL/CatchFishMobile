@@ -15,7 +15,7 @@ public class SkinItems : ItemInterface
         soldCover.color = new Color(0,0,0,0);
         skinData = _skinData;
         currencyIcon.sprite = ShopSys.instance.GetCurrencyIcon(skinData.currency);
-        priceShow.text = skinData.price.ToString();
+        SetPrice(skinData.price.ToString());
 
         charaterSkinSet = SkinController.instance.GetSkin(skinData.skinID);
         icon.sprite = charaterSkinSet.skinIcon;

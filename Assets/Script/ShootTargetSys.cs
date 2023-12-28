@@ -78,20 +78,22 @@ public class ShootTargetSys : MonoBehaviour
             marker.transform.position += (Vector3)wayVector * speed * Time.deltaTime;
             yield return null;
         }
-        MarkerDissapper();
+        MarkerDissapper(false);
     }
 
-    internal void MarkerDissapper()
+    internal void MarkerDissapper(bool hitted)
     {
         _catHand.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         _catHand.GetComponentInChildren<ParticleSystem>().Stop();
         marker.GetComponent<MarkerHit>().tracking = false;
+        if(!hitted)
+        DragControl.instance.CoolDownReset();
     }
 
     internal void MarkerHitted()
     {
         if (markerShooting != null)
             StopCoroutine(markerShooting);
-        MarkerDissapper();
+        MarkerDissapper(true);
     }
 }

@@ -33,6 +33,7 @@ public class SkinBtn : MonoBehaviour
     {
 
         SkinSelectCtr.instance.SelectSkin(skinID);
+        SfxControl.instance.ClickPlay();
         Seletable(false);
     }
 }

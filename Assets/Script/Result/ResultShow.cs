@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class ResultShow : MonoBehaviour
 {
@@ -137,7 +137,7 @@ public class ResultShow : MonoBehaviour
             Debug.Log(i);
 
             ShowCheck(i);
-
+            SfxControl.instance.AwardPlay();
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -149,9 +149,9 @@ public class ResultShow : MonoBehaviour
         LeanTween.value(0, 1, 1f).setEase(LeanTweenType.easeOutQuad).setOnUpdate((float val) =>
         {
             if (ResultRecord.instance.orderIngame[i].isFinished)
-                orderChecks[i].gameObject.GetComponent<Image>().sprite = doneIcon;
+                orderChecks[i].GetComponent<Image>().sprite = doneIcon;
             else
-                orderChecks[i].gameObject.GetComponent<Image>().sprite = notDoneIcon;
+                orderChecks[i].GetComponent<Image>().sprite = notDoneIcon;
             orderChecks[i].alpha = val;
         });
     }
@@ -168,7 +168,7 @@ public class ResultShow : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 var f = Instantiate(fishboarder, FishType, false);
-
+                SfxControl.instance.AwardPlay();
                 var fq = f.GetComponent<FishSquare>();
                 fq.ShowUP(fishByTypes[index]);
                 //    f.SetParent(FishType);  

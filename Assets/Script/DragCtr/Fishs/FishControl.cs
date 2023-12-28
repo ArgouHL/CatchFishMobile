@@ -19,7 +19,7 @@ public class FishControl : MonoBehaviour
     [SerializeField] private TMP_Text t;
     [SerializeField] private LinkedList<Fish> fishsOnScreen;
     [SerializeField] internal LinkedList<Fish> FishsOnScreen { get { return fishsOnScreen; } }
-   
+
 
     [SerializeField] private int normalNum, rareNum, superNum;
 
@@ -32,7 +32,10 @@ public class FishControl : MonoBehaviour
     private Fish nowFish;
 
     [SerializeField] private float fishSpawnPeriod = 2;
-   // private List<List<Fish>> SpawnedFish;
+
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private Transform catCentre;
+    // private List<List<Fish>> SpawnedFish;
 
     private void Awake()
     {
@@ -42,14 +45,16 @@ public class FishControl : MonoBehaviour
     private void OnEnable()
     {
         CatchDeter.EndDete += GetFishDete;
+
         GameInformationShow.StopCoro += StopCoro;
-        
+
     }
     private void OnDisable()
     {
         CatchDeter.EndDete -= GetFishDete;
+
         GameInformationShow.StopCoro -= StopCoro;
-        
+
     }
     private void Start()
     {
@@ -63,6 +68,7 @@ public class FishControl : MonoBehaviour
 
     private void GetFishDete(bool success)
     {
+        StopLineRender();
         PlayerInputManager.instance.ChangeType(InputType.GamePlay);
         TargetMarkCtr.instance.StopTracking();
         if (success)
@@ -73,10 +79,11 @@ public class FishControl : MonoBehaviour
             nowFish.StopMove();
             GamePlay.CatchedFish.Invoke(nowFish);
             GamePlay.instance.PlayCatchEff(nowFish.transform.position);
+            SfxControl.instance.WaterPlay();
         }
         else
         {
-            nowFish.ContinueMove();
+            nowFish.GetOut();
         }
     }
 
@@ -96,7 +103,7 @@ public class FishControl : MonoBehaviour
     }
     private void Instantized()
     {
-      //  SpawnedFish = new List<List<Fish>>();
+        //  SpawnedFish = new List<List<Fish>>();
         ResultRecord.instance.GetAllFishObj(FishData.instance.allFishObjects);
         fishsOnScreen = new LinkedList<Fish>();
 
@@ -134,10 +141,10 @@ public class FishControl : MonoBehaviour
             _fish.way = way;
             // _fish.Swim(way);
             //_fish.size = fishPrefab.size;
-         
-           
+
+
             _fish.indexInGroup = i;
-           
+
         }
 
         if (fishPrefab.numberOfGroup > 1)
@@ -177,46 +184,45 @@ public class FishControl : MonoBehaviour
 
     public void FishOutScreen(Fish fish)
     {
-       fishsOnScreen.Remove(fish);
+        fishsOnScreen.Remove(fish);
         if (hittedFish != fish)
             return;
         hittedFish = null;
-     
-     
-      
+
+
+
     }
     public void HitFish(Fish _fish)
     {
-       // var _fish = TouchFunc.FindClosestFish(aimPoint);
+        // var _fish = TouchFunc.FindClosestFish(aimPoint);
         if (_fish == null)
             return;
         if (hittedFish != _fish)
         {
             hittedFish = _fish;
-           
+
         }
         if (!_fish.canInteract)
             return;
 
-        if (_fish is Shark)
+
+        SfxControl.instance.HitPlay(0);
+        nowFish = _fish;
+        if (nowFish.isShocking)
         {
-            var _shark = _fish as Shark;
-            _shark.beHit();
-            Debug.Log("isShark");
-            CatCtr.instance.Atk();
+            GetFishDete(true);
         }
-        else 
+        else
         {
-            SfxControl.instance.HitPlay(0);
-            nowFish = _fish;
             CatchDeter.instance.StartDete(_fish.fishID);
-            nowFish.PauseMove();
+            nowFish.TryEscape(catCentre);
             TargetMarkCtr.instance.StartTracking(nowFish.transform);
         }
-        
+
+
+
         // UpdateHit();
     }
-
 
 
 
@@ -231,7 +237,7 @@ public class FishControl : MonoBehaviour
             var fs = GenerateFish(i);
             foreach (var f in fs)
             {
-               f.Swim();
+                f.Swim();
                 fishsOnScreen.AddLast(f);
             }
             yield return new WaitForSeconds(fishSpawnPeriod);
@@ -276,7 +282,7 @@ public class FishControl : MonoBehaviour
 
         foreach (var fishObj in fishs)
         {
-            if (FishUnlockCtr.instance.CheckIfUnlocked(fishObj.fishID) && fishObj.reagon==reagon)
+            if (FishUnlockCtr.instance.CheckIfUnlocked(fishObj.fishID) && fishObj.reagon == reagon)
             {
                 // Debug.Log(fishObj.name);
                 weightDict.Add(fishObj, fishObj.weights);
@@ -317,7 +323,7 @@ public class FishControl : MonoBehaviour
 
     private HashSet<FishObject> GetFishWithRarity(FishRarity rarity)
     {
-        return FishData.instance.allFishObjects.Where(p => (p.reagon==reagon && p.rarity.Equals(rarity))).ToHashSet();
+        return FishData.instance.allFishObjects.Where(p => (p.reagon == reagon && p.rarity.Equals(rarity))).ToHashSet();
     }
 
 
@@ -325,4 +331,22 @@ public class FishControl : MonoBehaviour
     {
         StopAllCoroutines();
     }
+
+
+    public void UpdateLineRender()
+    {
+        if (nowFish == null)
+        {
+            StopLineRender();
+            return;
+        }
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPositions(new Vector3[] { catCentre.position, nowFish.transform.position });
+    }
+
+    private void StopLineRender()
+    {
+        lineRenderer.positionCount = 0;
+    }
+
 }

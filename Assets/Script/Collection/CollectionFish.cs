@@ -12,12 +12,13 @@ public class CollectionFish : MonoBehaviour
     [SerializeField] private TMP_Text fishName;
     [SerializeField] private TMP_Text count;
     [SerializeField] private Image border,fishIcon,shinyEffect;
+    private string fishID;
 
     private void Start()
     {
         btn.interactable = false;
-        shinyEffect.enabled = false;
-        UIHelper.ShowAndClickable(canvasGroup, false);
+      
+     //   UIHelper.ShowAndClickable(canvasGroup, false);
     }
 
     public void Show(FishColletRecord record)
@@ -25,13 +26,16 @@ public class CollectionFish : MonoBehaviour
 
         setInfo(record);
         UIHelper.ShowAndClickable(canvasGroup, true);
+        Debug.Log("Show");
     }
 
 
     private void setInfo(FishColletRecord record)
     {
-        var fishObject = FishData.instance.GetFishObject(record.fishID);
-      
+        shinyEffect.enabled = false;
+        Debug.Log("setInfo"+ record.fishID);
+        fishID = record.fishID;
+        var fishObject = FishData.instance.GetFishObject(record.fishID);     
 
         if (record.count <= 0)
         {
@@ -44,16 +48,24 @@ public class CollectionFish : MonoBehaviour
         fishIcon.sprite = fishObject.fishIcon;
         fishName.text = fishObject.fishName;
         count.text = record.count + "/"+ fishObject.collectionRequire;
-        if (record.count < fishObject.collectionRequire)
+        if (record.count < fishObject.collectionRequire|| record.hasGetReward)
+        {            
             return;
+        }
+
+  
+
+        Debug.Log("Shine");
         btn.interactable = true;
         shinyEffect.enabled = true;
-        shinyEffect.GetComponent<ShineEffectCtr>().Shining();
-
+       var s= shinyEffect.GetComponent<ShineEffectCtr>();
+        s.GetReward += GetReward;
+        s.Shining();
     }
 
     public void GetReward()
-    {
+    {       
+        PlayerDataControl.instance.playerData.GetCollectReward(fishID);
         CollectionShow.instance.GetReward();
     }
 }

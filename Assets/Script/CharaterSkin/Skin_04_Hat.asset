@@ -19,4 +19,4 @@ MonoBehaviour:
   overrideController: {fileID: 22100000, guid: 41c01176579d9a04385b15519a2cde17, type: 2}
   skinType: 0
   shotOutSprite: {fileID: 21300000, guid: d1502d8bd4ffe874d8f77434c1dc1b04, type: 3}
-  catchEffectController: {fileID: 22100000, guid: 8b6b6b0633b16db46949c45f3feaf246, type: 2}
+  catchEffectController: {fileID: 22100000, guid: 880879eb25fff5f4bb8df10eb5302173, type: 2}

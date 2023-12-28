@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,11 @@ using UnityEngine.Audio;
 public class SfxControl : MonoBehaviour
 {
     public static SfxControl instance;
-    [SerializeField] private AudioSource buttonClick, coin, sad, rain, pass, fail;
+    [SerializeField] private AudioClip buttonClick, water, catMeow, award, struggle, openShop,stamp,thunder,money,fishJump,normalForce,MagicForce;
 
     [SerializeField] private AudioSource hitSoundsPlayer;
-
+    [SerializeField] private AudioSource forceSoundsPlayer;
+    [SerializeField] private AudioSource stuggleSoundsPlayer;
     [SerializeField] private AudioClip[] hitSounds;
     [SerializeField] private AudioClip catchSound;
     [SerializeField] private AudioMixer mixer;
@@ -17,79 +19,122 @@ public class SfxControl : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
+  
             instance = GetComponent<SfxControl>();
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+
     }
 
     public void HitPlay(int index)
     {
-      //  int index = hitSounds.Length-1 - count;
-        hitSoundsPlayer.PlayOneShot(hitSounds[index]);
+        //  int index = hitSounds.Length-1 - count;
+        SfxPlayOneShot(hitSounds[index]);
     }
 
     public void CatchPlay()
     {
         
-        hitSoundsPlayer.PlayOneShot(catchSound);
+        SfxPlayOneShot(catchSound);
     }
 
-    //public void PlayClick()
-    //{
-    //    buttonClick.Play();
-    //}
 
-    //public void PlayCoin()
-    //{
-    //    coin.Play();
-    //}
-    //public void PlaySad()
-    //{
-    //    sad.Play();
-    //}
-    //public void PlayPass()
-    //{
-    //    pass.Play();
-    //}
-    //public void PlayFail()
-    //{
-    //    fail.Play();
-    //}
-    //public void StartRain()
-    //{
+    public void ClickPlay()
+    {
 
-    //    RainFadeIn();
-    //    rain.Play();
-    //}
-    //public void StopRain()
-    //{
-    //    RainFadeOut();
-    //}
+       SfxPlayOneShot(buttonClick);
+    }
 
-    //public void RainFadeIn(float time = 2)
-    //{
+    public void SfxPlayOneShot(AudioClip clip)
+    {
+        if (clip == null)
+            return;
+        hitSoundsPlayer.PlayOneShot(clip);
+    }
+    public void WaterPlay()
+    {
+
+        SfxPlayOneShot(water);
+    }
 
 
-    //    LeanTween.value(0, 0.8f, time).setOnUpdate((float val) => RainFadeUpdate(val));
-    //}
-    //public void RainFadeOut(float time = 2)
-    //{
+    public void CatSoundPlay()
+    {
 
-    //    LeanTween.value(0.8f, 0, time).setOnUpdate((float val) => RainFadeUpdate(val));
-    //}
-    //private void RainFadeUpdate(float v)
-    //{
-    //    mixer.SetFloat("RainVolume", Mathf.Lerp(-80, 0, v / 1));
-    //}
+        SfxPlayOneShot(catMeow);
+    }
 
+    public void AwardPlay()
+    {
 
+        SfxPlayOneShot(award);
+    }
 
+    public void StrugglePlay()
+    {
+        stuggleSoundsPlayer.clip = struggle;
+        stuggleSoundsPlayer.Play();
+
+    }
+    public void StruggleStop()
+    {
+        stuggleSoundsPlayer.Stop();
+
+    }
+    public void OpenShopPlay()
+    {
+
+        SfxPlayOneShot(openShop);
+    }
+
+    public void StampPlay()
+    {
+
+        SfxPlayOneShot(stamp);
+    }
+
+    public void ThunderPlay()
+    {
+
+        SfxPlayOneShot(thunder);
+    }
+
+   
+    public void FishJumpPlay()
+    {
+
+        SfxPlayOneShot(fishJump);
+    }
+
+    internal void CoinPlay()
+    {
+        SfxPlayOneShot(money);
+    }
+
+    public void PlayForcoing()
+    {
+        forceSoundsPlayer.Stop();
+        switch (SkinController.instance.GetSkin(PlayerDataControl.instance.playerData.currentSkin).skinType)
+        {
+            case SkinType.Normal:
+            default:
+                forceSoundsPlayer.clip = normalForce;
+                break;
+            case SkinType.Magic:
+                forceSoundsPlayer.clip = MagicForce;
+                break;
+        }
+        forceSoundsPlayer.Play();
+    }
+
+    internal void StopForcoing()
+    {
+        forceSoundsPlayer.Stop();
+    }
+
+    void StopAllSound()
+    {
+        StopForcoing();
+        StruggleStop();
+    }
 }
 
 

@@ -78,7 +78,10 @@ public class ShopSys : MonoBehaviour
 
     internal static bool TakeCurrency(currencyType currency, int price)
     {
-       return PlayerDataControl.instance.playerData.TakeCurrency(currency, price);
+    bool result= PlayerDataControl.instance.playerData.TakeCurrency(currency, price);
+        if (result)
+            SfxControl.instance.CoinPlay();
+        return result;
     }
 
     internal void ShowBuySure(string skinName)

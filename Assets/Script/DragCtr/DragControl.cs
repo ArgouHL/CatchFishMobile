@@ -27,8 +27,8 @@ public class DragControl : MonoBehaviour
     private float wayAngle;
     private float disOnWorld;
     private Coroutine effCoro;
-
-
+    private float coolDownTime = 0.5f;
+    private bool coolingDown = false;
     private void Awake()
     {
         instance = this;
@@ -57,6 +57,8 @@ public class DragControl : MonoBehaviour
     }
     private void StartDrag(InputAction.CallbackContext ctx)
     {
+        //if (coolingDown)
+        //    return;
         if (MarkerHit.instance.tracking)
             return;
         // Debug.Log(PlayerInputManager.inputs.GamePlay.TouchPosition.ReadValue<Vector2>());
@@ -66,7 +68,8 @@ public class DragControl : MonoBehaviour
             return;
         dragCoro = StartCoroutine(DragShowIE());
         CatCtr.instance.PreAtk();
-
+        SfxControl.instance.PlayForcoing();
+        coolingDown = true;
     }
     private void EndDrag(InputAction.CallbackContext ctx)
     {
@@ -85,15 +88,18 @@ public class DragControl : MonoBehaviour
         dragCoro = null;
         // dragLine.positionCount = 0;
         HideAim();
-
+        SfxControl.instance.StopForcoing();
         if (disOnWorld < 2f)
         {
             CatCtr.instance.BackIdle();
+            coolingDown = false;
             return;
         }
 
         dragoff.Invoke(wayAngle, disOnWorld);
         CatCtr.instance.Atk();
+
+
     }
 
 
@@ -225,6 +231,12 @@ public class DragControl : MonoBehaviour
         effCoro = null;
     }
 
-
-
+    public void CoolDownReset()
+    {
+        coolingDown = false; ;
+    }
+    public void CoolDown()
+    {
+        LeanTween.delayedCall(coolDownTime, () => coolingDown = false);
+    }
 }

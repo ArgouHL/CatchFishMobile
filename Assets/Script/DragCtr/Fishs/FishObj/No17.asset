@@ -15,10 +15,11 @@ MonoBehaviour:
   fishName: Fish17
   fishObj: {fileID: 5406272352078813806, guid: 8ee4e1e69917a1f42b38325246714491, type: 3}
   fishID: 17
-  hitTimes: 4
+  deterSpeed: 0
+  deterTime: 0
   size: 1
-  rarity: 0
-  reagon: 00000000
+  rarity: 2
+  reagon: 0
   income: 10
   exp: 0
   startHeights:
@@ -32,6 +33,7 @@ MonoBehaviour:
   acceleratedSpeed: 9
   numberOfGroup: 1
   randomRoadCount: 1
-  weights: 40
+  weights: 5
   speedUpTime: 1
   fishIcon: {fileID: 21300000, guid: 9c5050ed75044c74d8cd08e4333f2b19, type: 3}
+  collectionRequire: 1

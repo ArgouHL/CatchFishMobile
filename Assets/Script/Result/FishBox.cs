@@ -15,7 +15,8 @@ public class FishBox : MonoBehaviour
     [SerializeField] private float maxHorizontalSpeed = 20;
     [SerializeField]
     private SpriteRenderer[] box;
-   private List<FishByType> fakefishByTypes;
+    [SerializeField] private Animator boxAni;
+    private List<FishByType> fakefishByTypes;
 
     private int way = 1;
     public List<GameObject> fishList;
@@ -32,9 +33,11 @@ public class FishBox : MonoBehaviour
 
     internal IEnumerator PlayBoxAni(List<FishByType> fishByTypes)
     {
-
-        yield return SpawnAllJumpFish(fishByTypes);
+       
         yield return new WaitForSeconds(1);
+        yield return SpawnAllJumpFish(fishByTypes);
+        
+        
         float dissTime = 1;
         LeanTween.value(0, 1, dissTime).setOnUpdate((float val) =>
           {
@@ -44,8 +47,11 @@ public class FishBox : MonoBehaviour
               }
           });
         yield return new WaitForSeconds(dissTime);
+        yield return new WaitForSeconds(0.5f);
+        boxAni.Play("box");
+        
         List<Coroutine> jumpCoroutines = new List<Coroutine>();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
         for (int i = 0; i < fishList.Count; i++)
         {
             Coroutine jumpCoro=null;
@@ -110,6 +116,7 @@ public class FishBox : MonoBehaviour
         LeanTween.delayedCall(0.5f, () => fish.GetComponent<SpriteRenderer>().sortingOrder = 5);
         way *= -1;
         float horizontalSpeed = Mathf.Pow(UnityEngine.Random.Range(0.2f, 1f), 2) * way * maxHorizontalSpeed;
+        SfxControl.instance.FishJumpPlay();
         while (fish.transform.position.y < 18f && fish.transform.position.y > -18f)
         {
             

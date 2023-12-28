@@ -3,12 +3,13 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public abstract class Fish : MonoBehaviour
 {
     [SerializeField] private Animator fishAni;
     public string fishID;
-   
+
     [SerializeField] internal float speed;
     internal float accelerate;
     internal bool canbeClick = true;
@@ -23,16 +24,14 @@ public abstract class Fish : MonoBehaviour
     internal Coroutine swimming, fearing, shocking;
     internal int randomIndex;
     internal bool isPause = false;
+    internal bool isShocking = false;
     internal int way = 1;
-
-    private void Start()
-    {
-      
-    }
+    Coroutine escapingCoro;
+    Vector3 escapeVector;
 
     public void Swim()
     {
-       
+
         PlayAni("shocked", false);
         Swim(way);
     }
@@ -53,9 +52,11 @@ public abstract class Fish : MonoBehaviour
     {
         isPause = true;
     }
-    internal void ContinueMove()
+    internal void GetOut()
     {
-        isPause = false;
+        //  isPause = false;
+        canbeClick = false;
+        Escape();
     }
 
     internal bool IsOutScreen()
@@ -65,7 +66,7 @@ public abstract class Fish : MonoBehaviour
             SetCanInteract(false);
         }
 
-        bool b = transform.position.x * way > 8f ? true:false;
+        bool b = transform.position.x * way > 8f ? true : false;
         return b;
     }
     internal virtual IEnumerator SwimToEndPoint(float way)
@@ -102,7 +103,7 @@ public abstract class Fish : MonoBehaviour
     }
     internal void NewFish(FishObject fishPrefab)
     {
-        fishID = fishPrefab.fishID;       
+        fishID = fishPrefab.fishID;
         //size = fishPrefab.size;
         rarity = fishPrefab.rarity;
         speed = fishPrefab.speed;
@@ -173,6 +174,7 @@ public abstract class Fish : MonoBehaviour
     }
     private IEnumerator GetShockIE(float time)
     {
+        isShocking = true;
         PlayAni("shocked", true);
         Debug.Log("GetShot");
         float _speed = speed;
@@ -181,22 +183,132 @@ public abstract class Fish : MonoBehaviour
         PlayAni("shocked", false);
         speed = _speed;
         shocking = null;
+        isShocking = false;
     }
 
     internal void SetCanInteract(bool b)
     {
-       // Debug.Log("Set CanInteract to " + b);
+        // Debug.Log("Set CanInteract to " + b);
         canInteract = b;
 
     }
 
-    public void PlayAni(string key,bool b)
+    public void PlayAni(string key, bool b)
     {
         if (fishAni != null)
         {
             fishAni.SetBool(key, b);
         }
     }
+
+    internal void TryEscape(Transform catCentre)
+    {
+        if (swimming != null)
+            StopCoroutine(swimming);
+        if (escapingCoro != null)
+            return;
+
+        fishAni.SetBool("run", true);
+        escapeVector =transform.position - catCentre.position;
+        escapeVector.z = 0;
+        escapeVector = escapeVector.normalized;
+        int way = escapeVector.x > 0 ? 1 : -1;
+        transform.localScale = Vector3.one;
+        var sp = GetComponentInChildren<SpriteRenderer>();
+        sp.flipX = false;
+        sp.flipY = way < 0 ? true : false;
+        escapingCoro = StartCoroutine(escapingIE(escapeVector));
+        transform.rotation = Quaternion.FromToRotation(Vector3.right, escapeVector);
+
+    }
+
+
+    private IEnumerator escapingIE(Vector3 escapeVector)
+    {
+        Vector3 pos = transform.position;
+        float time = 0;
+        while (true)
+        {
+            transform.position = pos + RunCurve(time) * (escapeVector) * 3;
+            FishControl.instance.UpdateLineRender();
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+    }
+
+    public void Escape()
+    {
+        Debug.Log("Escape");
+        if (escapingCoro != null)
+            StopCoroutine(escapingCoro);
+        StartCoroutine(EscapeIE(escapeVector));
+    }
+
+    private IEnumerator EscapeIE(Vector3 escapeVector)
+    {
+        fishAni.SetBool("run", false);
+        while (!IsOutScreen())
+        {
+            transform.position += escapeVector * Time.deltaTime * speed;
+            yield return null;
+        }
+    }
+
+    private float RunCurve(float x)
+    {
+        return ((Mathf.Sin(5 * x) + Mathf.Cos(4 * x) - Mathf.Cos(3 * x))) / 3 + 0.5f;
+    }
+
+    public void AquaSwim()
+    {
+        var orgPos = transform.position;
+        StartCoroutine(AquaSwimIE(orgPos));
+
+    }
+  
+
+
+  private IEnumerator AquaSwimIE(Vector3 orgPos)
+    {
+        float lastTargetY = orgPos.y;
+        while (true)
+        {
+            float minY = (lastTargetY - 3) < 0 ? 0 : lastTargetY - 3;
+            float maxY = (lastTargetY + 3) > 15 ? 15 : lastTargetY + 3;
+            Vector3 targetPos = new Vector3(Random.Range(-6, 6), Random.Range(minY, maxY), 0);
+            Vector3 toDirection = (targetPos - transform.position).normalized;
+            int way = toDirection.x > 0 ? 1 : -1;
+
+            transform.localScale = new Vector3(2*way, 2, 2);
+
+            while (!ToTarget(targetPos,2))
+            { yield return null; }
+
+
+
+        }
+    }
+
+
+    internal bool ToTarget(Vector3 targetPos, float speed)
+    {
+
+        var _pos = transform.position;
+        if (Vector3.Distance(targetPos, _pos) < 0.1f)
+        { return true; }
+        Vector3 fromDirection = transform.up;
+        Vector3 toDirection = (targetPos - transform.position).normalized;
+       
+      //  transform.rotation = Quaternion.FromToRotation(Vector3.right, toDirection);
+
+        transform.position += toDirection * speed * Time.deltaTime;
+
+        return false;
+    }
+
+
+
 }
 
 public abstract class Shark : Fish
@@ -298,7 +410,7 @@ public abstract class Shark : Fish
 
         Fish selectedFish = fishsOnScreen[0];
         chasing = StartCoroutine(ChaseTargetFish(selectedFish));
-        
+
 
 
     }
@@ -345,7 +457,7 @@ public abstract class Shark : Fish
         hp--;
         SetCanInteract(false);
         if (_eatingFish != null)
-            _eatingFish.ContinueMove();
+            _eatingFish.GetOut();
         StopCoroutine(chasing);
 
         if (hp <= 0)

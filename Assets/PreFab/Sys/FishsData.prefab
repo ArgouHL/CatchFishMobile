@@ -45,8 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allFishObjects:
+  - {fileID: 11400000, guid: bd622bb6bceb05c47af3ac4e8df50917, type: 2}
   - {fileID: 11400000, guid: 84acc7865fd2b8f43ba856bf73f0da19, type: 2}
   - {fileID: 11400000, guid: fba31fc1db2031e449048d98c5c098aa, type: 2}
+  - {fileID: 11400000, guid: 8a2a86562a8acc1459f7a61f23677875, type: 2}
+  - {fileID: 11400000, guid: 3441f77e82e7b964e8c3250a6b64d303, type: 2}
   - {fileID: 11400000, guid: 756fa13862e28894396acc253d2be63a, type: 2}
   - {fileID: 11400000, guid: e626aa4bf6f99d84c813fb4901759e18, type: 2}
   - {fileID: 11400000, guid: 6a667613159df9b468a033287c83bfa9, type: 2}

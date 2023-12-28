@@ -8,7 +8,7 @@ public class Fish16 : Fish
 
     internal override IEnumerator SwimToEndPoint(float way)
     {
-        
+        float orgHight = transform.position.y;
 
         // Generate a random number between 0 and 10
         float angle = (randomIndex-1)*25f;

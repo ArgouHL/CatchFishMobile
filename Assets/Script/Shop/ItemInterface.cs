@@ -12,5 +12,13 @@ public class ItemInterface: MonoBehaviour
     [SerializeField] internal TMP_Text priceShow;
     [SerializeField] internal TMP_Text nameShow;
     [SerializeField] internal CanvasGroup canvasGroup;
+    protected internal void SetPrice(string t)
+    {
+
+        var count = t.Length;
+        priceShow.text = t;
+        priceShow.GetComponent<RectTransform>().sizeDelta = new Vector2(count * 50, 100);
+
+    }
 
 }

@@ -82,13 +82,15 @@ public class GamePlay : MonoBehaviour
     private IEnumerator PreStart()
     {
 
-        int readytime = 1;
+        int readytime = 3;
 
         while (readytime >= 0)
         {
+            SfxControl.instance.AwardPlay();
             GameInformationShow.instance.UpdatePreCount(readytime);
             readytime--;
             yield return new WaitForSeconds(1);
+          
         }
         GameInformationShow.instance.HidePreCountUI();
         GameStart();
@@ -179,4 +181,6 @@ public class GamePlay : MonoBehaviour
         catchEffectTransform.position = worldPos;
         catchEffectAni.SetTrigger("Atk");
     }
+
+
 }

@@ -47,7 +47,7 @@ public class ZonesShow : MonoBehaviour
         PlayerInputManager.instance.ChangeType(InputType.None);
         infoText.text = "確認進入" + info + "?";
         UIHelper.ShowAndClickable(enterGameUI, true);
-    
+
     }
 
 
@@ -55,29 +55,34 @@ public class ZonesShow : MonoBehaviour
     {
         PlayerInputManager.instance.ChangeType(InputType.Lobby);
         UIHelper.ShowAndClickable(enterGameUI, false);
-    
+
         MainUICtr.instance.SetEnterBtnEnable(true);
     }
 
     public void EnterGame()
     {
-        switch (nowZone)
+        if (PlayerDataControl.instance.playerData.UseEnergy(10))
+            switch (nowZone)
+            {
+                case Zone.zone_1:
+                    SceneManager.LoadScene(2);
+                    break;
+                case Zone.zone_2:
+                    // ShowZone("印度洋");
+                    break;
+                case Zone.zone_3:
+                    //   ShowZone("大西洋");
+                    break;
+            }
+        else
         {
-            case Zone.zone_1:
-                SceneManager.LoadScene(2);
-                break;
-            case Zone.zone_2:
-               // ShowZone("印度洋");
-                break;
-            case Zone.zone_3:
-            //   ShowZone("大西洋");
-                break;
+
         }
-       
+
     }
 
- 
-  
+
+
 }
 
 
