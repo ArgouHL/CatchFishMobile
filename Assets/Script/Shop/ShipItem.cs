@@ -11,6 +11,7 @@ public class ShipItem : MonoBehaviour
     [SerializeField] private Image shipIcon;
     [SerializeField] private TMP_Text price;
     [SerializeField] private TMP_Text shipName;
+ 
     private ShipData shipData;
 
     internal void ShowData(ShipData _shipdata)
@@ -19,13 +20,28 @@ public class ShipItem : MonoBehaviour
         shipIcon.sprite = ShipSys.instance.GetShipSprite(shipData.shipID);
         usingIcon.alpha = ShipSys.instance.CheckUsing(shipData.shipID)?1:0;
         shipName.text = shipData.shipName;
+
         Debug.Log(shipData.price);
+        if(ShipSys.instance.CheckUnlocked(_shipdata.shipID))
+        {
+            SetPrice_Chinese("己購買");
+            shipIcon.color = Color.white;
+            return;
+        }
+      
         if (shipData.price > 200000)
             SetPrice("???");
         else
             SetPrice(shipData.price.ToString());
 
 
+    }
+
+    private void SetPrice_Chinese(string t)
+    {
+        var count = t.Length;
+        price.text = t;
+        price.GetComponent<RectTransform>().sizeDelta = new Vector2(count * 75, 100);
     }
 
     private void SetPrice(string t)
@@ -81,6 +97,8 @@ public class ShipItem : MonoBehaviour
             ShopSys.instance.ShowBuyFail();
             return;
         }
+        SetPrice_Chinese("己購買");
+        shipIcon.color = Color.white;
         PlayerDataControl.instance.playerData.unLockedShip.Add(shipData.shipID);
         ShopSys.instance.ShowBuySuccess();
         MainUICtr.instance.UpdateShownData();

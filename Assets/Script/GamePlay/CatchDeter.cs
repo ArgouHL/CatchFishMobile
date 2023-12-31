@@ -13,9 +13,10 @@ public class CatchDeter : MonoBehaviour
   //  private Slider deterBar;
     // private int targetTimes;
     private int nowTimes;
-    Coroutine deteCoro;
+    private Coroutine deteCoro;
     public delegate void DeteEvent(bool success);   
     public static DeteEvent EndDete;
+    [SerializeField] private Image tap;
 
 
     float deterValue = 100;
@@ -111,6 +112,7 @@ public class CatchDeter : MonoBehaviour
 
     private void StopDete(bool isSuccess)
     {
+        tap.color = new Color(1, 1, 1, 0);
         SfxControl.instance.StruggleStop();
         ui.alpha = 0;
 
@@ -140,6 +142,8 @@ public class CatchDeter : MonoBehaviour
     {
       //  deterBar.value = deterValue;
         timer.text = (deterTime - time).ToString("F");
+        float colorDelta = (Mathf.Cos(15 * time) + 3) / 4;
+        tap.color = new Color(colorDelta, colorDelta, colorDelta, colorDelta*0.5f);
         CheckDeterValue(deterValue);
     }
 

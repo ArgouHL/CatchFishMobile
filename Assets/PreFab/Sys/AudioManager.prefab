@@ -177,6 +177,7 @@ MonoBehaviour:
   bGMList:
   - {fileID: 11400000, guid: 9ee9f455bc8df0f44b2c03af0c3bfc7a, type: 2}
   - {fileID: 11400000, guid: db872ab6ec09ebc46922a9f999cea768, type: 2}
+  - {fileID: 11400000, guid: 76f72b3e02ee11a48b33edba31ac47d4, type: 2}
   bGMPlayersParent: {fileID: 4659534278796389010}
   masterMixer: {fileID: 24100000, guid: a70c73690ead5984aa704a1252c8c697, type: 2}
   offset: -0.045

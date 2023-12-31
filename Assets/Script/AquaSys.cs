@@ -12,6 +12,7 @@ public class AquaSys : MonoBehaviour
     private void Start()
     {
         SpawnFish();
+        MusicControl.instance.PlayBGM(bgmType.aqua);
     }
 
     private void SpawnFish()

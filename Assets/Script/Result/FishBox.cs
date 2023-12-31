@@ -49,9 +49,10 @@ public class FishBox : MonoBehaviour
         yield return new WaitForSeconds(dissTime);
         yield return new WaitForSeconds(0.5f);
         boxAni.Play("box");
-        
+        SfxControl.instance.BoxOpenPlay();
         List<Coroutine> jumpCoroutines = new List<Coroutine>();
         yield return new WaitForSeconds(0.3f);
+        
         for (int i = 0; i < fishList.Count; i++)
         {
             Coroutine jumpCoro=null;

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.Rendering;
 
 public class GameStart : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class GameStart : MonoBehaviour
 
     private string InputedName;
 
+    private void Start()
+    {
+        DebugManager.instance.enableRuntimeUI = false;
+    }
     public void PressGameStart()
     {
         StartUI.alpha = 0;

@@ -183,12 +183,12 @@ MonoBehaviour:
   award: {fileID: 8300000, guid: cbf4b5633e5f8364787b71aced09dc14, type: 3}
   struggle: {fileID: 8300000, guid: a488dff03aacae44fa28e6c3efefb923, type: 3}
   openShop: {fileID: 8300000, guid: fea1f1aec75335d45a16b2f97313d2c8, type: 3}
-  stamp: {fileID: 0}
   thunder: {fileID: 8300000, guid: 02c4578f1b63b0543b3dfe96319c8629, type: 3}
   money: {fileID: 8300000, guid: 48d883429e795544e87def00e20664d9, type: 3}
   fishJump: {fileID: 8300000, guid: 3794aa685d24f064c9dd0b944ce437d7, type: 3}
   normalForce: {fileID: 8300000, guid: 73b6cf6318fea3947afe6137ed830ce0, type: 3}
   MagicForce: {fileID: 8300000, guid: bc930c0d1529f4d4986ea73209f2d723, type: 3}
+  boxOpen: {fileID: 8300000, guid: 48a7a3fdc27ffc34a9cb80fa7df34803, type: 3}
   hitSoundsPlayer: {fileID: 2212190247902416803}
   forceSoundsPlayer: {fileID: 3042631994316065676}
   stuggleSoundsPlayer: {fileID: 2150419306381445646}

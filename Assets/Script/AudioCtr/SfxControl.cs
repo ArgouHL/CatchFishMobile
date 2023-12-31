@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 public class SfxControl : MonoBehaviour
 {
     public static SfxControl instance;
-    [SerializeField] private AudioClip buttonClick, water, catMeow, award, struggle, openShop,stamp,thunder,money,fishJump,normalForce,MagicForce;
+    [SerializeField] private AudioClip buttonClick, water, catMeow, award, struggle, openShop,thunder,money,fishJump,normalForce,MagicForce,boxOpen;
 
     [SerializeField] private AudioSource hitSoundsPlayer;
     [SerializeField] private AudioSource forceSoundsPlayer;
@@ -85,11 +85,7 @@ public class SfxControl : MonoBehaviour
         SfxPlayOneShot(openShop);
     }
 
-    public void StampPlay()
-    {
-
-        SfxPlayOneShot(stamp);
-    }
+  
 
     public void ThunderPlay()
     {
@@ -107,6 +103,11 @@ public class SfxControl : MonoBehaviour
     internal void CoinPlay()
     {
         SfxPlayOneShot(money);
+    }
+
+    internal void BoxOpenPlay()
+    {
+        SfxPlayOneShot(boxOpen);
     }
 
     public void PlayForcoing()

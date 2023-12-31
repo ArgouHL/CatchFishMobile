@@ -39,8 +39,10 @@ public class Fish19 : Fish
             else if (time > 0.4f)
                 speed = accelerate;
 
+            
             transform.position += direction * speed * Time.deltaTime;
             yield return new WaitWhile(() => isPause);
+            yield return new WaitWhile(() => isShocking);
             time += Time.deltaTime;
             yield return null;
         }

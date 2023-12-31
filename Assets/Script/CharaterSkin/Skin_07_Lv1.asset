@@ -15,8 +15,7 @@ MonoBehaviour:
   SkinID: 07
   skinName: 
   skinImg: {fileID: 21300000, guid: 3af0457d0519e2a4e977ab2800e8f08e, type: 3}
-  skinIcon: {fileID: 21300000, guid: 3efe6a54e40bfe34380a9588a015018e, type: 3}
-  overrideController: {fileID: 22100000, guid: fe4274c43c31a5447868837acd78d090, type: 2}
+  skinIcon: {fileID: 21300000, guid: 5d736a6cc0af7b746839d8e49b507d13, type: 3}
+  overrideController: {fileID: 22100000, guid: 994fd91f6eb11cc43bcf30d37c9e71b7, type: 2}
   skinType: 1
-  shotOutSprite: {fileID: 21300000, guid: 3c22d59adf354b948a327a09a24b6277, type: 3}
-  catchEffectController: {fileID: 22100000, guid: 880879eb25fff5f4bb8df10eb5302173, type: 2}
+  catchEffectController: {fileID: 22100000, guid: 8b6b6b0633b16db46949c45f3feaf246, type: 2}

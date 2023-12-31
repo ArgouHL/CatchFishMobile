@@ -7,18 +7,43 @@
     },
     {
       "skinID": "03",
-      "currency": 1,
-      "price": 150
+      "currency": 0,
+      "price": 200
     },
     {
       "skinID": "04",
-      "currency": 1,
-      "price": 150
+      "currency": 0,
+      "price": 500
     },
     {
       "skinID": "05",
+      "currency": 0,
+      "price": 1000
+    },
+    {
+      "skinID": "06",
+      "currency": 0,
+      "price": 1500
+    },
+    {
+      "skinID": "07",
+      "currency": 0,
+      "price": 2000
+    },
+    {
+      "skinID": "08",
       "currency": 1,
-      "price": 500
+      "price": 200
+    },
+    {
+      "skinID": "09",
+      "currency": 1,
+      "price": 200
+    },
+    {
+      "skinID": "10",
+      "currency": 1,
+      "price": 200
     }
   ],
   "itemsData": [

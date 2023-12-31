@@ -14,9 +14,7 @@ public class PlayerData : ScriptableObject
     public int Player_MaxEnergy;
     public bool UseForTest;
     public Dictionary<string,FishColletRecord> fishCollection;
-
-    
-
+    public DateTime lastEnergyChangeTime;
     public List<string> unLockedSkins;
     public int Player_Exp;
     public string currentSkin;
@@ -42,6 +40,7 @@ public class PlayerData : ScriptableObject
         freeShockItemCount = 0;
         currentShip = "01";
         unLockedShip =new List<string>() { "01" };
+        lastEnergyChangeTime = DateTime.Now;
         if (UseForTest)
         {
             Player_Coin = 100000;
@@ -170,6 +169,7 @@ public class PlayerData : ScriptableObject
         currentShip = ac.currentShip;
         unLockedShip = ac.unLockedShip;
         freeShockItemCount = ac.freeShockItemCount;
+        lastEnergyChangeTime = ac.lastEnergyChangeTime;
     }
 
 
@@ -182,8 +182,16 @@ public class PlayerData : ScriptableObject
     {
         if (Player_Energy - e < 0)
             return false;
-        Player_Energy -= e;
+
+        Player_Energy -= e;        
+        UpdateLastTime();      
+        PlayerDataControl.instance.Save();
         return true;
+    }
+
+    internal void UpdateLastTime()
+    {
+        lastEnergyChangeTime = DateTime.Now;
     }
 }
 [System.Serializable]
@@ -202,6 +210,7 @@ public class Account
     public string currentShip;
     public List<string> unLockedShip;
     public int freeShockItemCount;
+    public DateTime lastEnergyChangeTime;
     internal Account(PlayerData ac)
     {
         unLockedSkins=ac.unLockedSkins;
@@ -217,7 +226,7 @@ public class Account
         currentShip = ac.currentShip;
         unLockedShip = ac.unLockedShip;
         freeShockItemCount = ac.freeShockItemCount;
-
+        lastEnergyChangeTime = ac.lastEnergyChangeTime;
     }
 
    

@@ -62,6 +62,10 @@ public class ZonesShow : MonoBehaviour
     public void EnterGame()
     {
         if (PlayerDataControl.instance.playerData.UseEnergy(10))
+        {
+            if (MainUICtr.instance != null)
+                MainUICtr.instance.UpdateShownData();
+            EnergyRegen.instance.StartRegen();  
             switch (nowZone)
             {
                 case Zone.zone_1:
@@ -74,6 +78,7 @@ public class ZonesShow : MonoBehaviour
                     //   ShowZone("¤j¦è¬v");
                     break;
             }
+        }
         else
         {
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgm: {fileID: 8300000, guid: 05fe3b92dc70fe140bd887f855c10f01, type: 3}
   offset: 0
-  bars: 48
-  bpm: 120
+  bars: 40
+  bpm: 140
   beatType: 2
   type: 5

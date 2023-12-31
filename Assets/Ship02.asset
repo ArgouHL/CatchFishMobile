@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Ship02
   m_EditorClassIdentifier: 
   id: 02
-  afterBuyIcon: {fileID: 21300000, guid: d48e57de45c698b48aaeac46d8850507, type: 3}
-  beforeBuyIcon: {fileID: 21300000, guid: d48e57de45c698b48aaeac46d8850507, type: 3}
+  afterBuyIcon: {fileID: 21300000, guid: 04c4a06d1cade0b4aa91f5628d4c6c54, type: 3}
+  beforeBuyIcon: {fileID: 21300000, guid: 04c4a06d1cade0b4aa91f5628d4c6c54, type: 3}

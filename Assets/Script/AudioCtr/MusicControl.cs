@@ -40,6 +40,8 @@ public class MusicControl : MonoBehaviour
     public static BeatEvent Onbeat;
     public static BeatEvent OnHalfBar;
     public static BeatEvent OnBar;
+
+    public static bgmType currentType;
     public void Awake()
     {
         if (instance != null)
@@ -136,7 +138,11 @@ public class MusicControl : MonoBehaviour
 
     public void PlayBGM(bgmType type)
     {
-
+        if(currentType==type)
+        {
+            return;
+        }
+        currentType = type;
         Debug.Log("PlayBGM" + type);
         StopBGM();
 
@@ -166,6 +172,11 @@ public class MusicControl : MonoBehaviour
 
     public void PlayBGMFadeIn(bgmType type)
     {
+        if (currentType == type)
+        {
+            return;
+        }
+        currentType = type;
         Debug.Log("PlayBGM" + type);
         SoftStopBGM();
         BGMFadeOut(nowBGMIndex);
@@ -178,7 +189,7 @@ public class MusicControl : MonoBehaviour
 
         //timePerTick = 60.0f / nowBGM.bpm;
         //timePerBar = MusicCounter.GetDurationPerBar(nowBGM);
-        LeanTween.value(0, 0.9f, 3f).setOnUpdate((float val) => BGMFadeUpdate(val));
+        LeanTween.value(0, 0.9f, 0.5f).setOnUpdate((float val) => BGMFadeUpdate(val));
         bGMPlayers[nowBGMIndex].volume = 1;
         bGMPlayers[nowBGMIndex].clip = nowBGM.bgm;
         bGMPlayers[nowBGMIndex].Play();

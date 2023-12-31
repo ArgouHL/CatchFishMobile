@@ -280,8 +280,7 @@ public abstract class Fish : MonoBehaviour
             Vector3 toDirection = (targetPos - transform.position).normalized;
             int way = toDirection.x > 0 ? 1 : -1;
 
-            transform.localScale = new Vector3(2*way, 2, 2);
-
+            transform.localScale = new Vector3(1.5f*way, 1.5f, 1.5f);
             while (!ToTarget(targetPos,2))
             { yield return null; }
 
