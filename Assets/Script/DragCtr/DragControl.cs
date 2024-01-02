@@ -23,7 +23,8 @@ public class DragControl : MonoBehaviour
     [SerializeField] private Transform catTransform;
     private float draggedTime;
     [SerializeField] private float MaxDraggedTime = 3;
-    [SerializeField] private ParticleSystem charging;
+    [SerializeField] private ParticleSystem charging, magicCharging;
+    private ParticleSystem _charging;
     private float wayAngle;
     private float disOnWorld;
     private Coroutine effCoro;
@@ -54,6 +55,19 @@ public class DragControl : MonoBehaviour
         screenRect = new Vector2(Camera.main.scaledPixelWidth, Camera.main.scaledPixelHeight);
 
 #endif
+
+        switch (SkinController.instance.GetSkin(PlayerDataControl.instance.playerData.currentSkin).skinType)
+        {
+            case SkinType.Normal:
+                charging.gameObject.SetActive(true);
+                _charging = charging;
+                break;
+            case SkinType.Magic:
+                magicCharging.gameObject.SetActive(true);
+                _charging = magicCharging;
+                break;
+
+        }
     }
     private void StartDrag(InputAction.CallbackContext ctx)
     {
@@ -79,7 +93,7 @@ public class DragControl : MonoBehaviour
             effCoro = null;
         }
         else
-            charging.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _charging.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         //  Debug.Log("EndDrag");
         if (dragCoro == null)
             return;
@@ -227,7 +241,7 @@ public class DragControl : MonoBehaviour
     private IEnumerator effIE()
     {
         yield return new WaitForSeconds(0.15f);
-        charging.Play();
+        _charging.Play();
         effCoro = null;
     }
 

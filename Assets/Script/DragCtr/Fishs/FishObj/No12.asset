@@ -15,7 +15,7 @@ MonoBehaviour:
   fishName: "\u96F7\u514B\u65AF\u523B\u9F52\u96C0\u9BDB"
   fishObj: {fileID: 5406272352078813806, guid: e46c55330f1eeb44f9af6691a16d6476, type: 3}
   fishID: 12
-  deterSpeed: 40
+  deterSpeed: 55
   deterTime: 3
   size: 1
   rarity: 1
